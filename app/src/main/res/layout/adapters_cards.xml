@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.vinaygaba.creditcardview.CreditCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/cardbackground_sky"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:cardNumberTextColor="@color/white"
+        app:cardNumberFormat="masked_all_but_last_four"
+        app:cardNameTextColor="@color/white"
+        app:putChip="true"
+        app:expiryDateTextColor="@color/white"
+        app:isEditable="false"
+        app:validTillTextColor="@color/white"
+        app:hintTextColor = "@color/white" />
+
+</layout>

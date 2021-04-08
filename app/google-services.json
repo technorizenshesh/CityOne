@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "57474920573",
+    "project_id": "cityone-f6ec2",
+    "storage_bucket": "cityone-f6ec2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57474920573:android:853618178eb21fae0a8114",
+        "android_client_info": {
+          "package_name": "com.cityone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57474920573-jg6ptc1ltuu92nb6tt2vjutle9oqa639.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cityone",
+            "certificate_hash": "26cf14069d5878784efbf6de0138a0fd452d746c"
+          }
+        },
+        {
+          "client_id": "57474920573-1f3r112poaku66k96jrr2ivmm6jj47dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg8HotO69FQJIbU2eKRzF-wXVmP9w1bDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57474920573-1f3r112poaku66k96jrr2ivmm6jj47dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

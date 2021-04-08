@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/white_above_back">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:padding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18sdp"
+                android:text="@string/send_money"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/its_safe_and_secure"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15sdp"
+                android:text="@string/enter_amount_and_member_mail_id"/>
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:inputType="textVisiblePassword"
+                android:singleLine="true"
+                android:background="@drawable/orange_outline_back"
+                android:textColor="@color/black"
+                android:padding="@dimen/_10sdp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_amount"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:background="@drawable/orange_outline_back"
+                android:textColor="@color/black"
+                android:padding="@dimen/_10sdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btDone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:fontFamily="@font/poppins_bold"
+                android:textStyle="bold"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_13sdp"
+                android:layout_margin="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:background="@drawable/orange_back_10"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,290 @@
+<resources>
+    <string name="app_name">CityOne</string>
+
+    <string name="places_api_key">AIzaSyCNs1wH7F3CUq1_tYEkN_9BjfAvKeJmBLw</string>
+    <string name="facebook_app_id">206211304268201</string>
+    <string name="fb_login_protocol_scheme">fb206211304268201</string>
+    <string name="stripe_test_key">pk_test_51IH6khHvrBXHiy9OKldfgUUtI4iHepzsYINuK66EDMeLNPnFWmlaxqcJt2bEiry73Ei8QysltqwDq8bppntPeO4D00YDqGmHT2</string>
+    <string name="stripe_live_key">pk_test_51IH6khHvrBXHiy9OKldfgUUtI4iHepzsYINuK66EDMeLNPnFWmlaxqcJt2bEiry73Ei8QysltqwDq8bppntPeO4D00YDqGmHT2</string>
+
+    <string name="get_started">Get Started</string>
+    <string name="maps_api_key">AIzaSyD5KJs-4W2v_SJM5oJrwrC92KCcu34m9do</string>
+    <string name="wlecome_nto_our_store">Welcome\nto our store</string>
+    <string name="get_your_groceries_in_as_fast_as_one_hour">Get your groceries in as fast as one hour</string>
+    <string name="get_your_groceries_nwith_nectar">Get your groceries\nwith nectar</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="continue_with_email">Continue with email</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="enter_your_mobile_number">Enter your mobile number</string>
+    <string name="enter_otp">Enter otp</string>
+    <string name="code">Code</string>
+    <string name="enter_your_6_digit_code">Enter your 6-digit code</string>
+    <string name="resend">Resend Code</string>
+    <string name="allow">Allow</string>
+    <string name="email_text_forgot">Please enter your email address. You will receive a link to create a new password via email.</string>
+    <string name="for_better_experience_allow_your_device_location">For better experience allow your device location</string>
+    <string name="forgot_pass">Forgot Password</string>
+    <string name="submit">Submit</string>
+    <string name="enter_email">Enter email</string>
+    <string name="email">Email</string>
+    <string name="loging">Loging</string>
+    <string name="enter_your_email_and_password">Enter your email and password</string>
+    <string name="fogrot_password">Fogrot Password?</string>
+    <string name="log_in">Log In</string>
+    <string name="enter_you_credentials_to_continue">Enter you credentials to continue</string>
+    <string name="provider_req_text">Your request has been submitted to the admin and you will get access to subadmin when your request has been approved</string>
+    <string name="username">Username</string>
+    <string name="name">Name</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="category">Category</string>
+    <string name="stores">Stores</string>
+    <string name="meals">Meals</string>
+    <string name="trips">Trips</string>
+    <string name="cashback_nrefills">Cashback\nRefills</string>
+    <string name="shipping">Shipping</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="popular_meals">Popular Meals</string>
+    <string name="nearby_store">Nearby Store</string>
+    <string name="food">Food</string>
+    <string name="grocery">Grocery</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="favorite">Favorite</string>
+    <string name="account">Account</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_orders">My orders</string>
+    <string name="my_orderss">My Orders</string>
+    <string name="wallet">Wallet</string>
+    <string name="delivery_addresses">Delivery addresses</string>
+    <string name="my_reviews">My reviews</string>
+    <string name="my_reviewss">My Reviews</string>
+    <string name="settings">Settings</string>
+    <string name="password">Password</string>
+    <string name="delivered">Delivered</string>
+    <string name="processing">Processing</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="total_items">Total Items</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="details">Details</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="select_date_of_birth">Select date of birth</string>
+    <string name="notifications">Notifications</string>
+    <string name="update">Update</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_placed">Order Placed</string>
+    <string name="status">Status</string>
+    <string name="dev_address">Delivery Address</string>
+    <string name="items_detail">Items Detail</string>
+    <string name="edit">Edit</string>
+    <string name="dummy_text">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero\'s De Finibus Bonorum et Malorum for use in a type specimen book.</string>
+    <string name="dummy_add">9230 South Linden Lane Anaheim Lake View Lane Chino Hills, CA 92804</string>
+    <string name="select_address">Select Address</string>
+    <string name="add_dev_address">Add Delivery Address</string>
+    <string name="add_address">Add Address</string>
+    <string name="add_landmark_address">Add Landmark Address</string>
+    <string name="select_card">Select Card</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="add_card">Add Card</string>
+    <string name="fill_card_details">Fill Card Details</string>
+    <string name="add">Add</string>
+    <string name="pick_up_location">Pick up location</string>
+    <string name="drop_off_location">Drop location</string>
+    <string name="daily_time">Daily Time</string>
+    <string name="go_to_cart">Go to cart</string>
+    <string name="checkout">Checkout</string>
+    <string name="sub_total">Sub total</string>
+    <string name="summary">Summary</string>
+    <string name="dev_charges">Delivery fee</string>
+    <string name="to_pay">Total pay</string>
+    <string name="my_cart">My Cart</string>
+    <string name="add_item">Add Item</string>
+    <string name="add_parcel">Add Parcel</string>
+    <string name="select_pick_up_address">Select Pick-Up Address</string>
+    <string name="select_drop_off_address">Select Drop-Off Address</string>
+    <string name="select_pickup_date">Select Pick-Up Date</string>
+    <string name="select_drop_date">Select Drop-Off Date</string>
+    <string name="recipient_s_name">Recipient\'s Name</string>
+    <string name="item_detail">Item Detail</string>
+    <string name="pickup_address">PickUp Address</string>
+    <string name="dropoff_address">DropOff Address</string>
+    <string name="parcel_detail">Parcel Detail</string>
+    <string name="upload">Upload</string>
+    <string name="my_parcels">My Parcels</string>
+    <string name="delivery_instructions">Delivery Instructions</string>
+    <string name="applied_bids">Applied Bids</string>
+    <string name="dummy_item_text">This is 33KG of Apple Packages</string>
+    <string name="dummy_instruction_text">Slowly drive I want my all apples fresh</string>
+    <string name="dropoff_date">DropOff Date</string>
+    <string name="pickup_date">PickUp Date</string>
+    <string name="user">User</string>
+    <string name="price">Price</string>
+    <string name="bid_detail">Bid Detail</string>
+    <string name="comments">Comments</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="reject">Reject</string>
+    <string name="pub">Pub</string>
+    <string name="club">Club</string>
+    <string name="events">Events</string>
+    <string name="timeimg">Timing</string>
+    <string name="vip_ticket">VIP Ticket</string>
+    <string name="normal_ticket">Normal Ticket</string>
+    <string name="bill">Bill</string>
+    <string name="add_ticket">Add Ticket</string>
+    <string name="included">Included</string>
+    <string name="date">Date</string>
+    <string name="transaction">Transaction</string>
+    <string name="add_money">Add Money</string>
+    <string name="transfer">Transfer</string>
+    <string name="debit">Debit</string>
+    <string name="credit">Credit</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="send_money">Send Money</string>
+    <string name="its_safe_and_secure">It\'s safe and secure</string>
+    <string name="enter_amount_and_member_mail_id">Enter amount and member mail-id</string>
+    <string name="done">Done</string>
+    <string name="movies">Movies</string>
+    <string name="movie_tickets">Movie Tickets</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="recommended_movies">Recommended Movies</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="italian">Italian</string>
+    <string name="book_tickets">Book Tickets</string>
+    <string name="about_the_movie">About the movie</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
+    <string name="movie_details">Movie Details</string>
+    <string name="available_theatres">Available Theatres</string>
+    <string name="about_the_theater">About the theatre</string>
+    <string name="aval_time_slots">Available Time Slots</string>
+    <string name="available_dates">Available Dates</string>
+    <string name="select_seats">Select Seats</string>
+    <string name="address">Address</string>
+    <string name="sold">Sold</string>
+    <string name="available">Available</string>
+    <string name="selected">Selected</string>
+    <string name="exclutive_price">Exclutive $150</string>
+    <string name="normal_price">Normal $100</string>
+    <string name="classic_price">Classic $80</string>
+    <string name="req_now">Request Now</string>
+    <string name="confirm_pass">Confirm Password</string>
+    <string name="please_enter_username">Please enter username</string>
+    <string name="please_enter_email_add">Please enter email address</string>
+    <string name="please_select_add">Please select address</string>
+    <string name="please_enterlandmark_add">Please enter landmark address</string>
+    <string name="please_enter_pass">Please enter password</string>
+    <string name="please_enter_conf_pass">Please enter confirm password</string>
+    <string name="password_validation_text">Password should be greater than 4 digits</string>
+    <string name="password_not_match">Password not matched</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="phone">Phone</string>
+    <string name="invalid_number">Invalid phone number</string>
+    <string name="please_enter_phone_add">Please enter phone number</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="enter_6_digit_code">Please enter 6 digit verification code</string>
+    <string name="please_enter_otp">Please enter Otp</string>
+    <string name="logout">Logout</string>
+    <string name="change_password">Change Password</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="update_profile">Update profile</string>
+    <string name="reset_pass_msg">Reset password link sent to your mail-id</string>
+    <string name="logout_text">Are you sure you want to logout?</string>
+    <string name="close_app_text">Do you want to close the app?</string>
+    <string name="turn_on_loc">Turn on location</string>
+    <string name="fetch_loc">Fetch Location...</string>
+    <string name="cart_remove_text">You have already another store item in your cart.Do you want clear your cart ?</string>
+    <string name="next">Next</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="please_add_items_in_cart">Please add items in cart</string>
+    <string name="landmark_ex_hospital_park_etc">Ex: Hospital ,Park etc</string>
+    <string name="success">Success</string>
+    <string name="please_add_item">Please add items</string>
+    <string name="destination">I am going to...</string>
+
+    <string-array name="parcel_quantity">
+        <item>Select Quantity</item>
+        <item>Less then 1KG</item>
+        <item>1KG - 5KG</item>
+        <item>5KG - 10KG</item>
+        <item>10KG - 15KG</item>
+        <item>15KG - 20KG</item>
+        <item>20KG - 25KG</item>
+        <item>25KG - 30KG</item>
+        <item>30KG - 35KG</item>
+        <item>35KG - 40KG</item>
+        <item>40KG Above</item>
+    </string-array>
+
+    <string-array name="vehicle_type">
+        <item>Select Vehicle Type</item>
+        <item>Bicycle</item>
+        <item>Motorcycle</item>
+        <item>VAN</item>
+        <item>Any</item>
+    </string-array>
+
+    <string-array name="store_item_type">
+        <item>Indian Food</item>
+        <item>Italian</item>
+        <item>Maxican</item>
+        <item>Chinese</item>
+    </string-array>
+
+    <string-array name="user_type">
+        <item>USER</item>
+        <item>PROVIDER</item>
+    </string-array>
+
+    <string-array name="parcel_item_category">
+        <item>Select Item Category</item>
+        <item>Document</item>
+        <item>Food</item>
+        <item>Cloting</item>
+        <item>Electronics</item>
+        <item>Fragile</item>
+        <item>Medical</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="my_booking">My booking</string>
+    <string name="order_amt">Order amount :</string>
+    <string name="order_id">Order id</string>
+    <string name="pending">Pending</string>
+    <string name="please_add_card">Please add card</string>
+    <string name="please_check_internet">Please check your internet connection!</string>
+    <string name="ok">Ok</string>
+    <string name="all_fields_are_mandatory">All fields are mandatory</string>
+    <string name="please_select_item_quantity">Please select quantity</string>
+    <string name="please_select_item_category">Please select item category</string>
+    <string name="no_request_found">No Request Found</string>
+    <string name="select_user_type">Select User Type</string>
+    <string name="upload_any_2_documents_ex_pan_driving_license">Upload any 2 documents(Ex- PAN,Driving License etc)</string>
+    <string name="provider_request">Provider Request</string>
+    <string name="please_upload_both_doc">Please upload both documents</string>
+    <string name="want_to_provider">Want to become a provider ?</string>
+    <string name="send_request">Send Request</string>
+    <string name="not_allowed_to_see_other_bids">You are not allowed to see other parcel bids</string>
+    <string name="chat">Chat</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="please_write_a_message">Please_write a message</string>
+    <string name="messages">Message</string>
+    <string name="no_chat_found">No chat found</string>
+    <string name="my_sendings">My Sendings</string>
+    <string name="give_feedback">Give Feedback</string>
+    <string name="comment">Comment</string>
+    <string name="request_now">Request Now</string>
+    <string name="ride_option">Trip Option</string>
+    <string name="select_vech_type">Select vehicle type</string>
+    <string name="select_pickup_address">PLease select pickup address</string>
+    <string name="please_select_pickup_address">Please select pickup address</string>
+    <string name="please_select_dropoff_address">Please select dropoff address</string>
+    <string name="doller">$</string>
+    <string name="seater">Seater</string>
+    <string name="no_vehicle_available">No Vehicle Available</string>
+
+</resources>

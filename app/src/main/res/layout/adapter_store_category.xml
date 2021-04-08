@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btCatName"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/_2sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:background="@drawable/orange_back_20"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:paddingRight="@dimen/_20sdp"
+        android:paddingLeft="@dimen/_20sdp"
+        android:includeFontPadding="false"
+        android:textSize="@dimen/_9sdp"
+        android:text="@string/grocery"
+        android:fontFamily="@font/poppins_bold" />
+
+</layout>

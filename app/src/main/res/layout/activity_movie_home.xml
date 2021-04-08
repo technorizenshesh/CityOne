@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_back"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:src="@drawable/ic_back_black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/movies"
+                android:textAllCaps="false"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/upcoming_movies"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textAllCaps="false"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="@dimen/_150sdp">
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/categorAdsSlider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1"
+                app:sliderStartAutoCycle="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/recommended_movies"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:textAllCaps="false"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold" />
+
+       <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:fillViewport="true">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="@dimen/_5sdp"
+                   android:weightSum="3"
+                   android:layout_marginTop="@dimen/_5sdp"
+                   android:layout_marginRight="@dimen/_5sdp"
+                   android:orientation="horizontal">
+
+                   <androidx.appcompat.widget.AppCompatButton
+                       android:id="@+id/btEnglish"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_height="@dimen/_30sdp"
+                       android:background="@drawable/orange_back_10"
+                       android:textColor="@color/white"
+                       android:textAllCaps="false"
+                       android:textStyle="bold"
+                       android:includeFontPadding="false"
+                       android:textSize="@dimen/_9sdp"
+                       android:text="@string/english"
+                       android:fontFamily="@font/poppins_bold" />
+
+                   <androidx.appcompat.widget.AppCompatButton
+                       android:id="@+id/btSpanish"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_height="@dimen/_30sdp"
+                       android:background="@drawable/gray_back_10"
+                       android:textColor="@color/white"
+                       android:textAllCaps="false"
+                       android:includeFontPadding="false"
+                       android:textSize="@dimen/_9sdp"
+                       android:layout_marginLeft="@dimen/_3sdp"
+                       android:textStyle="bold"
+                       android:fontFamily="@font/poppins_bold"
+                       android:text="@string/spanish"/>
+
+                   <androidx.appcompat.widget.AppCompatButton
+                       android:id="@+id/btItalian"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_height="@dimen/_30sdp"
+                       android:background="@drawable/gray_back_10"
+                       android:fontFamily="@font/poppins_bold"
+                       android:text="@string/italian"
+                       android:includeFontPadding="false"
+                       android:textSize="@dimen/_9sdp"
+                       android:layout_marginLeft="@dimen/_3sdp"
+                       android:textAllCaps="false"
+                       android:textColor="@color/white"
+                       android:textStyle="bold" />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+
+                   <androidx.cardview.widget.CardView
+                       android:id="@+id/cvMovie1"
+                       android:layout_width="0dp"
+                       android:clickable="true"
+                       android:layout_weight="0.5"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="@dimen/_10sdp"
+                       android:layout_marginLeft="@dimen/_5sdp"
+                       android:layout_marginRight="@dimen/_5sdp"
+                       android:layout_marginBottom="@dimen/_3sdp"
+                       app:cardCornerRadius="@dimen/_10sdp"
+                       android:elevation="@dimen/_10sdp">
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical">
+
+                           <com.makeramen.roundedimageview.RoundedImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="@dimen/_200sdp"
+                               android:scaleType="fitXY"
+                               app:riv_corner_radius="@dimen/_10sdp"
+                               android:src="@drawable/movie1"/>
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_bold"
+                               android:gravity="start"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:layout_marginTop="@dimen/_5sdp"
+                               android:text="The Iron man"
+                               android:textAllCaps="false"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_12sdp" />
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_regular"
+                               android:gravity="start"
+                               android:layout_marginBottom="@dimen/_3sdp"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:text="English, Spanish"
+                               android:textAllCaps="false"
+                               android:textColor="@color/gray"
+                               android:textSize="@dimen/_10sdp" />
+
+
+                       </LinearLayout>
+
+                   </androidx.cardview.widget.CardView>
+
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="0dp"
+                       android:layout_weight="0.5"
+                       android:layout_height="wrap_content"
+                       android:layout_marginBottom="@dimen/_3sdp"
+                       android:layout_marginTop="@dimen/_10sdp"
+                       android:layout_marginLeft="@dimen/_5sdp"
+                       android:layout_marginRight="@dimen/_5sdp"
+                       app:cardCornerRadius="@dimen/_10sdp"
+                       android:elevation="@dimen/_10sdp">
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical">
+
+                           <com.makeramen.roundedimageview.RoundedImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="@dimen/_200sdp"
+                               android:scaleType="fitXY"
+                               app:riv_corner_radius="@dimen/_10sdp"
+                               android:src="@drawable/movie2"/>
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_bold"
+                               android:gravity="start"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:layout_marginTop="@dimen/_5sdp"
+                               android:text="The Halk"
+                               android:textAllCaps="false"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_12sdp" />
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_regular"
+                               android:gravity="start"
+                               android:layout_marginBottom="@dimen/_3sdp"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:text="English, Spanish"
+                               android:textAllCaps="false"
+                               android:textColor="@color/gray"
+                               android:textSize="@dimen/_10sdp" />
+
+
+                       </LinearLayout>
+
+                   </androidx.cardview.widget.CardView>
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginBottom="@dimen/_10sdp"
+                   android:orientation="horizontal">
+
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="0dp"
+                       android:layout_weight="0.5"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="@dimen/_10sdp"
+                       android:layout_marginLeft="@dimen/_5sdp"
+                       android:layout_marginRight="@dimen/_5sdp"
+                       android:layout_marginBottom="@dimen/_3sdp"
+                       app:cardCornerRadius="@dimen/_10sdp"
+                       android:elevation="@dimen/_10sdp">
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical">
+
+                           <com.makeramen.roundedimageview.RoundedImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="@dimen/_200sdp"
+                               android:scaleType="fitXY"
+                               app:riv_corner_radius="@dimen/_10sdp"
+                               android:src="@drawable/movie1"/>
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_bold"
+                               android:gravity="start"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:layout_marginTop="@dimen/_5sdp"
+                               android:text="The Iron man"
+                               android:textAllCaps="false"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_12sdp" />
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_regular"
+                               android:gravity="start"
+                               android:layout_marginBottom="@dimen/_3sdp"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:text="English, Spanish"
+                               android:textAllCaps="false"
+                               android:textColor="@color/gray"
+                               android:textSize="@dimen/_10sdp" />
+
+
+                       </LinearLayout>
+
+                   </androidx.cardview.widget.CardView>
+
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="0dp"
+                       android:layout_weight="0.5"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="@dimen/_10sdp"
+                       android:layout_marginLeft="@dimen/_5sdp"
+                       android:layout_marginRight="@dimen/_5sdp"
+                       android:layout_marginBottom="@dimen/_3sdp"
+                       app:cardCornerRadius="@dimen/_10sdp"
+                       android:elevation="@dimen/_10sdp">
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical">
+
+                           <com.makeramen.roundedimageview.RoundedImageView
+                               android:layout_width="match_parent"
+                               android:layout_height="@dimen/_200sdp"
+                               android:scaleType="fitXY"
+                               app:riv_corner_radius="@dimen/_10sdp"
+                               android:src="@drawable/movie2"/>
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_bold"
+                               android:gravity="start"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:layout_marginTop="@dimen/_5sdp"
+                               android:text="The Halk"
+                               android:textAllCaps="false"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_12sdp" />
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:fontFamily="@font/poppins_regular"
+                               android:gravity="start"
+                               android:layout_marginBottom="@dimen/_3sdp"
+                               android:layout_marginLeft="@dimen/_5sdp"
+                               android:text="English, Spanish"
+                               android:textAllCaps="false"
+                               android:textColor="@color/gray"
+                               android:textSize="@dimen/_10sdp" />
+
+
+                       </LinearLayout>
+
+                   </androidx.cardview.widget.CardView>
+
+               </LinearLayout>
+
+           </LinearLayout>
+
+       </ScrollView>
+
+    </LinearLayout>
+
+</layout>
