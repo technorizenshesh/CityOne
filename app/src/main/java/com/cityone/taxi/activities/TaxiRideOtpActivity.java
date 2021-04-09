@@ -66,6 +66,7 @@ public class TaxiRideOtpActivity extends
     ModelLogin modelLogin;
     String carId = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +86,9 @@ public class TaxiRideOtpActivity extends
 
         getAllCarTypes();
 
-        binding.btRequestNow.setOnClickListener(v -> {
-            searchDriverDialog();
-        });
+//        binding.btRequestNow.setOnClickListener(v -> {
+//            // searchDriverDialog();
+//        });
 
     }
 

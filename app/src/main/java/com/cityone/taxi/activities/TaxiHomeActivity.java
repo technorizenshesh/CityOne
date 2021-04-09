@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.cityone.R;
 import com.cityone.databinding.ActivityTaxiHomeBinding;
 import com.cityone.models.ModelLogin;
@@ -47,11 +45,9 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 import static com.google.android.gms.maps.model.JointType.ROUND;
 
@@ -123,7 +119,6 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
                         .putExtra("droplatlon",dropOffLatLng)
                 );
             }
-
         });
 
     }
