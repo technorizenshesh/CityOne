@@ -187,11 +187,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         calltaxiStatusClicked(title,"Your trip is cancelled",request_id,"Cancel_by_driver");
                     }
                 }
-
             }
-
         }
-
     }
 
     private void calltaxiStatusClicked(String title, String msg ,String requestId,String status) {

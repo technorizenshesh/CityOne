@@ -22,6 +22,7 @@ public interface AppConstant {
     String IS_REGISTER = "user_register";
     String USER_DETAILS = "user_details";
     String USER = "USER";
+    String LAT_LON_LIST = "latlonlist";
     String PROVIDER = "PROVIDER";
     String UPDATE_ORDER_STATUS = "update_order_status";
 

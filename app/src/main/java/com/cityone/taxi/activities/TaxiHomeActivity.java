@@ -48,6 +48,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -137,8 +138,8 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
             } else if(TextUtils.isEmpty(binding.tvDropOff.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_select_dropoff_address), Toast.LENGTH_SHORT).show();
             } else {
+                sharedPref.setLatLngList(AppConstant.LAT_LON_LIST,new Gson().toJson(polyLineLatlng));
                 startActivity(new Intent(mContext,TaxiRideOtpActivity.class)
-                        .putExtra("polylines",polyLineLatlng)
                         .putExtra("picklatlon",pickUpLatLng)
                         .putExtra("droplatlon",dropOffLatLng)
                 );

@@ -44,6 +44,7 @@ public class TripHistoryAct extends AppCompatActivity {
     // MercadoPagoCheckout checkout;
     private int requestCodeMercadoPago = 101;
     AdapterTripHistory adapterTripHistory;
+    private ModelTripHistory modelTripHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,6 @@ public class TripHistoryAct extends AppCompatActivity {
                     getFinishedBookings();
                 }
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}
 
@@ -113,14 +113,14 @@ public class TripHistoryAct extends AppCompatActivity {
 
     }
 
-    public void payNowClicked(ModelTripHistory.Result data,String payMethod) {
-        doPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount());
+    public void payNowClicked(ModelTripHistory.Result data,String payMethod,int position) {
+        doPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
 //        checkout = new MercadoPagoCheckout.Builder("public_key", "checkout_preference_id")
 //                .build();
 //        checkout.startPayment(mContext, requestCodeMercadoPago);
     }
 
-    private void doPayment(ModelTripHistory.Result data,String requestId,String payMethod,String estimate_charge_amount) {
+    private void doPayment(ModelTripHistory.Result data,String requestId,String payMethod,String estimate_charge_amount,int position) {
 
         ProjectUtil.showProgressDialog(mContext,false, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
@@ -153,8 +153,9 @@ public class TripHistoryAct extends AppCompatActivity {
                     Log.e("kjagsdkjgaskjd","stringResponse = " + stringResponse);
 
                     if (jsonObject.getString("status").equals("1")) {
-                        data.setStatus("Paid");
-                        adapterTripHistory.notifyDataSetChanged();
+                        modelTripHistory.getResult().get(position).setStatus("Paid");
+                        adapterTripHistory = new AdapterTripHistory(mContext,modelTripHistory.getResult(),"Finish",TripHistoryAct.this::payNowClicked);
+                        binding.rvHistory.setAdapter(adapterTripHistory);
                         Toast.makeText(TripHistoryAct.this, "Payment Success", Toast.LENGTH_SHORT).show();
                     } else {
 
@@ -213,7 +214,7 @@ public class TripHistoryAct extends AppCompatActivity {
 
                     if (jsonObject.getString("status").equals("1")) {
 
-                        ModelTripHistory modelTripHistory = new Gson().fromJson(stringResponse,ModelTripHistory.class);
+                        modelTripHistory = new Gson().fromJson(stringResponse,ModelTripHistory.class);
 
                         adapterTripHistory = new AdapterTripHistory(mContext,modelTripHistory.getResult(),"Pending",TripHistoryAct.this::payNowClicked);
                         binding.rvHistory.setAdapter(adapterTripHistory);
@@ -268,7 +269,7 @@ public class TripHistoryAct extends AppCompatActivity {
 
                     if (jsonObject.getString("status").equals("1")) {
 
-                        ModelTripHistory modelTripHistory = new Gson().fromJson(stringResponse,ModelTripHistory.class);
+                        modelTripHistory = new Gson().fromJson(stringResponse,ModelTripHistory.class);
 
                         adapterTripHistory = new AdapterTripHistory(mContext,modelTripHistory.getResult(),"Active",TripHistoryAct.this::payNowClicked);
                         binding.rvHistory.setAdapter(adapterTripHistory);
@@ -323,7 +324,7 @@ public class TripHistoryAct extends AppCompatActivity {
 
                     if (jsonObject.getString("status").equals("1")) {
 
-                        ModelTripHistory modelTripHistory = new Gson().fromJson(stringResponse,ModelTripHistory.class);
+                        modelTripHistory = new Gson().fromJson(stringResponse,ModelTripHistory.class);
 
                         adapterTripHistory = new AdapterTripHistory(mContext,modelTripHistory.getResult(),"Finish",TripHistoryAct.this::payNowClicked);
                         binding.rvHistory.setAdapter(adapterTripHistory);

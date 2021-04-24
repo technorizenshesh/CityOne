@@ -45,11 +45,6 @@ import retrofit2.Response;
 
 public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.MyTripView> {
 
-    //        Picasso.get().load(data.get())
-//                .error(R.drawable.default_profile_icon)
-//                .placeholder(R.drawable.default_profile_icon)
-//                .into(dialogBinding.driveUserProfile);
-
     Context mContext;
     ArrayList<ModelTripHistory.Result> tripHisList;
     String status;
@@ -64,19 +59,19 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
         this.status = status;
         this.payNowInterface = payNowInterface;
         sharedPref = SharedPref.getInstance(mContext);
-        modelLogin = sharedPref.getUserDetails(AppConstant.USER);
+        modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
     }
 
     @NonNull
     @Override
-    public MyTripView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyTripView onCreateViewHolder(@NonNull ViewGroup parent,int viewType) {
         AdapterTripHistoryBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
                 , R.layout.adapter_trip_history,parent,false);
         return new MyTripView(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyTripView holder, int position) {
+    public void onBindViewHolder(@NonNull MyTripView holder,int position) {
 
         ModelTripHistory.Result data = tripHisList.get(position);
 
@@ -92,24 +87,37 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
         }
 
         Log.e("fsdfssadaasd","data.getUser_rating_status() = " + data.getUser_rating_status());
+        Log.e("fsdfssadaasd","data.getUser_rating_status() = " + data.getStatus());
 
-        if(status.equals("Finish")) {
-            holder.binding.btPayNow.setVisibility(View.VISIBLE);
-            holder.binding.btGiveFeedback.setVisibility(View.GONE);
-        } else if(status.equals("Finish")) {
+//        if(status.equals("Finish")) {
+//            holder.binding.btPayNow.setVisibility(View.VISIBLE);
+//            holder.binding.btGiveFeedback.setVisibility(View.GONE);
+//        } else
+
+          if(status.equals("Finish")) {
             if(data.getStatus().equals("Paid")) {
                 if("true".equals(data.getUser_rating_status())) {
                     holder.binding.btGiveFeedback.setVisibility(View.GONE);
                 } else if("false".equals(data.getUser_rating_status())) {
                     holder.binding.btGiveFeedback.setVisibility(View.VISIBLE);
                 } else {
-                    holder.binding.btGiveFeedback.setVisibility(View.GONE);
+                    holder.binding.btGiveFeedback.setVisibility(View.VISIBLE);
                 }
                 holder.binding.btPayNow.setVisibility(View.GONE);
             } else {
                 holder.binding.btPayNow.setVisibility(View.VISIBLE);
                 holder.binding.btGiveFeedback.setVisibility(View.GONE);
             }
+        }
+
+        if(data.getStatus().equals("Cancel_by_user")) {
+            holder.binding.btPayNow.setVisibility(View.GONE);
+            holder.binding.btGiveFeedback.setVisibility(View.GONE);
+            holder.binding.tvStatus.setText("Cancel By User");
+        } else if(data.getStatus().equals("Cancel_by_driver")) {
+            holder.binding.btPayNow.setVisibility(View.GONE);
+            holder.binding.btGiveFeedback.setVisibility(View.GONE);
+            holder.binding.tvStatus.setText("Cancel By Driver");
         }
 
         holder.binding.btGiveFeedback.setOnClickListener(v -> {
@@ -123,21 +131,23 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
         });
 
         holder.binding.btPayNow.setOnClickListener(v -> {
-            openPaymentSummaryDialog(data);
+            openPaymentSummaryDialog(data,position);
         });
 
     }
 
     private void addFeedbackDialog(ModelTripHistory.Result data) {
-        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        Log.e("fasdfasdasd","data = " + data.getDriver_name());
+
+        Dialog dialog = new Dialog(mContext,WindowManager.LayoutParams.MATCH_PARENT);
 
         AddFeedbackDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
                 ,R.layout.add_feedback_dialog,null,false);
 
         dialog.setContentView(dialogBinding.getRoot());
 
-        dialogBinding.tvDrivername.setText(data.getUser_name());
-//        Picasso.get().load(data.get())
+        dialogBinding.tvDrivername.setText(data.getDriver_name());
+//      Picasso.get().load(data.get())
 //                .error(R.drawable.default_profile_icon)
 //                .placeholder(R.drawable.default_profile_icon)
 //                .into(dialogBinding.driveUserProfile);
@@ -161,6 +171,7 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
         HashMap<String,String> params = new HashMap<>();
         params.put("user_id",modelLogin.getResult().getId());
         params.put("rating",rating);
+        params.put("request_id",data.getId());
         params.put("review",comment);
 
         Call<ResponseBody> call = api.addFeedbackByUserApiCall(params);
@@ -198,7 +209,7 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
         });
     }
 
-    private void openPaymentSummaryDialog(ModelTripHistory.Result data) {
+    private void openPaymentSummaryDialog(ModelTripHistory.Result data,int position) {
 
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         TaxiPaymentHistoryDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
@@ -216,10 +227,10 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
             dialog.dismiss();
             if(dialogBinding.rbCash.isChecked()) {
                 payMethod = "cash";
-                payNowInterface.onSuccess(data,payMethod);
+                payNowInterface.onSuccess(data,payMethod,position);
             } else if(dialogBinding.rbOnline.isChecked()) {
                 payMethod = "online";
-                payNowInterface.onSuccess(data,payMethod);
+                payNowInterface.onSuccess(data,payMethod,position);
             } else {
                 Toast.makeText(mContext, mContext.getString(R.string.please_select_pay_method), Toast.LENGTH_SHORT).show();
             }
@@ -230,7 +241,7 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
     }
 
     public interface PayNowInterface {
-        void onSuccess(ModelTripHistory.Result data,String payMethod);
+        void onSuccess(ModelTripHistory.Result data,String payMethod,int position);
     }
 
     @Override

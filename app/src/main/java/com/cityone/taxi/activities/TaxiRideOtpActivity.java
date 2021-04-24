@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +90,7 @@ public class TaxiRideOtpActivity extends
         currentDate = ProjectUtil.getCurrentDate();
         currentTime = ProjectUtil.getCurrentTime();
 
-        polyLineLatLngs = (ArrayList<LatLng>) getIntent().getSerializableExtra("polylines");
+        polyLineLatLngs = sharedPref.getLatLngList(AppConstant.LAT_LON_LIST);
         pickLatLng = getIntent().getExtras().getParcelable("picklatlon");
         dropLatLng = getIntent().getExtras().getParcelable("droplatlon");
 
@@ -267,8 +270,10 @@ public class TaxiRideOtpActivity extends
 
                     if (jsonObject.getString("status").equals("1")) {
                          searchDriverDialog();
+                    } else if(jsonObject.getString("status").equals("2")) {
+                         alreadyTripDialog();
                     } else {
-                        Toast.makeText(mContext, getString(R.string.no_car_found), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(mContext, getString(R.string.no_car_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -281,6 +286,20 @@ public class TaxiRideOtpActivity extends
                 Log.e("kjagsdkjgaskjd","stringResponse = " + t.getMessage());
             }
 
+        });
+
+    }
+
+    private void alreadyTripDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setCancelable(false);
+        builder.setMessage(getString(R.string.you_are_already_in_trip));
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                startActivity(new Intent(mContext,TaxiHomeActivity.class));
+            }
         });
     }
 

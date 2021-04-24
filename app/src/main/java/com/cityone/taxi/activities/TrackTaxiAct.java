@@ -119,7 +119,12 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
                 try {
                     JSONObject jsonObject = new JSONObject(intent.getStringExtra("object"));
                     binding.ivCancel.setVisibility(View.GONE);
-                    DriverArriveDialog(String.valueOf(jsonObject.get("status")));
+                    if(String.valueOf(jsonObject.get("status")).equals("Cancel_by_driver")) {
+                        finish();
+                        startActivity(new Intent(mContext,DashboardActivity.class));
+                    } else {
+                        DriverArriveDialog(String.valueOf(jsonObject.get("status")));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -129,7 +134,7 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
 
     private void openPaymentSummaryDialog(ModelTaxiBookingDetail data) {
 
-        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        Dialog dialog = new Dialog(mContext,WindowManager.LayoutParams.MATCH_PARENT);
         TaxiPaymentDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
                 ,R.layout.taxi_payment_dialog,null,false);
         dialog.setContentView(dialogBinding.getRoot());
@@ -143,9 +148,7 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
             finishAffinity();
         });
 
-        dialogBinding.btPayNow.setOnClickListener(v -> {
-            
-        });
+        dialogBinding.btPayNow.setOnClickListener(v -> {});
 
         dialog.show();
 
@@ -157,16 +160,13 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
                 .getString(R.string.are_your_sure_you_want_to_cancel_the_trip));
         builder1.setCancelable(false);
 
-        builder1.setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
+        builder1.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         cancelByUserApi();
                     }
                 });
-
-        builder1.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
+        builder1.setNegativeButton("No",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -369,9 +369,8 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
             binding.titler.setText(getString(R.string.your_trip_is_finished));
         } else if(status.equals("Cancel_by_driver")) {
             binding.titler.setText(getString(R.string.your_trip_is_cancelled_by_driver));
+            tvTitle.setText(getString(R.string.your_trip_is_cancelled_by_driver));
             Toast.makeText(mContext,getString(R.string.your_trip_is_cancelled_by_driver), Toast.LENGTH_SHORT).show();
-            finish();
-            startActivity(new Intent(mContext,DashboardActivity.class));
         }
 
         TextView btnOk = dialog.findViewById(R.id.btnOk);
@@ -380,7 +379,7 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
             if(status.equals("Finish")) {
               openPaymentSummaryDialog(data);
             }
-            //TripStartDialog();
+            // TripStartDialog();
             dialog.dismiss();
         });
 
@@ -432,8 +431,15 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
                             binding.titler.setText(getString(R.string.your_trip_is_finished));
                             binding.ivCancel.setVisibility(View.GONE);
                             openPaymentSummaryDialog(data);
+                        } else if("Cancel_by_user".equals(data.getResult().getStatus())){
+                            binding.ivCancel.setVisibility(View.GONE);
+                            binding.titler.setText(getString(R.string.your_trip_is_cancelled));
+                        } else if("Cancel_by_driver".equals(data.getResult().getStatus())) {
+                            binding.ivCancel.setVisibility(View.GONE);
+                            binding.titler.setText(getString(R.string.your_trip_is_cancelled));
                         } else {
                             binding.ivCancel.setVisibility(View.VISIBLE);
+                            binding.titler.setText(getString(R.string.driver_arriving));
                         }
 
                         driverId = data.getResult().getDriverDetails().getId();

@@ -292,6 +292,7 @@
     <string name="no_car_found">No Car Avilable</string>
     <string name="searching_driver">Searching Driver...</string>
     <string name="driver_arrived">Driver Arrived</string>
+    <string name="driver_arriving">Driver Arriving</string>
     <string name="your_trip_has_begin">Your trip has begin</string>
     <string name="your_trip_is_finished">Your trip is finished</string>
     <string name="trip_history">Trip History</string>
@@ -305,4 +306,6 @@
     <string name="pay_now">Pay Now</string>
     <string name="please_select_pay_method">Please select payment method</string>
     <string name="your_trip_is_cancelled_by_driver">Your trip is cancelled by driver</string>
+    <string name="you_are_already_in_trip">You are already in trip...</string>
+    <string name="your_trip_is_cancelled">Your trip is cancelled</string>
 </resources>

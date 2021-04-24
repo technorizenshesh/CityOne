@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.cityone.models.ModelLogin;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 public class SharedPref {
 
@@ -34,6 +38,16 @@ public class SharedPref {
 
     public String getLanguage(String key) {
         return myPrefs.getString(key,"");
+    }
+
+    public void setLatLngList(String key, String value) {
+        SharedPreferences.Editor myPrefEditor = myPrefs.edit();
+        myPrefEditor.putString(key,value);
+        myPrefEditor.commit();
+    }
+
+    public ArrayList<LatLng> getLatLngList(String key) {
+        return new Gson().fromJson(myPrefs.getString(key,""),new TypeToken<ArrayList<LatLng>>() {}.getType());
     }
 
     public void setSharedType(String key, String value) {

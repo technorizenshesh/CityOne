@@ -177,7 +177,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btPayNow"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/orange_back_10"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
@@ -192,7 +192,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btGiveFeedback"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/orange_back_10"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
