@@ -22,11 +22,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CityOne"
         android:usesCleartextTraffic="true">
-        <activity android:name=".shipping.ShipChatListActivity"></activity>
-        <activity android:name=".shipping.ShipChatingActivity" />
-        <activity android:name=".shipping.ShippStatusActivity" />
-        <activity android:name=".taxi.activities.TaxiRideOtpActivity" />
-        <activity android:name=".activities.ProviderRequestActivity" />
+        <activity android:name=".taxi.activities.TripHistoryAct"></activity>
+        <activity
+            android:name=".taxi.activities.TaxiChatingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".taxi.activities.TrackTaxiAct"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".shipping.ShipChatListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".shipping.ShipChatingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".shipping.ShippStatusActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".taxi.activities.TaxiRideOtpActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.ProviderRequestActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".stores.activities.StorePaymentActivity"
             android:screenOrientation="portrait"

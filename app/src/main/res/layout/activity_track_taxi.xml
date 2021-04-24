@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/rlDriver"
+            android:layout_marginBottom="-80dp"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_15sdp">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/black_back" />
+
+            <TextView
+                android:id="@+id/titler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:background="@drawable/purpal_back_10"
+                android:paddingBottom="@dimen/_5sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlDriver"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_220sdp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_33sdp"
+                android:background="@drawable/white_right_corner_back"
+                android:padding="@dimen/_15sdp">
+
+                <TextView
+                    android:id="@+id/tvCaraNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="HS785K"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13sdp" />
+
+                <TextView
+                    android:id="@+id/tvCarModel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvCaraNumber"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Volkswagen Jetta"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
+                <RelativeLayout
+                    android:id="@+id/ivCancel"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_cross_white" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_alignParentBottom="true">
+
+                    <ImageView
+                        android:id="@+id/ic_call"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_call" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutforprofileimage"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:id="@+id/ivChat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/btn_chat" />
+
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/small_red_circle"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#ffffffff"
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlDriver1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp">
+
+                <RelativeLayout
+                    android:id="@+id/rlDriverPropic"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
+                    android:background="@drawable/green_back_oval">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivDriverPropic"
+                        android:layout_width="@dimen/_50sdp"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="@dimen/_2sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/default_profile_icon" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rlDriverPropic"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Pratik"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
+
+                <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"
+                    android:progressTint="@color/dark_green"
+                    android:rating="4.0" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

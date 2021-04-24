@@ -42,13 +42,14 @@ public class AdapterCarTypes extends RecyclerView.Adapter<AdapterCarTypes.StoreH
         holder.binding.tvSeats.setText(data.getNo_of_seats() + " " + mContext.getString(R.string.seater));
 
         if(parentPosition == position) {
+            craTypeCallBack.onSuccess(data.getId(),data.getAmount());
             holder.binding.llCarBack.setBackgroundResource(R.drawable.orange_light_back);
         } else {
             holder.binding.llCarBack.setBackgroundResource(R.drawable.orange_outline_back);
         }
 
         holder.binding.llCarBack.setOnClickListener(v -> {
-            craTypeCallBack.onSuccess(data.getId());
+            craTypeCallBack.onSuccess(data.getId(),data.getAmount());
             parentPosition = position;
             notifyDataSetChanged();
         });
@@ -56,7 +57,7 @@ public class AdapterCarTypes extends RecyclerView.Adapter<AdapterCarTypes.StoreH
     }
 
     public interface CraTypeCallBack {
-        void onSuccess(String carId);
+        void onSuccess(String carId,String amount);
     }
 
     @Override

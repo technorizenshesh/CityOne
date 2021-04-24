@@ -13,9 +13,11 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.cityone.R;
+import com.cityone.activities.DashboardActivity;
 import com.cityone.activities.SplashActivity;
 import com.cityone.shipping.ShippDetailsActivity;
 import com.cityone.shipping.ShippStatusActivity;
+import com.cityone.taxi.activities.TrackTaxiAct;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -96,6 +98,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String shipId = "";
                 String status = "";
                 String key = "";
+                String request_id = "";
 
                 try {
                     jsonObject = new JSONObject(messageBody);
@@ -103,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     shipId = jsonObject.getString("shipping_id");
                 } catch (JSONException e) {}
 
-                try{
+                try {
                     status = jsonObject.getString("status");
                     key = jsonObject.getString("key");
                 } catch (Exception e) {}
@@ -121,9 +124,110 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     callShippingWhenNotifyClicked(status,shipId,msg);
                 }
 
+                if(key.equalsIgnoreCase("taxi")) {
+                    if(status.equalsIgnoreCase("Accept")) {
+                        title = "New Booking Request";
+                        try {
+                            request_id = String.valueOf(jsonObject.get("request_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent1 = new Intent("driver_accept_request");
+                        Log.e("fsdfsfsdfdsfdsf", "below intent = " + jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"Driver is on the way",request_id,"");
+                    } else if(status.equalsIgnoreCase("Arrived")) {
+                        title = "New Booking Request";
+                        try {
+                            request_id = String.valueOf(jsonObject.get("request_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent1 = new Intent("Job_Status_Action");
+                        Log.e("SendData=====", jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"Driver Arrived",request_id,"");
+                    } else if(status.equalsIgnoreCase("Start")) {
+                        title = "New Booking Request";
+                        try {
+                            request_id = String.valueOf(jsonObject.get("request_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent1 = new Intent("Job_Status_Action");
+                        Log.e("SendData=====", jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"Your trip has begin",request_id,"");
+                    } else if(status.equalsIgnoreCase("Finish")) {
+                        title = "New Booking Request";
+                        try {
+                            request_id = String.valueOf(jsonObject.get("request_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent1 = new Intent("Job_Status_Action");
+                        Log.e("SendData=====", jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"Your trip is finished",request_id,"");
+                    } else if(status.equalsIgnoreCase("Cancel_by_driver")) {
+                        title = "New Booking Request";
+                        try {
+                            request_id = String.valueOf(jsonObject.get("request_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent1 = new Intent("Job_Status_Action");
+                        Log.e("SendData=====", jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"Your trip is cancelled",request_id,"Cancel_by_driver");
+                    }
+                }
+
             }
+
         }
 
+    }
+
+    private void calltaxiStatusClicked(String title, String msg ,String requestId,String status) {
+
+        if(status.equals("Cancel_by_driver")) {
+            intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra("request_id",requestId);
+        } else {
+            intent = new Intent(this, TrackTaxiAct.class);
+            intent.putExtra("request_id",requestId);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        String channelId = "1";
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setSmallIcon(R.drawable.app_icon)
+                .setContentTitle(getString(R.string.app_name))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentText(msg)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Channel human readable title
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Cloud Messaging Service",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager.notify(getNotificationId(), notificationBuilder.build());
     }
 
     private static int getNotificationId() {
@@ -164,7 +268,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
-
         notificationManager.notify(getNotificationId(), notificationBuilder.build());
     }
 

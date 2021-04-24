@@ -21,10 +21,10 @@ public class ModelTaxiType implements Serializable {
     public String getStatus() {
         return this.status;
     }
-    public void setMessage(String message){
+    public void setMessage(String message) {
         this.message = message;
     }
-    public String getMessage(){
+    public String getMessage() {
         return this.message;
     }
 
@@ -53,6 +53,16 @@ public class ModelTaxiType implements Serializable {
         private String free_time_min;
 
         private String status;
+
+        private String distance;
+
+        private String miles;
+
+        private int perMin;
+
+        private String amount;
+
+        private String cab_find;
 
         public void setId(String id){
             this.id = id;
@@ -126,6 +136,37 @@ public class ModelTaxiType implements Serializable {
         public String getStatus(){
             return this.status;
         }
+        public void setDistance(String distance){
+            this.distance = distance;
+        }
+        public String getDistance(){
+            return this.distance;
+        }
+        public void setMiles(String miles){
+            this.miles = miles;
+        }
+        public String getMiles(){
+            return this.miles;
+        }
+        public void setPerMin(int perMin){
+            this.perMin = perMin;
+        }
+        public int getPerMin(){
+            return this.perMin;
+        }
+        public void setAmount(String amount){
+            this.amount = amount;
+        }
+        public String getAmount(){
+            return this.amount;
+        }
+        public void setCab_find(String cab_find){
+            this.cab_find = cab_find;
+        }
+        public String getCab_find(){
+            return this.cab_find;
+        }
     }
+
 
 }

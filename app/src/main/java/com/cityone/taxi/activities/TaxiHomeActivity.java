@@ -3,8 +3,10 @@ package com.cityone.taxi.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import com.cityone.R;
 import com.cityone.databinding.ActivityTaxiHomeBinding;
@@ -45,6 +48,8 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,8 +97,27 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
 
     private void init() {
 
+        try {
+            binding.navItems.tvName.setText(modelLogin.getResult().getUser_name());
+            Picasso.get().load(modelLogin.getResult().getImage())
+                    .placeholder(R.drawable.default_profile_icon)
+                    .error(R.drawable.default_profile_icon)
+                    .into(binding.navItems.ivProfile);
+        } catch (Exception e){
+
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(TaxiHomeActivity.this);
+
+        binding.ivMenu.setOnClickListener(v -> {
+            binding.drawerLayout.openDrawer(GravityCompat.START);
+        });
+
+        binding.navItems.tvTripHistory.setOnClickListener(v -> {
+            startActivity(new Intent(mContext,TripHistoryAct.class));
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        });
 
         binding.tvPickUp.setOnClickListener(v -> {
             List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
@@ -226,10 +250,13 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void drawRoute(LatLng pickUpLatLng, LatLng dropOffLatLng) {
+        hideKeyboard();
+        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
         DrawPollyLine.get(this).setOrigin(pickUpLatLng)
                 .setDestination(dropOffLatLng).execute(new DrawPollyLine.onPolyLineResponse() {
             @Override
             public void Success(ArrayList<LatLng> latLngs) {
+                ProjectUtil.pauseProgressDialog();
                 mMap.clear();
                 polyLineLatlng = latLngs;
                 addPickDropMarkerOnMap(pickUpLatLng, dropOffLatLng);
@@ -309,6 +336,11 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         }
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
     @Override

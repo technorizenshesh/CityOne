@@ -38,6 +38,10 @@ public interface Api {
     Call<ResponseBody> getAllShippingRequestApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("add_feedback")
+    Call<ResponseBody> addFeedbackByUserApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_my_shipping")
     Call<ResponseBody> getMySendingsApiCall(@FieldMap Map<String,String> params);
 
@@ -131,6 +135,26 @@ public interface Api {
     Call<ResponseBody> addToCartApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("cancel_by_user")
+    Call<ResponseBody> cancelTripByUser(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("insert_chat_booking")
+    Call<ResponseBody> insertChatBookingCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_chat_booking")
+    Call<ResponseBody> getChatBookingCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_driver_latlon")
+    Call<ResponseBody> getDriverLocation(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_booking_details")
+    Call<ResponseBody>  bookingDetails(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_chat")
     Call<ResponseBody> getAllMessagesCall(@FieldMap Map<String,String> params);
 
@@ -141,6 +165,30 @@ public interface Api {
     @FormUrlEncoded
     @POST("get_conversation")
     Call<ResponseBody> getConversation(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("booking_request")
+    Call<ResponseBody> taxiBookingRequest(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_current_booking_user")
+    Call<ResponseBody> getPendingBooking(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("payment")
+    Call<ResponseBody> doTaxiPayment(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_running_booking_user")
+    Call<ResponseBody> getActiveBooking(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_booking_history")
+    Call<ResponseBody> getFinishedBooking(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("car_type_list")
+    Call<ResponseBody> getTypeList(@FieldMap Map<String,String> params);
 
     @POST("car_list")
     Call<ResponseBody> getCarTypesApi();

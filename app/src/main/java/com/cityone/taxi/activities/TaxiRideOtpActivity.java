@@ -5,12 +5,17 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -40,11 +45,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -65,7 +72,11 @@ public class TaxiRideOtpActivity extends
     SharedPref sharedPref;
     ModelLogin modelLogin;
     String carId = "";
-
+    Dialog searchDialog;
+    private String estiCost;
+    String pickAdd,dropAdd;
+    String timeZone = TimeZone.getDefault().getID();
+    private String request_id,currentDate,currentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,48 +84,100 @@ public class TaxiRideOtpActivity extends
         binding = DataBindingUtil.setContentView(this,R.layout.activity_taxi_ride_otp);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+        currentDate = ProjectUtil.getCurrentDate();
+        currentTime = ProjectUtil.getCurrentTime();
+
         polyLineLatLngs = (ArrayList<LatLng>) getIntent().getSerializableExtra("polylines");
         pickLatLng = getIntent().getExtras().getParcelable("picklatlon");
         dropLatLng = getIntent().getExtras().getParcelable("droplatlon");
+
+        pickAdd = ProjectUtil.getCompleteAddressString(mContext,pickLatLng.latitude,pickLatLng.longitude);
+        dropAdd = ProjectUtil.getCompleteAddressString(mContext,dropLatLng.latitude,dropLatLng.longitude);
 
         init();
     }
 
     private void init() {
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(TaxiRideOtpActivity.this);
 
         getAllCarTypes();
 
-//        binding.btRequestNow.setOnClickListener(v -> {
-//            // searchDriverDialog();
-//        });
+        binding.btRequestNow.setOnClickListener(v -> {
+           addBookingRequest();
+        });
 
     }
 
-    private void searchDriverDialog() {
-        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("fsdfsfsdfdsfdsf","Broadcast intent = " + intent.getStringExtra("object"));
+            if(intent.getStringExtra("object") != null) {
+                searchDialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(intent.getStringExtra("object"));
+                    request_id = String.valueOf(jsonObject.get("request_id"));
+                    startActivity(new Intent(mContext,TrackTaxiAct.class)
+                       .putExtra("request_id",request_id)
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver,new IntentFilter("driver_accept_request"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private void searchDriverDialog() {
+        searchDialog = new Dialog(mContext,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        searchDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         SerachDriverDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
                 R.layout.serach_driver_dialog,null,false);
-        dialog.setContentView(dialogBinding.getRoot());
+        searchDialog.setContentView(dialogBinding.getRoot());
+        searchDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialogBinding.riipleIcon.startRippleAnimation();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
+//                dialogBinding.riipleIcon.stopRippleAnimation();
+//                searchDialog.dismiss();
+//                startActivity(new Intent(mContext,TrackTaxiAct.class));
             }
-        },3000);
+        },5000);
 
-        dialog.dismiss();
+        dialogBinding.btnCancel.setOnClickListener(v -> {
+            searchDialog.dismiss();
+        });
+        searchDialog.show();
     }
 
-    private void getAllCarTypes () {
+    private void getAllCarTypes() {
         ProjectUtil.showProgressDialog(mContext,false, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
-        Call<ResponseBody> call = api.getCarTypesApi();
+        HashMap<String,String> params = new HashMap<>();
+        params.put("user_id",modelLogin.getResult().getId());
+        params.put("picuplat",String.valueOf(pickLatLng.latitude));
+        params.put("pickuplon",String.valueOf(pickLatLng.longitude));
+        params.put("droplat",String.valueOf(dropLatLng.latitude));
+        params.put("droplon",String.valueOf(dropLatLng.longitude));
 
+        Call<ResponseBody> call = api.getTypeList(params);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -138,7 +201,7 @@ public class TaxiRideOtpActivity extends
                         binding.rvCarTypes.setAdapter(adapterCarTypes);
 
                     } else {
-                        Toast.makeText(mContext, getString(R.string.no_chat_found), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, getString(R.string.no_car_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -154,9 +217,71 @@ public class TaxiRideOtpActivity extends
 
     }
 
-    public void updateCarType(String carIdNew) {
+    public void updateCarType(String carIdNew,String amount) {
         carId = carIdNew;
+        estiCost = amount;
+        binding.tvEstiTime.setText(AppConstant.DOLLAR + amount);
         Log.e("hjsdgfhjds","carId = " + carId);
+    }
+
+    private void addBookingRequest() {
+        ProjectUtil.showProgressDialog(mContext,false, getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        Log.e("sfddsfdsfdsf","user_id = " + modelLogin.getResult().getId());
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("user_id",modelLogin.getResult().getId());
+        params.put("picuplat",String.valueOf(pickLatLng.latitude));
+        params.put("pickuplon",String.valueOf(pickLatLng.longitude));
+        params.put("droplat",String.valueOf(dropLatLng.latitude));
+        params.put("droplon",String.valueOf(dropLatLng.longitude));
+        params.put("timezone",timeZone);
+        params.put("device_type","android");
+        params.put("car_type_id",carId);
+        params.put("picuplocation",pickAdd);
+        params.put("dropofflocation",dropAdd);
+        params.put("booktype","NOW");
+        params.put("picklatertime",currentTime);
+        params.put("picklaterdate",currentDate);
+        params.put("payment_type","");
+        params.put("estimate_charge_amount",estiCost);
+
+        Log.e("hjadkjshakjdhkjas","params = " + params);
+
+        Call<ResponseBody> call = api.taxiBookingRequest(params);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                ProjectUtil.pauseProgressDialog();
+
+                Log.e("kghkljsdhkljf","response = " + response);
+
+                try {
+                    String stringResponse = response.body().string();
+                    JSONObject jsonObject = new JSONObject(stringResponse);
+
+                    Log.e("kjagsdkjgaskjd","stringResponse = " + response);
+                    Log.e("kjagsdkjgaskjd","stringResponse = " + stringResponse);
+
+                    if (jsonObject.getString("status").equals("1")) {
+                         searchDriverDialog();
+                    } else {
+                        Toast.makeText(mContext, getString(R.string.no_car_found), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("kjagsdkjgaskjd","stringResponse = " + t.getMessage());
+            }
+
+        });
     }
 
     private void addPickDropMarkerOnMap(LatLng pickUpLatLng, LatLng dropOffLatLng) {

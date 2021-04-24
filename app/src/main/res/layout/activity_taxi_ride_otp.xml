@@ -73,18 +73,83 @@
                         android:orientation="horizontal"
                         android:id="@+id/rvCarTypes"/>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/estimated_trip_cost"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/tvEstiTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/_12sdp"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btRequestNow"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/request_now"
-                    android:textStyle="bold"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:textColor="@color/white"
-                    android:textAllCaps="false"
-                    android:background="@drawable/orange_back_20"/>
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btRequestNow"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.7"
+                        android:layout_height="wrap_content"
+                        android:text="@string/request_now"
+                        android:textStyle="bold"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        android:background="@drawable/orange_back_20"/>
+
+                    <LinearLayout
+                        android:id="@+id/btnTime"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_10sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/ic_calender"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reservation"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="@dimen/_12sdp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

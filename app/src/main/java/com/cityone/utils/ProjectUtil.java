@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProjectUtil {
+
     private static ProgressDialog mProgressDialog;
 
     public static Dialog showProgressDialog(Context context, boolean isCancelable, String message) {
@@ -79,7 +80,7 @@ public class ProjectUtil {
     }
 
     public static String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = dateFormat.format(new Date());
         return formattedDate;
     }

@@ -285,6 +285,24 @@
     <string name="please_select_dropoff_address">Please select dropoff address</string>
     <string name="doller">$</string>
     <string name="seater">Seater</string>
+    <string name="estimated_trip_time">Estimated Trip Time</string>
+    <string name="estimated_trip_cost">Estimated Trip Cost</string>
     <string name="no_vehicle_available">No Vehicle Available</string>
-
+    <string name="reservation">Reservation</string>
+    <string name="no_car_found">No Car Avilable</string>
+    <string name="searching_driver">Searching Driver...</string>
+    <string name="driver_arrived">Driver Arrived</string>
+    <string name="your_trip_has_begin">Your trip has begin</string>
+    <string name="your_trip_is_finished">Your trip is finished</string>
+    <string name="trip_history">Trip History</string>
+    <string name="no_trip_avail">No Trip Available</string>
+    <string name="are_your_sure_you_want_to_cancel_the_trip">Are you sure you want to cancel the trip ?</string>
+    <string name="payment_summary">Payment Summary</string>
+    <string name="trip_payment">Trip Payment</string>
+    <string name="select_payment_method">Select Payment Method</string>
+    <string name="online">Online</string>
+    <string name="cash">Cash</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="please_select_pay_method">Please select payment method</string>
+    <string name="your_trip_is_cancelled_by_driver">Your trip is cancelled by driver</string>
 </resources>
