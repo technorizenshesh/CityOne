@@ -45,6 +45,11 @@ import retrofit2.Response;
 
 public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.MyTripView> {
 
+    //        Picasso.get().load(data.get())
+//                .error(R.drawable.default_profile_icon)
+//                .placeholder(R.drawable.default_profile_icon)
+//                .into(dialogBinding.driveUserProfile);
+
     Context mContext;
     ArrayList<ModelTripHistory.Result> tripHisList;
     String status;
