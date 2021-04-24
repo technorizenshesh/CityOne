@@ -146,6 +146,7 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
                     ,dialogBinding.tvComment.getText().toString().trim());
         });
         dialog.show();
+
     }
 
     private void addFeedbackApi(ModelTripHistory.Result data, Dialog dialog, String rating, String comment) {
