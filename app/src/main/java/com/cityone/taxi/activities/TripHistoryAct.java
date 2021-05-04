@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,14 +21,22 @@ import com.cityone.taxi.models.ModelTripHistory;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
 import com.cityone.utils.AppConstant;
+import com.cityone.utils.PaypalClientId;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 // import com.mercadopago.android.px.core.MercadoPagoCheckout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import okhttp3.ResponseBody;
@@ -42,9 +52,12 @@ public class TripHistoryAct extends AppCompatActivity {
     ModelLogin modelLogin;
     int position;
     // MercadoPagoCheckout checkout;
-    private int requestCodeMercadoPago = 101;
     AdapterTripHistory adapterTripHistory;
     private ModelTripHistory modelTripHistory;
+    private int PAYPAL_REQUEST_CODE = 101;
+    private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(PaypalClientId.PAYPAL_CLIENT_ID_SENDBOX);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +65,10 @@ public class TripHistoryAct extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_trip_history);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        Intent intent = new Intent(mContext, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        startService(intent);
 
         init();
 
@@ -113,16 +130,61 @@ public class TripHistoryAct extends AppCompatActivity {
 
     }
 
-    public void payNowClicked(ModelTripHistory.Result data,String payMethod,int position) {
-        doPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(mContext,PayPalService.class));
+        super.onDestroy();
+    }
+
+    public void payNowClicked(ModelTripHistory.Result data, String payMethod, int position) {
+        makepaypalPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
+        // doPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
 //        checkout = new MercadoPagoCheckout.Builder("public_key", "checkout_preference_id")
 //                .build();
 //        checkout.startPayment(mContext, requestCodeMercadoPago);
     }
 
+    private void makepaypalPayment(ModelTripHistory.Result data,String requestId,String payMethod,String estimate_charge_amount,int position){
+        double amount = Double.parseDouble(data.getEstimate_charge_amount());
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal("1.0"),
+                "USD","Trip Test Payment",PayPalPayment.PAYMENT_INTENT_SALE);
+
+        Intent intent = new Intent(mContext, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PAYPAL_REQUEST_CODE) {
+            if(resultCode == Activity.RESULT_OK) {
+                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirmation != null){
+                    try {
+                        String paymentDetails = confirmation.toJSONObject().toString(4);
+                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        Log.e("sfdasdfasd","requestCode = " + requestCode);
+        Log.e("sfdasdfasd","resultCode = " + resultCode);
+        Log.e("sfdasdfasd","bundle = " + data.getExtras());
+    }
+
+
     private void doPayment(ModelTripHistory.Result data,String requestId,String payMethod,String estimate_charge_amount,int position) {
 
-        ProjectUtil.showProgressDialog(mContext,false, getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         Log.e("sfddsfdsfdsf","user_id = " + modelLogin.getResult().getId());
@@ -176,16 +238,8 @@ public class TripHistoryAct extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.e("sfdasdfasd","requestCode = " + requestCode);
-        Log.e("sfdasdfasd","resultCode = " + resultCode);
-        Log.e("sfdasdfasd","data = " + data.getExtras());
-    }
-
     private void getPendingRequest() {
-        ProjectUtil.showProgressDialog(mContext,false, getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         Log.e("sfddsfdsfdsf","user_id = " + modelLogin.getResult().getId());

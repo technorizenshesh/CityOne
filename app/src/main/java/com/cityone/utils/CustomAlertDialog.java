@@ -37,8 +37,8 @@ public class CustomAlertDialog extends AlertDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
+        setCancelable(true);
+        setCanceledOnTouchOutside(true);
         this.setTitle(title);
         this.setMessage(message);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

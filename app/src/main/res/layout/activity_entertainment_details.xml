@@ -57,7 +57,6 @@
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="Royal Oak"
                             android:textSize="@dimen/_12sdp"
                             android:textColor="@color/black"
                             android:inputType="textVisiblePassword" />
@@ -88,7 +87,6 @@
                         android:drawableLeft="@drawable/ic_blue_location"
                         android:textSize="@dimen/_10sdp"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:text="@string/dummy_add"
                         android:textColor="@color/gray" />
 
                     <LinearLayout
@@ -114,7 +112,6 @@
                             android:layout_marginLeft="@dimen/_5sdp"
                             android:textStyle="bold"
                             android:fontFamily="@font/poppins_regular"
-                            android:text="10:00 AM - 10:00 PM"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:textSize="@dimen/_11sdp"
                             android:textColor="@color/red"
@@ -126,189 +123,21 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/item1"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardBackgroundColor="@color/white"
-                app:contentPadding="@dimen/_5sdp">
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_2sdp"
+                android:id="@+id/swipLayout">
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTickets"
                     android:layout_width="match_parent"
-                    android:gravity="center_vertical"
-                    android:weightSum="10"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"/>
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        app:riv_corner_radius="@dimen/_5sdp"
-                        android:padding="@dimen/_10sdp"
-                        android:src="@drawable/tickets"
-                        android:layout_marginLeft="@dimen/_10sdp">
-                    </com.makeramen.roundedimageview.RoundedImageView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="5"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_5sdp">
-
-                        <TextView
-                            android:id="@+id/tvName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:text="@string/vip_ticket"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_10sdp"
-                            android:textStyle="bold"
-                            android:layout_marginLeft="@dimen/_10sdp" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tvPrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$150"
-                                android:textColor="@color/red"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvDetail"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:layout_alignParentBottom="true"
-                        android:background="@drawable/orange_back_10"
-                        android:fontFamily="@font/poppins_bold"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:layout_centerVertical="true"
-                        android:textSize="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_4sdp"
-                        android:paddingBottom="@dimen/_4sdp"
-                        android:paddingLeft="@dimen/_15sdp"
-                        android:paddingRight="@dimen/_15sdp"
-                        android:text="@string/details"/>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardBackgroundColor="@color/white"
-                app:contentPadding="@dimen/_5sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:gravity="center_vertical"
-                    android:weightSum="10"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:padding="@dimen/_10sdp"
-                        app:riv_corner_radius="@dimen/_5sdp"
-                        android:src="@drawable/tickets"
-                        android:layout_marginLeft="@dimen/_10sdp">
-                    </com.makeramen.roundedimageview.RoundedImageView>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="5"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_5sdp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:text="@string/normal_ticket"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_10sdp"
-                            android:textStyle="bold"
-                            android:layout_marginLeft="@dimen/_10sdp" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$80"
-                                android:textColor="@color/red"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:layout_alignParentBottom="true"
-                        android:background="@drawable/orange_back_10"
-                        android:fontFamily="@font/poppins_bold"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:layout_centerVertical="true"
-                        android:textSize="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_4sdp"
-                        android:paddingBottom="@dimen/_4sdp"
-                        android:paddingLeft="@dimen/_15sdp"
-                        android:paddingRight="@dimen/_15sdp"
-                        android:text="@string/details"/>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
@@ -326,6 +155,7 @@
             android:background="@drawable/orange_back_10">
 
             <TextView
+                android:id="@+id/tvCartCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"

@@ -1,15 +1,11 @@
 package com.cityone.utils;
 
-import java.util.HashMap;
 import java.util.Map;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface Api {
 
@@ -62,8 +58,20 @@ public interface Api {
     Call<ResponseBody> getStoreCartApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("get_cart_entertentment")
+    Call<ResponseBody> getCartEntApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_count_cart_entertentment")
+    Call<ResponseBody> getCartCountEntApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("delete_cart")
     Call<ResponseBody> deleteStoreItemApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("delete_cart_entertentment")
+    Call<ResponseBody> deleteEntItemApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_restaurant_details")
@@ -120,8 +128,15 @@ public interface Api {
     @POST("add_account_details")
     Call<ResponseBody> addCardApiCall(@FieldMap Map<String,String> params);
 
+    @FormUrlEncoded
+    @POST("get_entertentment_details")
+    Call<ResponseBody> addEntDetailsCall(@FieldMap Map<String,String> params);
+
     @POST("get_restaurant_category")
     Call<ResponseBody> getStoreCatApiCall();
+
+    @POST("get_entertentment_category")
+    Call<ResponseBody> getEntCatApiCall();
 
     @POST("get_restaurant_item_meals")
     Call<ResponseBody> getStoreMealsCatApiCall();
@@ -131,8 +146,28 @@ public interface Api {
     Call<ResponseBody> loginApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("get_entertentment")
+    Call<ResponseBody> getEntCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_entertentment_details")
+    Call<ResponseBody> getEntDetailsCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_ticket")
+    Call<ResponseBody> getEntTicketCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("add_to_cart")
     Call<ResponseBody> addToCartApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("add_to_cart_entertentment")
+    Call<ResponseBody> addToCartEntApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("remove_cart_entertentment")
+    Call<ResponseBody> removeEntCartApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("cancel_by_user")

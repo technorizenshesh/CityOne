@@ -49,7 +49,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
     ModelLogin modelLogin;
     ModelStoreDetails modelStoreDetails;
     ModelStoreItemFilterCat modelStoreItemFilterCat;
-    HashMap<String,String> bookingParam= new HashMap<>();
+    HashMap<String,String> bookingParam = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

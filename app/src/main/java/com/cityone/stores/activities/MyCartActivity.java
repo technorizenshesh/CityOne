@@ -94,7 +94,7 @@ public class MyCartActivity extends AppCompatActivity {
                     params.put("time",currentTime);
                     params.put("total_amount", String.valueOf(itemTotal+10));
 
-                    startActivity(new Intent(mContext, SetDeliveryLocationActivity.class)
+                    startActivity(new Intent(mContext,SetDeliveryLocationActivity.class)
                             .putExtra(AppConstant.STORE_BOOKING_PARAMS,params)
                     );
 

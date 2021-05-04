@@ -7,6 +7,9 @@
     <string name="stripe_test_key">pk_test_51IH6khHvrBXHiy9OKldfgUUtI4iHepzsYINuK66EDMeLNPnFWmlaxqcJt2bEiry73Ei8QysltqwDq8bppntPeO4D00YDqGmHT2</string>
     <string name="stripe_live_key">pk_test_51IH6khHvrBXHiy9OKldfgUUtI4iHepzsYINuK66EDMeLNPnFWmlaxqcJt2bEiry73Ei8QysltqwDq8bppntPeO4D00YDqGmHT2</string>
 
+    <string name="paypal_sendbox_key">AaoQC7Sch8---qJ5SN8ahy5-rWKjUcfqZKkiP32N913gDzvIZYaDUpUBD4T5rS_pZpJnOnV6T3PbQGr6</string>
+
+
     <string name="get_started">Get Started</string>
     <string name="maps_api_key">AIzaSyD5KJs-4W2v_SJM5oJrwrC92KCcu34m9do</string>
     <string name="wlecome_nto_our_store">Welcome\nto our store</string>
@@ -198,6 +201,7 @@
     <string name="turn_on_loc">Turn on location</string>
     <string name="fetch_loc">Fetch Location...</string>
     <string name="cart_remove_text">You have already another store item in your cart.Do you want clear your cart ?</string>
+    <string name="cart_remove_text_ent">You have already another Entertainment Ticket in your cart.Do you want clear your cart ?</string>
     <string name="next">Next</string>
     <string name="edit_item">Edit Item</string>
     <string name="please_add_items_in_cart">Please add items in cart</string>
@@ -308,4 +312,5 @@
     <string name="your_trip_is_cancelled_by_driver">Your trip is cancelled by driver</string>
     <string name="you_are_already_in_trip">You are already in trip...</string>
     <string name="your_trip_is_cancelled">Your trip is cancelled</string>
+    <string name="edit_ticket">Edit Ticket</string>
 </resources>

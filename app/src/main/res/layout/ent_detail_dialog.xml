@@ -8,7 +8,7 @@
         android:background="@color/home_back">
 
         <ImageView
-            android:id="@+id/ivItemImage"
+            android:id="@+id/ivImage"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_180sdp"
             android:scaleType="centerCrop"
@@ -48,7 +48,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvItemName"
+                        android:id="@+id/tvTicketName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -69,7 +69,7 @@
                         android:inputType="textVisiblePassword" />
 
                     <TextView
-                        android:id="@+id/tvItemDesp"
+                        android:id="@+id/tvIncludedDesp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"

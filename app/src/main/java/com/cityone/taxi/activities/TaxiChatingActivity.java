@@ -113,7 +113,7 @@ public class TaxiChatingActivity extends AppCompatActivity implements BottomReac
     }
 
     private void getAllMessages() {
-        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         HashMap<String,String> param = new HashMap<>();

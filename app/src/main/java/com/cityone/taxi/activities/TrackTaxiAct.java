@@ -1,11 +1,13 @@
 package com.cityone.taxi.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,6 +43,7 @@ import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.DrawPollyLine;
+import com.cityone.utils.PaypalClientId;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,11 +60,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,12 +82,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallback {
+public class TrackTaxiAct extends AppCompatActivity
+        implements OnMapReadyCallback {
 
+    private static final int PAYPAL_REQUEST_CODE = 101;
     Context mContext = TrackTaxiAct.this;
     ActivityTrackTaxiBinding binding;
     String request_id = "";
-    private LatLng pickUpLatLng, dropOffLatLng;
+    private LatLng pickUpLatLng,dropOffLatLng;
     int PERMISSION_ID = 44;
     FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest mLocationRequest;
@@ -91,8 +102,11 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
     Timer timer = new Timer();
     ModelTaxiBookingDetail data;
     AlertDialog.Builder builder1;
-    String driverStatus = "",driverId=null,driverName="",driverImage="",driverMobile =null,driverLat,driverLon;
+    String driverStatus = "",driverId=null,driverName="",driverImage="",driverMobile=null,driverLat,driverLon;
     private PolylineOptions lineOptions;
+    private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(PaypalClientId.PAYPAL_CLIENT_ID_SENDBOX);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +115,16 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
+        Intent intent = new Intent(mContext,PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        startService(intent);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
 
         if (getIntent() != null)
             request_id = getIntent().getStringExtra("request_id");
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         init();
@@ -132,6 +151,49 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(mContext,PayPalService.class));
+        super.onDestroy();
+    }
+
+    private void makepaypalPayment(ModelTaxiBookingDetail data) {
+        double amount = Double.parseDouble(data.getResult().getEstimateChargeAmount());
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal("1.0"),
+                "USD","Trip Test Payment",PayPalPayment.PAYMENT_INTENT_SALE);
+
+        Intent intent = new Intent(mContext, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PAYPAL_REQUEST_CODE) {
+            if(resultCode == Activity.RESULT_OK) {
+                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirmation != null) {
+                    try {
+                        String paymentDetails = confirmation.toJSONObject().toString(4);
+                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        Log.e("sfdasdfasd","requestCode = " + requestCode);
+        Log.e("sfdasdfasd","resultCode = " + resultCode);
+        Log.e("sfdasdfasd","bundle = " + data.getExtras());
+    }
+
     private void openPaymentSummaryDialog(ModelTaxiBookingDetail data) {
 
         Dialog dialog = new Dialog(mContext,WindowManager.LayoutParams.MATCH_PARENT);
@@ -148,7 +210,9 @@ public class TrackTaxiAct extends AppCompatActivity implements OnMapReadyCallbac
             finishAffinity();
         });
 
-        dialogBinding.btPayNow.setOnClickListener(v -> {});
+        dialogBinding.btPayNow.setOnClickListener(v -> {
+            makepaypalPayment(data);
+        });
 
         dialog.show();
 

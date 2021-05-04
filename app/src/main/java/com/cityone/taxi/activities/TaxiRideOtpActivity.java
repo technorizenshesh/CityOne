@@ -273,7 +273,7 @@ public class TaxiRideOtpActivity extends
                     } else if(jsonObject.getString("status").equals("2")) {
                          alreadyTripDialog();
                     } else {
-                         Toast.makeText(mContext, getString(R.string.no_car_found), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(mContext,getString(R.string.no_car_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -298,9 +298,9 @@ public class TaxiRideOtpActivity extends
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
-                startActivity(new Intent(mContext,TaxiHomeActivity.class));
+                startActivity(new Intent(mContext,TripHistoryAct.class));
             }
-        });
+        }).create().show();
     }
 
     private void addPickDropMarkerOnMap(LatLng pickUpLatLng, LatLng dropOffLatLng) {

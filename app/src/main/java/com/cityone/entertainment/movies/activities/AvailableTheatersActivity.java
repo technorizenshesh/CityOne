@@ -39,7 +39,6 @@ public class AvailableTheatersActivity extends AppCompatActivity {
             startActivity(new Intent(mContext,TheaterDetailActivity.class));
         });
 
-
     }
 
 
