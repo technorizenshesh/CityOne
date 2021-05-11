@@ -60,11 +60,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
+//import com.paypal.android.sdk.payments.PayPalConfiguration;
+//import com.paypal.android.sdk.payments.PayPalPayment;
+//import com.paypal.android.sdk.payments.PayPalService;
+//import com.paypal.android.sdk.payments.PaymentActivity;
+//import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -104,9 +104,9 @@ public class TrackTaxiAct extends AppCompatActivity
     AlertDialog.Builder builder1;
     String driverStatus = "",driverId=null,driverName="",driverImage="",driverMobile=null,driverLat,driverLon;
     private PolylineOptions lineOptions;
-    private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
-            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
-            .clientId(PaypalClientId.PAYPAL_CLIENT_ID_SENDBOX);
+//    private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
+//            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+//            .clientId(PaypalClientId.PAYPAL_CLIENT_ID_SENDBOX);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +115,9 @@ public class TrackTaxiAct extends AppCompatActivity
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
-        Intent intent = new Intent(mContext,PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
-        startService(intent);
+//        Intent intent = new Intent(mContext,PayPalService.class);
+//        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+//        startService(intent);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
 
@@ -153,19 +153,19 @@ public class TrackTaxiAct extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        stopService(new Intent(mContext,PayPalService.class));
+       // stopService(new Intent(mContext,PayPalService.class));
         super.onDestroy();
     }
 
     private void makepaypalPayment(ModelTaxiBookingDetail data) {
         double amount = Double.parseDouble(data.getResult().getEstimateChargeAmount());
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal("1.0"),
-                "USD","Trip Test Payment",PayPalPayment.PAYMENT_INTENT_SALE);
-
-        Intent intent = new Intent(mContext, PaymentActivity.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+//        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal("1.0"),
+//                "USD","Trip Test Payment",PayPalPayment.PAYMENT_INTENT_SALE);
+//
+//        Intent intent = new Intent(mContext, PaymentActivity.class);
+//        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+//        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+//        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
     }
 
     @Override
@@ -173,20 +173,20 @@ public class TrackTaxiAct extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PAYPAL_REQUEST_CODE) {
-            if(resultCode == Activity.RESULT_OK) {
-                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-                if (confirmation != null) {
-                    try {
-                        String paymentDetails = confirmation.toJSONObject().toString(4);
-                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
-            }
+//            if(resultCode == Activity.RESULT_OK) {
+//                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+//                if (confirmation != null) {
+//                    try {
+//                        String paymentDetails = confirmation.toJSONObject().toString(4);
+//                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
+//            }
         }
 
         Log.e("sfdasdfasd","requestCode = " + requestCode);
@@ -287,6 +287,7 @@ public class TrackTaxiAct extends AppCompatActivity
             }
 
         });
+
     }
 
     private void init() {

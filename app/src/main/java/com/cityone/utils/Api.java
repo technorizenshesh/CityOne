@@ -135,6 +135,9 @@ public interface Api {
     @POST("get_restaurant_category")
     Call<ResponseBody> getStoreCatApiCall();
 
+    @POST("get_upcoming_movie")
+    Call<ResponseBody> getUpMoviesApiCall();
+
     @POST("get_entertentment_category")
     Call<ResponseBody> getEntCatApiCall();
 
@@ -152,6 +155,11 @@ public interface Api {
     @FormUrlEncoded
     @POST("get_entertentment_details")
     Call<ResponseBody> getEntDetailsCall(@FieldMap Map<String,String> params);
+
+
+    @FormUrlEncoded
+    @POST("get_movie_details")
+    Call<ResponseBody> getMovieDetailsCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_ticket")
@@ -227,5 +235,8 @@ public interface Api {
 
     @POST("car_list")
     Call<ResponseBody> getCarTypesApi();
+
+    @POST("get_access_token")
+    Call<ResponseBody> getClientTokenApi();
 
 }

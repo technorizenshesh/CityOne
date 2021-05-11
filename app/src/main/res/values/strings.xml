@@ -313,4 +313,7 @@
     <string name="you_are_already_in_trip">You are already in trip...</string>
     <string name="your_trip_is_cancelled">Your trip is cancelled</string>
     <string name="edit_ticket">Edit Ticket</string>
+<!--    <string name="tokenizationKey">sandbox_mfgkd5gf_6p5mzrg3hryr89hn</string>-->
+<!--    <string name="tokenizationKey">sandbox_8hczq7ns_c7js9njkww5hns5n</string>-->
+    <string name="tokenizationKey">sandbox_mf8n2kgs_6p5mzrg3hryr89hn</string>
 </resources>

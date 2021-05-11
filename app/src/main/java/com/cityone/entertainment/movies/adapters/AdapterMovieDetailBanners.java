@@ -4,26 +4,25 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.cityone.R;
 import com.cityone.entertainment.movies.models.ModelUpcMovies;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
-public class AdapterUpcomeMovies extends SliderViewAdapter<AdapterUpcomeMovies.AdapterRecentAdsViewHolder> {
+public class AdapterMovieDetailBanners extends SliderViewAdapter<AdapterMovieDetailBanners
+        .AdapterRecentAdsViewHolder> {
 
     Context mContext;
-    ArrayList<ModelUpcMovies.Result> adsList;
+    ArrayList<String> adsList;
 
-    public AdapterUpcomeMovies(Context mContext, ArrayList<ModelUpcMovies.Result> adsList) {
+    public AdapterMovieDetailBanners(Context mContext,ArrayList<String> adsList) {
         this.mContext = mContext;
         this.adsList = adsList;
     }
 
-    public void renewItems(ArrayList<ModelUpcMovies.Result> adsList) {
+    public void renewItems(ArrayList<String> adsList) {
         this.adsList = adsList;
         notifyDataSetChanged();
     }
@@ -33,22 +32,23 @@ public class AdapterUpcomeMovies extends SliderViewAdapter<AdapterUpcomeMovies.A
         notifyDataSetChanged();
     }
 
-    public void addItem(ModelUpcMovies.Result sliderItem) {
+    public void addItem(String sliderItem) {
         this.adsList.add(sliderItem);
         notifyDataSetChanged();
     }
 
     @Override
-    public AdapterUpcomeMovies.AdapterRecentAdsViewHolder onCreateViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_upcoming_movies,parent,false);
-        return new AdapterUpcomeMovies.AdapterRecentAdsViewHolder(view);
+    public AdapterMovieDetailBanners.AdapterRecentAdsViewHolder onCreateViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.adapter_upcoming_movies,parent,false);
+        return new AdapterMovieDetailBanners.AdapterRecentAdsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterUpcomeMovies.AdapterRecentAdsViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterMovieDetailBanners.AdapterRecentAdsViewHolder holder, int position) {
 
         try {
-            Picasso.get().load(adsList.get(position).getFirst_image()).into(holder.itemsImage);
+            Picasso.get().load(adsList.get(position)).into(holder.itemsImage);
         } catch (Exception e){}
 
 

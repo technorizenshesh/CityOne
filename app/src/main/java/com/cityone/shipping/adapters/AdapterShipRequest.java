@@ -24,12 +24,6 @@ import com.cityone.stores.models.ModelCards;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
-import com.stripe.android.ApiResultCallback;
-import com.stripe.android.Stripe;
-import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 

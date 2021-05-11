@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.cityone.R;
@@ -56,7 +57,7 @@ public class EntHomeActivity extends AppCompatActivity {
         });
 
         binding.btMovie.setOnClickListener(v -> {
-            // startActivity(new Intent(mContext, MovieHomeActivity.class));
+            startActivity(new Intent(mContext, MovieHomeActivity.class));
         });
 
     }

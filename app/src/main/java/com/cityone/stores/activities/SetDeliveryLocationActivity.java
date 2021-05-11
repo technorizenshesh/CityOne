@@ -3,7 +3,6 @@ package com.cityone.stores.activities;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -221,11 +220,7 @@ public class SetDeliveryLocationActivity extends AppCompatActivity {
                                         ProjectUtil.pauseProgressDialog();
                                         dialog.dismiss();
                                         Log.e("stripeToken","token = " + token.getId());
-                                        addCardApi(dialogBinding.cardForm.getCardNumber(),
-                                                dialogBinding.cardForm.getExpirationMonth()+"/"+
-                                                        dialogBinding.cardForm.getExpirationYear(),
-                                                dialogBinding.cardForm.getExpirationMonth()
-                                                ,dialogBinding.cardForm.getCvv(),token.getId());
+
                                     }
 
                                     @Override

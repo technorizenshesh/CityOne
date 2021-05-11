@@ -4,15 +4,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.braintreepayments.api.BraintreeFragment;
+import com.braintreepayments.api.dropin.DropInActivity;
+import com.braintreepayments.api.dropin.DropInRequest;
+import com.braintreepayments.api.dropin.DropInResult;
+import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.cityone.R;
 import com.cityone.databinding.ActivityTripHistoryBinding;
 import com.cityone.models.ModelLogin;
@@ -31,6 +34,11 @@ import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+//import com.paypal.android.sdk.payments.PayPalConfiguration;
+//import com.paypal.android.sdk.payments.PayPalPayment;
+//import com.paypal.android.sdk.payments.PayPalService;
+//import com.paypal.android.sdk.payments.PaymentActivity;
+//import com.paypal.android.sdk.payments.PaymentConfirmation;
 // import com.mercadopago.android.px.core.MercadoPagoCheckout;
 
 import org.json.JSONException;
@@ -39,6 +47,7 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import lib.android.paypal.com.magnessdk.Environment;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,14 +59,21 @@ public class TripHistoryAct extends AppCompatActivity {
     ActivityTripHistoryBinding binding;
     SharedPref sharedPref;
     ModelLogin modelLogin;
+    String clientToken = "";
     int position;
     // MercadoPagoCheckout checkout;
     AdapterTripHistory adapterTripHistory;
     private ModelTripHistory modelTripHistory;
     private int PAYPAL_REQUEST_CODE = 101;
+
+    ModelTripHistory.Result dataResult;
+    String requestId = "";
+    String tripAmount = "";
+    int taxiPosition = 0;
     private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(PaypalClientId.PAYPAL_CLIENT_ID_SENDBOX);
+    private BraintreeFragment braintree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +82,15 @@ public class TripHistoryAct extends AppCompatActivity {
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
-        Intent intent = new Intent(mContext, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
-        startService(intent);
+        try {
+            braintree = BraintreeFragment.newInstance(TripHistoryAct.this,getString(R.string.tokenizationKey));
+        } catch (InvalidArgumentException e) {
+            e.printStackTrace();
+        }
+
+//      Intent intent = new Intent(mContext, PayPalService.class);
+//      intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+//      startService(intent);
 
         init();
 
@@ -136,51 +158,169 @@ public class TripHistoryAct extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void payNowClicked(ModelTripHistory.Result data, String payMethod, int position) {
+    public void payNowClicked(ModelTripHistory.Result data,String payMethod,int position) {
+        dataResult = data;
+        tripAmount = data.getId();
+        requestId = data.getEstimate_charge_amount();
+        taxiPosition = position;
         makepaypalPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
-        // doPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
+//        doPayment(data,data.getId(),payMethod,data.getEstimate_charge_amount(),position);
 //        checkout = new MercadoPagoCheckout.Builder("public_key", "checkout_preference_id")
 //                .build();
 //        checkout.startPayment(mContext, requestCodeMercadoPago);
     }
 
-    private void makepaypalPayment(ModelTripHistory.Result data,String requestId,String payMethod,String estimate_charge_amount,int position){
-        double amount = Double.parseDouble(data.getEstimate_charge_amount());
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal("1.0"),
-                "USD","Trip Test Payment",PayPalPayment.PAYMENT_INTENT_SALE);
-
-        Intent intent = new Intent(mContext, PaymentActivity.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+    private void makepaypalPayment(ModelTripHistory.Result data,String requestId
+            ,String payMethod,String estimate_charge_amount,int position) {
+        getClientToken(data,requestId,payMethod,estimate_charge_amount,position);
+//        double amount = Double.parseDouble(data.getEstimate_charge_amount());
+//        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf("1.00")),
+//                "USD","Trip",PayPalPayment.PAYMENT_INTENT_SALE);
+//
+//      Intent intent = new Intent(mContext, PaymentActivity.class);
+//      intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+//      intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+//      startActivityForResult(intent,PAYPAL_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PAYPAL_REQUEST_CODE) {
-            if(resultCode == Activity.RESULT_OK) {
-                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-                if (confirmation != null){
-                    try {
-                        String paymentDetails = confirmation.toJSONObject().toString(4);
-                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
-            }
+       if(requestCode == PAYPAL_REQUEST_CODE) {
+
+           //If the result is from paypal
+//           if (requestCode == PAYPAL_REQUEST_CODE) {
+//
+//               //If the result is OK i.e. user has not canceled the payment
+//               if (resultCode == Activity.RESULT_OK) {
+//                   //Getting the payment confirmation
+//                   PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+//
+//                   Log.e("kjghjgkjfkjdsf",confirm.toJSONObject().toString());
+////                   try {
+////                       Log.e("kjghjgkjfkjdsf",confirm.toJSONObject().toString(4));
+////                   } catch (JSONException e) {
+////                       e.printStackTrace();
+////                   }
+//
+//                   //if confirmation is not null
+//                   if (confirm != null) {
+//                       try {
+//                          // Getting the payment details
+//                          // String paymentDetails = confirm.toJSONObject().toString(4);
+//                          // Log.e("paymentExample", paymentDetails);
+//
+//                          // Starting a new activity for the payment details and also putting the payment details with intent
+////                           startActivity(new Intent(this, ConfirmationActivity.class)
+////                                  .putExtra("PaymentDetails", paymentDetails)
+////                                  .putExtra("PaymentAmount", paymentAmount));
+//
+//                       } catch (Exception e) {
+//                           Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+//                       }
+//                   }
+//               } else if (resultCode == Activity.RESULT_CANCELED) {
+//                   Log.e("paymentExample", "The user canceled.");
+//               } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+//                   Log.e("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+//               }
+//           }
+
+           if (resultCode == Activity.RESULT_OK) {
+
+               DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+               // here you will get nonce for the payment
+               String nNonce = result.getPaymentMethodNonce().getNonce();
+               // you also can check payment type is from paypal or Card
+               String payment_type = result.getPaymentMethodType().getCanonicalName();
+
+               if (nNonce != null && payment_type != null) {
+                   Log.e("nNoncenNonce","nNonce = " + nNonce);
+                   Toast.makeText(mContext, "Payment done, Send this nonce to server", Toast.LENGTH_SHORT).show();
+                   // doPayment(dataResult,requestId,payment_type,tripAmount,taxiPosition);
+               }
+
+           } else if (resultCode == Activity.RESULT_CANCELED) {
+               Toast.makeText(mContext, "Payment cancelled by user, go back to previous activity", Toast.LENGTH_SHORT).show();
+           } else {
+               // handle errors here, an exception may be available in
+               Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+               Log.e("errorerrorerror","error = " + error.getMessage());
+               Log.e("errorerrorerror","error = " + error.getStackTrace());
+               Log.e("errorerrorerror","error = " + error.getLocalizedMessage());
+               Log.e("errorerrorerror","error = " + error.getCause());
+               Toast.makeText(mContext, "Get some unknown error, go back to previous activity", Toast.LENGTH_SHORT).show();
+           }
+           
+//            if(resultCode == Activity.RESULT_OK) {
+//                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+//                if (confirmation != null) {
+//                    try {
+//                        String paymentDetails = confirmation.toJSONObject().toString(4);
+//                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
+//            }
         }
 
         Log.e("sfdasdfasd","requestCode = " + requestCode);
         Log.e("sfdasdfasd","resultCode = " + resultCode);
         Log.e("sfdasdfasd","bundle = " + data.getExtras());
+
     }
 
+    private void getClientToken(ModelTripHistory.Result data,String requestId,
+                                String payMethod,String estimate_charge_amount,int position) {
+
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        Log.e("sfddsfdsfdsf","user_id = " + modelLogin.getResult().getId());
+
+        Call<ResponseBody> call = api.getClientTokenApi();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                ProjectUtil.pauseProgressDialog();
+                binding.swipLayout.setRefreshing(false);
+
+                try {
+                    String stringResponse = response.body().string();
+                    JSONObject jsonObject = new JSONObject(stringResponse);
+
+                    Log.e("kjagsdkjgaskjd","stringResponse = " + response);
+                    Log.e("kjagsdkjgaskjd","stringResponse = " + stringResponse);
+
+                    clientToken = jsonObject.getString("result");
+                    Log.e("kjagsdkjgaskjd","clientToken = " + clientToken);
+                    DropInRequest dropInRequest = new DropInRequest()
+                            .tokenizationKey(/*"sandbox_f252zhq7_hh4cpc39zq4rgjcg"*/ getString(R.string.tokenizationKey));
+                            //.clientToken("client_id$sandbox$zrcjnv838t9m39kf");
+                    Log.e("kjagsdkjgaskjd","dropInRequest.isPayPalEnabled() = " + dropInRequest.isPayPalEnabled());
+                    dropInRequest.amount(data.getEstimate_charge_amount());
+                    startActivityForResult(dropInRequest.getIntent(mContext),PAYPAL_REQUEST_CODE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+                binding.swipLayout.setRefreshing(false);
+                Log.e("kjagsdkjgaskjd","stringResponse = " + t.getMessage());
+            }
+
+        });
+
+    }
 
     private void doPayment(ModelTripHistory.Result data,String requestId,String payMethod,String estimate_charge_amount,int position) {
 
