@@ -58,9 +58,11 @@
     <string name="account">Account</string>
     <string name="my_profile">My Profile</string>
     <string name="my_orders">My orders</string>
+    <string name="my_store_orders">My Stores Orders</string>
     <string name="my_orderss">My Orders</string>
     <string name="wallet">Wallet</string>
     <string name="delivery_addresses">Delivery addresses</string>
+    <string name="movie_ticket_books">Movie Tickets Bookings</string>
     <string name="my_reviews">My reviews</string>
     <string name="my_reviewss">My Reviews</string>
     <string name="settings">Settings</string>
@@ -138,6 +140,7 @@
     <string name="add_ticket">Add Ticket</string>
     <string name="included">Included</string>
     <string name="date">Date</string>
+    <string name="datee">Date :</string>
     <string name="transaction">Transaction</string>
     <string name="add_money">Add Money</string>
     <string name="transfer">Transfer</string>
@@ -169,7 +172,7 @@
     <string name="sold">Sold</string>
     <string name="available">Available</string>
     <string name="selected">Selected</string>
-    <string name="exclutive_price">Exclutive $150</string>
+    <string name="exclutive_price">Exclusive $150</string>
     <string name="normal_price">Normal $100</string>
     <string name="classic_price">Classic $80</string>
     <string name="req_now">Request Now</string>
@@ -316,4 +319,8 @@
 <!--    <string name="tokenizationKey">sandbox_mfgkd5gf_6p5mzrg3hryr89hn</string>-->
 <!--    <string name="tokenizationKey">sandbox_8hczq7ns_c7js9njkww5hns5n</string>-->
     <string name="tokenizationKey">sandbox_mf8n2kgs_6p5mzrg3hryr89hn</string>
+    <string name="theater_name">Theater Name :</string>
+    <string name="movie">Movie :</string>
+    <string name="time_slot">Time Slot :</string>
+    <string name="seats_details">Seats Details :</string>
 </resources>

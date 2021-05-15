@@ -48,6 +48,8 @@ public class ModelStoreItems implements Serializable {
 
         private String name;
 
+        private String discount;
+
         private String restaurant_sub_category_name;
 
         private String restaurant_category_name;
@@ -55,6 +57,14 @@ public class ModelStoreItems implements Serializable {
         private String restaurant_name;
 
         private String restaurant_image;
+
+        public String getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(String discount) {
+            this.discount = discount;
+        }
 
         public void setId(String id){
             this.id = id;

@@ -41,6 +41,7 @@ android {
             }
         }
     }
+
 }
 
 dependencies {
@@ -69,7 +70,7 @@ dependencies {
 //  implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
     implementation 'com.paypal.sdk:paypal-android-sdk:2.14.2'
     implementation 'com.stripe:stripe-android:15.1.0'
-//    implementation 'com.braintreepayments.api:braintree:3.17.4'
+//  implementation 'com.braintreepayments.api:braintree:3.17.4'
     implementation 'com.braintreepayments.api:drop-in:3.7.1'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'com.braintreepayments:card-form:5.0.0'
@@ -84,4 +85,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 googleServices.disableVersionCheck = true
+
+
 

@@ -9,6 +9,9 @@ public interface AppConstant {
     String STORE_BOOKING_PARAMS = "bookingparam";
     String SIGNUP_API = "signup";
     String EURO = "€";
+    String EXCLUSIVE = "exclusive";
+    String NORMAL = "normal";
+    String CLASSIC = "classic";
     String UPDATE_PROFILE_API = "update_profile";
     String FORGOT_PASSWORD_API = "forgot_password";
     String CHANGE_PASSWORD_API = "change_password";

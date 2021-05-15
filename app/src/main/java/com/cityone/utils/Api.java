@@ -1,4 +1,4 @@
-package com.cityone.utils;
+ package com.cityone.utils;
 
 import java.util.Map;
 import okhttp3.ResponseBody;
@@ -138,6 +138,9 @@ public interface Api {
     @POST("get_upcoming_movie")
     Call<ResponseBody> getUpMoviesApiCall();
 
+    @POST("get_movie")
+    Call<ResponseBody> getRemMoviesApiCall();
+
     @POST("get_entertentment_category")
     Call<ResponseBody> getEntCatApiCall();
 
@@ -149,13 +152,20 @@ public interface Api {
     Call<ResponseBody> loginApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("get_treater_details")
+    Call<ResponseBody> getTheaterDetailsApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_treater")
+    Call<ResponseBody> getTheaterApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_entertentment")
     Call<ResponseBody> getEntCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_entertentment_details")
     Call<ResponseBody> getEntDetailsCall(@FieldMap Map<String,String> params);
-
 
     @FormUrlEncoded
     @POST("get_movie_details")

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -71,6 +72,12 @@ public class AdapterStoreItems extends RecyclerView.Adapter<AdapterStoreItems.St
 
         holder.binding.tvName.setText(data.getName());
         holder.binding.tvPrice.setText(AppConstant.DOLLAR + data.getAmount());
+        if(data.getDiscount() == null || data.getDiscount().equals("") || data.getDiscount().equals("0")) {
+            holder.binding.tvDiscount.setVisibility(View.GONE);
+        } else {
+            holder.binding.tvDiscount.setVisibility(View.VISIBLE);
+            holder.binding.tvDiscount.setText(data.getDiscount()+"% Off");
+        }
         Picasso.get().load(data.getImage()).into(holder.binding.ivImage);
 
         holder.binding.btAdd.setOnClickListener(v -> {

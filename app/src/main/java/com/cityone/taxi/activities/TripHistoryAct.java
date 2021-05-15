@@ -88,9 +88,9 @@ public class TripHistoryAct extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//      Intent intent = new Intent(mContext, PayPalService.class);
-//      intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
-//      startService(intent);
+        Intent intent = new Intent(mContext, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        startService(intent);
 
         init();
 
@@ -172,15 +172,15 @@ public class TripHistoryAct extends AppCompatActivity {
 
     private void makepaypalPayment(ModelTripHistory.Result data,String requestId
             ,String payMethod,String estimate_charge_amount,int position) {
-        getClientToken(data,requestId,payMethod,estimate_charge_amount,position);
-//        double amount = Double.parseDouble(data.getEstimate_charge_amount());
-//        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf("1.00")),
-//                "USD","Trip",PayPalPayment.PAYMENT_INTENT_SALE);
-//
-//      Intent intent = new Intent(mContext, PaymentActivity.class);
-//      intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
-//      intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-//      startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+        //getClientToken(data,requestId,payMethod,estimate_charge_amount,position);
+        double amount = Double.parseDouble(data.getEstimate_charge_amount());
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal("10"),
+                "USD","Trip",PayPalPayment.PAYMENT_INTENT_SALE);
+
+        Intent intent = new Intent(mContext, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
     }
 
     @Override
@@ -188,70 +188,66 @@ public class TripHistoryAct extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
        if(requestCode == PAYPAL_REQUEST_CODE) {
+           if (requestCode == PAYPAL_REQUEST_CODE) {
 
-           //If the result is from paypal
-//           if (requestCode == PAYPAL_REQUEST_CODE) {
-//
-//               //If the result is OK i.e. user has not canceled the payment
-//               if (resultCode == Activity.RESULT_OK) {
-//                   //Getting the payment confirmation
-//                   PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-//
-//                   Log.e("kjghjgkjfkjdsf",confirm.toJSONObject().toString());
-////                   try {
-////                       Log.e("kjghjgkjfkjdsf",confirm.toJSONObject().toString(4));
-////                   } catch (JSONException e) {
-////                       e.printStackTrace();
-////                   }
-//
-//                   //if confirmation is not null
-//                   if (confirm != null) {
-//                       try {
-//                          // Getting the payment details
-//                          // String paymentDetails = confirm.toJSONObject().toString(4);
-//                          // Log.e("paymentExample", paymentDetails);
-//
-//                          // Starting a new activity for the payment details and also putting the payment details with intent
-////                           startActivity(new Intent(this, ConfirmationActivity.class)
-////                                  .putExtra("PaymentDetails", paymentDetails)
-////                                  .putExtra("PaymentAmount", paymentAmount));
-//
-//                       } catch (Exception e) {
-//                           Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
-//                       }
-//                   }
-//               } else if (resultCode == Activity.RESULT_CANCELED) {
-//                   Log.e("paymentExample", "The user canceled.");
-//               } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-//                   Log.e("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
-//               }
-//           }
+               if (resultCode == Activity.RESULT_OK) {
 
-           if (resultCode == Activity.RESULT_OK) {
+                   PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
 
-               DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-               // here you will get nonce for the payment
-               String nNonce = result.getPaymentMethodNonce().getNonce();
-               // you also can check payment type is from paypal or Card
-               String payment_type = result.getPaymentMethodType().getCanonicalName();
+                   Log.e("kjghjgkjfkjdsf",confirm.toJSONObject().toString());
+                   try {
+                       Log.e("kjghjgkjfkjdsf",confirm.toJSONObject().toString(4));
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
 
-               if (nNonce != null && payment_type != null) {
-                   Log.e("nNoncenNonce","nNonce = " + nNonce);
-                   Toast.makeText(mContext, "Payment done, Send this nonce to server", Toast.LENGTH_SHORT).show();
-                   // doPayment(dataResult,requestId,payment_type,tripAmount,taxiPosition);
+                   if (confirm != null) {
+                       try {
+                          // Getting the payment details
+                          // String paymentDetails = confirm.toJSONObject().toString(4);
+                          // Log.e("paymentExample", paymentDetails);
+
+                          // Starting a new activity for the payment details and also putting the payment details with intent
+//                           startActivity(new Intent(this, ConfirmationActivity.class)
+//                                  .putExtra("PaymentDetails", paymentDetails)
+//                                  .putExtra("PaymentAmount", paymentAmount));
+
+                       } catch (Exception e) {
+                           Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                       }
+                   }
+               } else if (resultCode == Activity.RESULT_CANCELED) {
+                   Log.e("paymentExample", "The user canceled.");
+               } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                   Log.e("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
                }
-
-           } else if (resultCode == Activity.RESULT_CANCELED) {
-               Toast.makeText(mContext, "Payment cancelled by user, go back to previous activity", Toast.LENGTH_SHORT).show();
-           } else {
-               // handle errors here, an exception may be available in
-               Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-               Log.e("errorerrorerror","error = " + error.getMessage());
-               Log.e("errorerrorerror","error = " + error.getStackTrace());
-               Log.e("errorerrorerror","error = " + error.getLocalizedMessage());
-               Log.e("errorerrorerror","error = " + error.getCause());
-               Toast.makeText(mContext, "Get some unknown error, go back to previous activity", Toast.LENGTH_SHORT).show();
            }
+
+//           if (resultCode == Activity.RESULT_OK) {
+//
+//               DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+//               // here you will get nonce for the payment
+//               String nNonce = result.getPaymentMethodNonce().getNonce();
+//               // you also can check payment type is from paypal or Card
+//               String payment_type = result.getPaymentMethodType().getCanonicalName();
+//
+//               if (nNonce != null && payment_type != null) {
+//                   Log.e("nNoncenNonce","nNonce = " + nNonce);
+//                   Toast.makeText(mContext, "Payment done, Send this nonce to server", Toast.LENGTH_SHORT).show();
+//                   // doPayment(dataResult,requestId,payment_type,tripAmount,taxiPosition);
+//               }
+//
+//           } else if (resultCode == Activity.RESULT_CANCELED) {
+//               Toast.makeText(mContext, "Payment cancelled by user, go back to previous activity", Toast.LENGTH_SHORT).show();
+//           } else {
+//               // handle errors here, an exception may be available in
+//               Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+//               Log.e("errorerrorerror","error = " + error.getMessage());
+//               Log.e("errorerrorerror","error = " + error.getStackTrace());
+//               Log.e("errorerrorerror","error = " + error.getLocalizedMessage());
+//               Log.e("errorerrorerror","error = " + error.getCause());
+//               Toast.makeText(mContext, "Get some unknown error, go back to previous activity", Toast.LENGTH_SHORT).show();
+//           }
            
 //            if(resultCode == Activity.RESULT_OK) {
 //                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);

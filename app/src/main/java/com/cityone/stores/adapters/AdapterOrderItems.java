@@ -3,6 +3,7 @@ package com.cityone.stores.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,13 @@ public class AdapterOrderItems extends RecyclerView.Adapter<AdapterOrderItems.St
 
         holder.binding.tvName.setText(data.getItem_name());
         holder.binding.tvPrice.setText(AppConstant.DOLLAR + data.getPrice() +" x "+ data.getQuantity());
+
+        if(data.getDiscount() == null || data.getDiscount().equals("") || data.getDiscount().equals("0")){
+            holder.binding.tvDiscount.setVisibility(View.GONE);
+        } else {
+            holder.binding.tvDiscount.setText(data.getDiscount()+"% Off");
+            holder.binding.tvDiscount.setVisibility(View.VISIBLE);
+        }
 
         Picasso.get().load(data.getItem_image()).into(holder.binding.ivImage);
     }

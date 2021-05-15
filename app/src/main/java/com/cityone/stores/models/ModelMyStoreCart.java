@@ -38,8 +38,8 @@ public class ModelMyStoreCart implements Serializable {
         return this.total_amount;
     }
 
-    public class Result
-    {
+    public class Result {
+
         private String id;
 
         private String user_id;
@@ -54,11 +54,21 @@ public class ModelMyStoreCart implements Serializable {
 
         private String amount;
 
+        private String discount;
+
         private String image;
 
         private String name;
 
         private String updated_at;
+
+        public String getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(String discount) {
+            this.discount = discount;
+        }
 
         public String getAmount() {
             return amount;

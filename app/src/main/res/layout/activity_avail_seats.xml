@@ -69,6 +69,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvExclusive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
@@ -91,6 +92,7 @@
                         app:spanCount="8"/>
 
                     <TextView
+                        android:id="@+id/tvNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
@@ -113,6 +115,7 @@
                         app:spanCount="8"/>
 
                     <TextView
+                        android:id="@+id/tvClassic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"

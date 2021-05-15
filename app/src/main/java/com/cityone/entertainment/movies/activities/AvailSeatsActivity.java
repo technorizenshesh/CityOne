@@ -16,6 +16,8 @@ import com.cityone.databinding.ActivityAvailSeatsBinding;
 import com.cityone.entertainment.movies.adapters.AdapterClassicSeats;
 import com.cityone.entertainment.movies.adapters.AdapterExclutiveSeats;
 import com.cityone.entertainment.movies.adapters.AdapterNormalSeats;
+import com.cityone.entertainment.movies.models.ModelTheaterDetails;
+import com.cityone.utils.AppConstant;
 
 import java.util.ArrayList;
 
@@ -29,14 +31,17 @@ public class AvailSeatsActivity extends AppCompatActivity {
     AdapterExclutiveSeats adapterExclutiveSeats;
     AdapterExclutiveSeats adapterNormalSeats;
     AdapterExclutiveSeats adapterClassicSeats;
+    ModelTheaterDetails modelTheaterDetails;
+    String seatType = null;
 
     public void successExl(int pso) {
-      // Toast.makeText(mContext, ""+exclList.get(pso).isSelected(), Toast.LENGTH_SHORT).show();
+        seatType = AppConstant.EXCLUSIVE;
+      // Toast.makeText(mContext,""+exclList.get(pso).isSelected(),Toast.LENGTH_SHORT).show();
       exclList.get(pso).setSelected(!exclList.get(pso).isSelected());
-      for (int i=0;i<normalList.size();i++){
+      for (int i=0;i<normalList.size();i++) {
           normalList.get(i).setSelected(false);
       }
-        for (int i=0;i<classicList.size();i++){
+        for (int i=0;i<classicList.size();i++) {
             classicList.get(i).setSelected(false);
         }
         adapterExclutiveSeats.notifyDataSetChanged();
@@ -45,6 +50,7 @@ public class AvailSeatsActivity extends AppCompatActivity {
     }
 
     public void successNor(int pso) {
+        seatType = AppConstant.NORMAL;
         normalList.get(pso).setSelected(!normalList.get(pso).isSelected);
         for (int i=0;i<exclList.size();i++) {
             exclList.get(i).setSelected(false);
@@ -58,8 +64,9 @@ public class AvailSeatsActivity extends AppCompatActivity {
     }
 
     public void successClic(int pso) {
+        seatType = AppConstant.CLASSIC;
         classicList.get(pso).setSelected(!classicList.get(pso).isSelected);
-        for (int i=0;i<exclList.size();i++){
+        for (int i=0;i<exclList.size();i++) {
             exclList.get(i).setSelected(false);
         }
         for (int i=0;i<normalList.size();i++){
@@ -104,9 +111,8 @@ public class AvailSeatsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_avail_seats);
-
+        modelTheaterDetails = (ModelTheaterDetails) getIntent().getSerializableExtra("data");
         init();
-
     }
 
     private void init() {
@@ -115,11 +121,20 @@ public class AvailSeatsActivity extends AppCompatActivity {
         classicList = new ArrayList<>();
         normalList = new ArrayList<>();
 
-        for (int i=0;i<35;i++) {
+        binding.tvExclusive.setText("Exclusive: $"+modelTheaterDetails.getResult().getExclusive_price());
+        binding.tvNormal.setText("Normal: $"+modelTheaterDetails.getResult().getNormal_price());
+        binding.tvClassic.setText("Classic: $"+modelTheaterDetails.getResult().getClassic_price());
+
+        int exSeats = Integer.parseInt(modelTheaterDetails.getResult().getExclusive_seat());
+        int normSeats = Integer.parseInt(modelTheaterDetails.getResult().getNormal_seat());
+        int classicSeats = Integer.parseInt(modelTheaterDetails.getResult().getClassic_seat());
+
+        for (int i=0;i<exSeats;i++)
             exclList.add(new Model(i + 1, false));
-            classicList.add(new Model(i + 1, false));
+        for (int i=0;i<normSeats;i++)
             normalList.add(new Model(i + 1, false));
-        }
+        for (int i=0;i<classicSeats;i++)
+            classicList.add(new Model(i + 1, false));
 
         adapterExclutiveSeats = new AdapterExclutiveSeats(mContext,exclList,this::successExl);
         binding.rvExclutive.setAdapter(adapterExclutiveSeats);
@@ -131,8 +146,20 @@ public class AvailSeatsActivity extends AppCompatActivity {
         binding.rvClassic.setAdapter(adapterClassicSeats);
 
         binding.btDone.setOnClickListener(v -> {
-          // Log.e("SelectedSets","===>"+builder.toString().substring(0,builder.length()-1));
-          startActivity(new Intent(mContext,PaymentMethodActivity.class));
+            StringBuilder builder = new StringBuilder();
+            if(seatType.equals(AppConstant.EXCLUSIVE)){
+                for(int i=0;i<exclList.size();i++) if(exclList.get(i).isSelected()) builder.append((i+1)+",");
+            } else if(seatType.equals(AppConstant.NORMAL)) {
+                for(int i=0;i<normalList.size();i++) if(normalList.get(i).isSelected()) builder.append((i+1)+",");
+            } else if(seatType.equals(AppConstant.CLASSIC)) {
+                for(int i=0;i<classicList.size();i++) if(classicList.get(i).isSelected()) builder.append((i+1)+",");
+            }
+
+            Log.e("SelectedSets","SelectedSets = " + builder);
+
+            Log.e("SelectedSets","===>" + builder.toString().substring(0,builder.length()-1));
+            // startActivity(new Intent(mContext,PaymentMethodActivity.class));
+
         });
 
     }

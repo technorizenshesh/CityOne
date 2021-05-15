@@ -25,6 +25,7 @@ import com.cityone.utils.ApiFactory;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
+import com.facebook.login.Login;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -34,6 +35,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.security.auth.login.LoginException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -304,6 +307,8 @@ public class StoreDetailsActivity extends AppCompatActivity {
 
                         AdapterStoreItemCat adapterStoreItemCat = new AdapterStoreItemCat(mContext, modelStoreDetails.getResult().getRestaurant_sub_category());
                         binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
+
+                        Log.e("adasdasda",modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
 
                         getStoreItems(modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
 

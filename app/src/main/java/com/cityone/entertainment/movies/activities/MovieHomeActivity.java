@@ -138,7 +138,7 @@ public class MovieHomeActivity extends AppCompatActivity {
         ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.getUpMoviesApiCall();
+        Call<ResponseBody> call = api.getRemMoviesApiCall();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

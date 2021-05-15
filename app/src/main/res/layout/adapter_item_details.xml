@@ -76,6 +76,17 @@
 
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/tvDiscount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/darkGreen"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="@dimen/_10sdp" />
+
                 </LinearLayout>
 
             </LinearLayout>

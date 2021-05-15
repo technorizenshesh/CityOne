@@ -93,6 +93,11 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(new Intent(mContext,MyBookingActivity.class));
         });
 
+        binding.navItems.tvMoveiBooks.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            // startActivity(new Intent(mContext,MyBookingActivity.class));
+        });
+
         binding.navItems.tvAccount.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             startActivity(new Intent(mContext,AccountActivity.class));

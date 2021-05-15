@@ -8,11 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import com.cityone.R;
 import com.cityone.databinding.ActivityMovieDetailsBinding;
-import com.cityone.databinding.ActivityMovieHomeBinding;
 import com.cityone.entertainment.movies.adapters.AdapterMovieDetailBanners;
-import com.cityone.entertainment.movies.adapters.AdapterUpcomeMovies;
 import com.cityone.entertainment.movies.models.ModelMovieDetails;
-import com.cityone.entertainment.movies.models.ModelUpcMovies;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
 import com.cityone.utils.ProjectUtil;
@@ -51,7 +48,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
 
         binding.btBookTicket.setOnClickListener(v -> {
-            startActivity(new Intent(mContext,AvailableTheatersActivity.class));
+            startActivity(new Intent(mContext,AvailableTheatersActivity.class)
+                .putExtra("id",movieId)
+            );
         });
 
     }
@@ -92,9 +91,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         binding.categorAdsSlider.setAutoCycle(true);
                         binding.categorAdsSlider.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
 
-                    } else {
-
-                    }
+                    } else {}
 
                 } catch (Exception e) {
                     // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();

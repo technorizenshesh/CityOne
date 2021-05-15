@@ -226,7 +226,17 @@ public class ModelStoreBooking implements Serializable {
 
             private String price;
 
+            private String discount;
+
             private String item_image;
+
+            public String getDiscount() {
+                return discount;
+            }
+
+            public void setDiscount(String discount) {
+                this.discount = discount;
+            }
 
             public void setId(String id){
                 this.id = id;

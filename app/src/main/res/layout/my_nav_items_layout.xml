@@ -48,7 +48,25 @@
                 android:id="@+id/tvMybooking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/my_booking"
+                android:text="@string/my_store_orders"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:padding="@dimen/_10sdp"
+                android:background="?android:selectableItemBackground"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/_12sdp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/gray"/>
+
+            <TextView
+                android:id="@+id/tvMoveiBooks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/movie_ticket_books"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/black"
                 android:padding="@dimen/_10sdp"
@@ -78,6 +96,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
+                android:visibility="gone"
                 android:background="@color/gray"/>
 
             <TextView
@@ -88,6 +107,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/black"
                 android:padding="@dimen/_10sdp"
+                android:visibility="gone"
                 android:background="?android:selectableItemBackground"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
