@@ -7,6 +7,7 @@ android {
 
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    ndkVersion "23.0.7599858"
 
     defaultConfig {
         applicationId "com.cityone"
@@ -55,7 +56,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     testImplementation 'junit:junit:4.+'
+
+    // implementation 'com.redeban:payment-android:1.2.8'
+    // implementation project(':payment')
+    implementation 'com.github.globalpayredeban:globalpayredeban-android:1.2.9'
+
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation 'com.github.jrvansuita:PickImage:v2.5.1'
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
@@ -77,6 +85,10 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.github.smarteist:autoimageslider:1.3.9'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.facebook.android:facebook-login:[5,6)'
     implementation 'com.makeramen:roundedimageview:2.3.0'

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,11 +41,12 @@
             android:layout_below="@+id/rlHeader"
             android:background="@color/gray2"/>
 
-        <com.braintreepayments.cardform.view.CardForm
-            android:id="@+id/card_form"
-            android:layout_below="@+id/view1"
-            android:layout_margin="@dimen/_15sdp"
+        <com.redeban.payment.view.CardMultilineWidget
+            android:id="@+id/cardForm"
             android:layout_width="match_parent"
+            android:layout_below="@+id/view1"
+            android:layout_margin="8dp"
+            app:shouldShowRedebanLogo="true"
             android:layout_height="wrap_content"/>
 
         <Button

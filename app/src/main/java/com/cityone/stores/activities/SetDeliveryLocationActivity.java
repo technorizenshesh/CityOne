@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.cityone.R;
 import com.cityone.activities.DashboardActivity;
 import com.cityone.activities.PaymentMethodActivity;
+import com.cityone.activities.PaypalWebviewAct;
 import com.cityone.databinding.ActivitySetDeliveryLocationBinding;
 import com.cityone.databinding.AddCardDialogBinding;
 import com.cityone.databinding.CardListDialogBinding;
@@ -86,7 +87,7 @@ public class SetDeliveryLocationActivity extends AppCompatActivity {
                 Toast.makeText(mContext, getString(R.string.please_enterlandmark_add), Toast.LENGTH_SHORT).show();
             } else {
 
-//                bookingAPicall(binding.etAddress.getText().toString().trim()
+//              bookingAPicall(binding.etAddress.getText().toString().trim()
 //                        +" "+binding.etLandMark.getText().toString().trim());
 
                 bookingParams.put("address",binding.etAddress.getText().toString().trim()
@@ -94,7 +95,11 @@ public class SetDeliveryLocationActivity extends AppCompatActivity {
                 bookingParams.put("lat", String.valueOf(latLng.latitude));
                 bookingParams.put("lon", String.valueOf(latLng.longitude));
 
-                startActivity(new Intent(mContext, StorePaymentActivity.class)
+//                startActivity(new Intent(mContext,PaypalWebviewAct.class)
+//                    .putExtra("param",bookingParams)
+//                );
+
+                startActivity(new Intent(mContext,StorePaymentActivity.class)
                     .putExtra("param",bookingParams)
                 );
 
@@ -107,6 +112,10 @@ public class SetDeliveryLocationActivity extends AppCompatActivity {
             Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                     .build(this);
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+        });
+
+        binding.ivBack.setOnClickListener(v -> {
+            finish();
         });
 
     }
@@ -133,10 +142,7 @@ public class SetDeliveryLocationActivity extends AppCompatActivity {
                         Toast.makeText(SetDeliveryLocationActivity.this,getString(R.string.please_add_card), Toast.LENGTH_SHORT).show();
                         getCardListDialog(null);
                     }
-                } catch (Exception e) {
-
-                }
-
+                } catch (Exception e) {}
             }
 
             @Override
@@ -155,188 +161,188 @@ public class SetDeliveryLocationActivity extends AppCompatActivity {
                 .inflate(LayoutInflater.from(mContext),R.layout.card_list_dialog,null,false);
         dialog.setContentView(dialogBinding.getRoot());
 
-        AdapterCards adapterCards = new AdapterCards(mContext,modelCards.getResult());
-        dialogBinding.rvCards.setAdapter(adapterCards);
+//      AdapterCards adapterCards = new AdapterCards(mContext,modelCards.getResult(),"");
+//      dialogBinding.rvCards.setAdapter(adapterCards);
 
         dialogBinding.ivBack.setOnClickListener(v -> {
             dialog.dismiss();
         });
 
         dialogBinding.ivAddCard.setOnClickListener(v -> {
-            openCarddetailDialog();
+            // openCarddetailDialog();
         });
 
         dialog.show();
 
     }
 
-    private void openCarddetailDialog() {
-
-        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
-
-        AddCardDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,null,false);
-        dialog.setContentView(dialogBinding.getRoot());
-
-        dialogBinding.cardForm.cardRequired(true)
-                .expirationRequired(true)
-                .cvvRequired(true)
-                .postalCodeRequired(false)
-                .mobileNumberRequired(false)
-                .setup(SetDeliveryLocationActivity.this);
-
-        dialogBinding.cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-
-        dialogBinding.btMakePayment.setOnClickListener(v -> {
-            if (dialogBinding.cardForm.isValid()) {
-                alertBuilder = new AlertDialog.Builder(mContext);
-                alertBuilder.setTitle("Confirm before purchase");
-                alertBuilder.setMessage("Card number: " + dialogBinding.cardForm.getCardNumber() + "\n" +
-                                "Card expiry date: " + dialogBinding.cardForm.getExpirationDateEditText().getText().toString() + "\n" +
-                                "Card CVV: " + dialogBinding.cardForm.getCvv() + "\n");
-                alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-                        Card.Builder card = new Card.Builder(dialogBinding.cardForm.getCardNumber(),
-                                Integer.valueOf(dialogBinding.cardForm.getExpirationMonth()),
-                                Integer.valueOf(dialogBinding.cardForm.getExpirationYear()),
-                                dialogBinding.cardForm.getCvv());
-
-                        if (!card.build().validateCard()) {
-                            Toast.makeText(mContext, "Card Not Valid", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        // Stripe stripe = new Stripe(mContext, "pk_test_51HGVYvEA8txfY5aoKS3kcgQ7PsKWlkRpwf0gB6R9hERR2iQyS7qNf1Gx5IfRkAOAf5SLBYrpdrRg3LadRPyl0fjo005Z3Z8G3Z");
-                        Stripe stripe = new Stripe(mContext, getString(R.string.stripe_test_key));
-
-                        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
-                        stripe.createCardToken(
-                                card.build(), new ApiResultCallback<Token>() {
-                                    @Override
-                                    public void onSuccess(Token token) {
-                                        ProjectUtil.pauseProgressDialog();
-                                        dialog.dismiss();
-                                        Log.e("stripeToken","token = " + token.getId());
-
-                                    }
-
-                                    @Override
-                                    public void onError(@NotNull Exception e) {
-                                        ProjectUtil.pauseProgressDialog();
-                                    }
-                                });
-                    }
-                });
-                alertBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialog = alertBuilder.create();
-                alertDialog.show();
-
-            } else {
-                Toast.makeText(mContext, "Please complete the form", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        dialogBinding.ivBack.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        dialog.show();
-
-    }
-
-    private void addCardDialog() {
-        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
-
-        AddCardDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,null,false);
-        dialog.setContentView(dialogBinding.getRoot());
-
-        dialogBinding.cardForm.cardRequired(true)
-                .expirationRequired(true)
-                .cvvRequired(true)
-                .postalCodeRequired(false)
-                .mobileNumberRequired(false)
-                .setup(SetDeliveryLocationActivity.this);
-
-        dialogBinding.cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-
-        dialogBinding.btMakePayment.setOnClickListener(v -> {
-            if (dialogBinding.cardForm.isValid()) {
-                alertBuilder = new AlertDialog.Builder(mContext);
-                alertBuilder.setTitle("Confirm before purchase");
-                alertBuilder.setMessage("Card number: " + dialogBinding.cardForm.getCardNumber() + "\n" +
-                                "Card expiry date: " + dialogBinding.cardForm.getExpirationDateEditText().getText().toString() + "\n" +
-                                "Card CVV: " + dialogBinding.cardForm.getCvv() + "\n"
-                        // "Postal code: " + binding.cardForm.getPostalCode() + "\n" +
-                        /* "Phone number: " + binding.cardForm.getMobileNumber() */ );
-                alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-                        Card.Builder card = new Card.Builder(dialogBinding.cardForm.getCardNumber(),
-                                Integer.valueOf(dialogBinding.cardForm.getExpirationMonth()),
-                                Integer.valueOf(dialogBinding.cardForm.getExpirationYear()),
-                                dialogBinding.cardForm.getCvv());
-
-                        if (!card.build().validateCard()) {
-                            Toast.makeText(mContext, "Card Not Valid", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        // Stripe stripe = new Stripe(mContext, "pk_test_51HGVYvEA8txfY5aoKS3kcgQ7PsKWlkRpwf0gB6R9hERR2iQyS7qNf1Gx5IfRkAOAf5SLBYrpdrRg3LadRPyl0fjo005Z3Z8G3Z");
-                        Stripe stripe = new Stripe(mContext, getString(R.string.stripe_test_key));
-
-                        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
-                        stripe.createCardToken(
-                                card.build(), new ApiResultCallback<Token>() {
-                                    @Override
-                                    public void onSuccess(Token token) {
-                                        ProjectUtil.pauseProgressDialog();
-                                        dialog.dismiss();
-                                        Log.e("stripeToken","token = " + token.getId());
-                                        getAvailableCardApi();
-                                    }
-
-                                    @Override
-                                    public void onError(@NotNull Exception e) {
-                                        ProjectUtil.pauseProgressDialog();
-                                    }
-                                });
-
-                    }
-                });
-                alertBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialog = alertBuilder.create();
-                alertDialog.show();
-
-            } else {
-                Toast.makeText(mContext, "Please complete the form", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        dialogBinding.ivBack.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        dialog.show();
-
-    }
+    //    private void openCarddetailDialog() {
+//
+//        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+//
+//        AddCardDialogBinding dialogBinding = DataBindingUtil
+//                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,null,false);
+//        dialog.setContentView(dialogBinding.getRoot());
+//
+//        dialogBinding.cardForm.cardRequired(true)
+//                .expirationRequired(true)
+//                .cvvRequired(true)
+//                .postalCodeRequired(false)
+//                .mobileNumberRequired(false)
+//                .setup(SetDeliveryLocationActivity.this);
+//
+//        dialogBinding.cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+//
+//        dialogBinding.btMakePayment.setOnClickListener(v -> {
+//            if (dialogBinding.cardForm.isValid()) {
+//                alertBuilder = new AlertDialog.Builder(mContext);
+//                alertBuilder.setTitle("Confirm before purchase");
+//                alertBuilder.setMessage("Card number: " + dialogBinding.cardForm.getCardNumber() + "\n" +
+//                                "Card expiry date: " + dialogBinding.cardForm.getExpirationDateEditText().getText().toString() + "\n" +
+//                                "Card CVV: " + dialogBinding.cardForm.getCvv() + "\n");
+//                alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//
+//                        Card.Builder card = new Card.Builder(dialogBinding.cardForm.getCardNumber(),
+//                                Integer.valueOf(dialogBinding.cardForm.getExpirationMonth()),
+//                                Integer.valueOf(dialogBinding.cardForm.getExpirationYear()),
+//                                dialogBinding.cardForm.getCvv());
+//
+//                        if (!card.build().validateCard()) {
+//                            Toast.makeText(mContext, "Card Not Valid", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//
+//                        // Stripe stripe = new Stripe(mContext, "pk_test_51HGVYvEA8txfY5aoKS3kcgQ7PsKWlkRpwf0gB6R9hERR2iQyS7qNf1Gx5IfRkAOAf5SLBYrpdrRg3LadRPyl0fjo005Z3Z8G3Z");
+//                        Stripe stripe = new Stripe(mContext, getString(R.string.stripe_test_key));
+//
+//                        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+//                        stripe.createCardToken(
+//                                card.build(), new ApiResultCallback<Token>() {
+//                                    @Override
+//                                    public void onSuccess(Token token) {
+//                                        ProjectUtil.pauseProgressDialog();
+//                                        dialog.dismiss();
+//                                        Log.e("stripeToken","token = " + token.getId());
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(@NotNull Exception e) {
+//                                        ProjectUtil.pauseProgressDialog();
+//                                    }
+//                                });
+//                    }
+//                });
+//                alertBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//
+//                AlertDialog alertDialog = alertBuilder.create();
+//                alertDialog.show();
+//
+//            } else {
+//                Toast.makeText(mContext, "Please complete the form", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        dialogBinding.ivBack.setOnClickListener(v -> {
+//            dialog.dismiss();
+//        });
+//
+//        dialog.show();
+//
+//    }
+//
+//    private void addCardDialog() {
+//        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+//
+//        AddCardDialogBinding dialogBinding = DataBindingUtil
+//                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,null,false);
+//        dialog.setContentView(dialogBinding.getRoot());
+//
+//        dialogBinding.cardForm.cardRequired(true)
+//                .expirationRequired(true)
+//                .cvvRequired(true)
+//                .postalCodeRequired(false)
+//                .mobileNumberRequired(false)
+//                .setup(SetDeliveryLocationActivity.this);
+//
+//        dialogBinding.cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+//
+//        dialogBinding.btMakePayment.setOnClickListener(v -> {
+//            if (dialogBinding.cardForm.isValid()) {
+//                alertBuilder = new AlertDialog.Builder(mContext);
+//                alertBuilder.setTitle("Confirm before purchase");
+//                alertBuilder.setMessage("Card number: " + dialogBinding.cardForm.getCardNumber() + "\n" +
+//                                "Card expiry date: " + dialogBinding.cardForm.getExpirationDateEditText().getText().toString() + "\n" +
+//                                "Card CVV: " + dialogBinding.cardForm.getCvv() + "\n"
+//                        // "Postal code: " + binding.cardForm.getPostalCode() + "\n" +
+//                        /* "Phone number: " + binding.cardForm.getMobileNumber() */ );
+//                alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//
+//                        Card.Builder card = new Card.Builder(dialogBinding.cardForm.getCardNumber(),
+//                                Integer.valueOf(dialogBinding.cardForm.getExpirationMonth()),
+//                                Integer.valueOf(dialogBinding.cardForm.getExpirationYear()),
+//                                dialogBinding.cardForm.getCvv());
+//
+//                        if (!card.build().validateCard()) {
+//                            Toast.makeText(mContext, "Card Not Valid", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//
+//                        // Stripe stripe = new Stripe(mContext, "pk_test_51HGVYvEA8txfY5aoKS3kcgQ7PsKWlkRpwf0gB6R9hERR2iQyS7qNf1Gx5IfRkAOAf5SLBYrpdrRg3LadRPyl0fjo005Z3Z8G3Z");
+//                        Stripe stripe = new Stripe(mContext, getString(R.string.stripe_test_key));
+//
+//                        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+//                        stripe.createCardToken(
+//                                card.build(), new ApiResultCallback<Token>() {
+//                                    @Override
+//                                    public void onSuccess(Token token) {
+//                                        ProjectUtil.pauseProgressDialog();
+//                                        dialog.dismiss();
+//                                        Log.e("stripeToken","token = " + token.getId());
+//                                        getAvailableCardApi();
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(@NotNull Exception e) {
+//                                        ProjectUtil.pauseProgressDialog();
+//                                    }
+//                                });
+//
+//                    }
+//                });
+//                alertBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//
+//                AlertDialog alertDialog = alertBuilder.create();
+//                alertDialog.show();
+//
+//            } else {
+//                Toast.makeText(mContext, "Please complete the form", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        dialogBinding.ivBack.setOnClickListener(v -> {
+//            dialog.dismiss();
+//        });
+//
+//        dialog.show();
+//
+//    }
 
     private void addCardApi(String cardNo,String expDate,String expMonth,String cvv,String tokenId) {
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));

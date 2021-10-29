@@ -40,6 +40,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -57,9 +58,9 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
     Context mContext = VerifyOtpActivity.this;
     ActivityVerifyOtpBinding binding;
-    String mobile="";
+    String mobile = "";
     String id;
-    HashMap<String,String> paramHash = new HashMap<>();
+    HashMap<String, String> paramHash = new HashMap<>();
     HashMap<String, File> fileHashMap = new HashMap<>();
     private FirebaseAuth mAuth;
     Api api;
@@ -70,7 +71,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_verify_otp);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_verify_otp);
         sharedPref = SharedPref.getInstance(mContext);
         api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         mAuth = FirebaseAuth.getInstance();
@@ -89,10 +90,10 @@ public class VerifyOtpActivity extends AppCompatActivity {
     private void init() {
 
         binding.next.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(binding.etOtp.getText().toString().trim())) {
+            if (TextUtils.isEmpty(binding.etOtp.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_otp), Toast.LENGTH_SHORT).show();
             } else {
-                ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+                ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, binding.etOtp.getText().toString().trim());
                 signInWithPhoneAuthCredential(credential);
             }
@@ -112,10 +113,10 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
         binding.tvVerifyText.setText("We have send you an SMS on " + mobile + " with 6 digit verification code.");
 
-        new CountDownTimer(60000,1000) {
+        new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                binding.tvResend.setText("" + millisUntilFinished/1000);
+                binding.tvResend.setText("" + millisUntilFinished / 1000);
                 binding.tvResend.setEnabled(false);
             }
 
@@ -127,7 +128,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
         }.start();
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                mobile.replace(" ",""), // Phone number to verify
+                mobile.replace(" ", ""), // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
@@ -176,7 +177,8 @@ public class VerifyOtpActivity extends AppCompatActivity {
                             ProjectUtil.pauseProgressDialog();
                             Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
 
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {}
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            }
 
                         }
                     }
@@ -191,9 +193,9 @@ public class VerifyOtpActivity extends AppCompatActivity {
                 .writeTimeout(120, TimeUnit.SECONDS)
                 .build();
 
-        AndroidNetworking.initialize(getApplicationContext(),okHttpClient);
+        AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
 
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         AndroidNetworking.upload(AppConstant.BASE_URL + "signup")
                 .addMultipartParameter(paramHash)
                 .addMultipartFile(fileHashMap)
@@ -207,11 +209,11 @@ public class VerifyOtpActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
 
-                            if(jsonObject.getString("status").equals("1")) {
+                            if (jsonObject.getString("status").equals("1")) {
 
                                 openProviderReqDialog();
 
-                                Log.e("zdgfxsdgfxdg","response = " + response);
+                                Log.e("zdgfxsdgfxdg", "response = " + response);
 
                             } else {
                                 // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
@@ -219,7 +221,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
                         } catch (Exception e) {
                             Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e("Exception","Exception = " + e.getMessage());
+                            Log.e("Exception", "Exception = " + e.getMessage());
                         }
                     }
 
@@ -235,7 +237,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         ProviderReqDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
-        ,R.layout.provider_req_dialog,null,false);
+                , R.layout.provider_req_dialog, null, false);
         dialog.setContentView(dialogBinding.getRoot());
 
         dialogBinding.btOk.setOnClickListener(v -> {
@@ -250,8 +252,11 @@ public class VerifyOtpActivity extends AppCompatActivity {
     }
 
     private void signUpApiCall() {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         Call<ResponseBody> call = api.signUpApiCall(paramHash);
+
+        Log.e("adasdasdas", "paramHash = " + paramHash);
+
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -260,22 +265,24 @@ public class VerifyOtpActivity extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
+                    Log.e("adasdasdas", "response = " + responseString);
+
+                    if (jsonObject.getString("status").equals("1")) {
 
                         modelLogin = new Gson().fromJson(responseString, ModelLogin.class);
 
-                        sharedPref.setBooleanValue(AppConstant.IS_REGISTER,true);
-                        sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+                        sharedPref.setBooleanValue(AppConstant.IS_REGISTER, true);
+                        sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
 
-                        startActivity(new Intent(mContext,DashboardActivity.class));
-                        finish();
+                        referApiCall();
+
                     } else {
-                       // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -288,6 +295,50 @@ public class VerifyOtpActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void referApiCall() {
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.referralCodeApi(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String stringResponse = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        Log.e("fasfasfas","stringResponse = " + stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+                            startActivity(new Intent(mContext, DashboardActivity.class));
+                            finish();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
     }
 
 

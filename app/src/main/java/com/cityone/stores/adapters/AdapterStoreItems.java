@@ -161,10 +161,64 @@ public class AdapterStoreItems extends RecyclerView.Adapter<AdapterStoreItems.St
                     } else if(jsonObject.getString("status").equals("2")) {
                         Log.e("fsdfdsfdsf","responseString = " + responseString);
                         Log.e("fsdfdsfdsf","response = " + response);
-                        new CustomAlertDialog(mContext).Message(mContext.getString(R.string.cart_remove_text))
-                        .Show(() -> {
-                           // Toast.makeText(mContext,"Click",Toast.LENGTH_SHORT).show();
-                        });
+                        removeCartDialog();
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception","Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("fsdfdsfdsf","response = " + t.getMessage());
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+
+    }
+
+    private void removeCartDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(mContext.getString(R.string.another_res_added_cart_text))
+               .setCancelable(false)
+               .setPositiveButton(mContext.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeCartApi();
+                        dialog.dismiss();
+                    }
+                }).setNegativeButton(mContext.getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
+    private void removeCartApi() {
+        ProjectUtil.showProgressDialog(mContext,false,mContext.getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        HashMap<String,String> param = new HashMap<>();
+        param.put("user_id",modelLogin.getResult().getId());
+
+        Log.e("paramparam","param = " + param.toString());
+
+        Call<ResponseBody> call = api.removeCartApiCall(param);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    if(jsonObject.getString("status").equals("1")) {
+                        Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {

@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cityone.R;
+import com.cityone.activities.DashboardActivity;
 import com.cityone.databinding.AdapterStoreCategoryBinding;
 import com.cityone.meals.MealsHomeActivity;
 import com.cityone.stores.activities.StoresActivity;
@@ -24,12 +25,13 @@ public class AdapterStoreCat extends RecyclerView.Adapter<AdapterStoreCat.StoreC
     Context mContext;
     ArrayList<ModelStoreCat.Result> storeList;
     int index = 0;
-    boolean isMeals;
+    boolean isMeals,isDashboard;
 
-    public AdapterStoreCat(Context mContext, ArrayList<ModelStoreCat.Result> storeList,boolean isMeals) {
+    public AdapterStoreCat(Context mContext, ArrayList<ModelStoreCat.Result> storeList,boolean isMeals,boolean isDashboard) {
         this.mContext = mContext;
         this.storeList = storeList;
         this.isMeals = isMeals;
+        this.isDashboard = isDashboard;
     }
 
     @NonNull
@@ -51,6 +53,8 @@ public class AdapterStoreCat extends RecyclerView.Adapter<AdapterStoreCat.StoreC
             index = position;
             if(isMeals) {
                 ((MealsHomeActivity)mContext).getStoresById(data.getId(),data.getName());
+            } else if(isDashboard) {
+                ((DashboardActivity)mContext).getStoresById(data.getId(),data.getName());
             } else {
                 ((StoresActivity)mContext).getStoresById(data.getId(),data.getName());
             }

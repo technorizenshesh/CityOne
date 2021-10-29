@@ -188,8 +188,6 @@ public class TripHistoryAct extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
        if(requestCode == PAYPAL_REQUEST_CODE) {
-           if (requestCode == PAYPAL_REQUEST_CODE) {
-
                if (resultCode == Activity.RESULT_OK) {
 
                    PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
@@ -221,53 +219,7 @@ public class TripHistoryAct extends AppCompatActivity {
                } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
                    Log.e("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
                }
-           }
-
-//           if (resultCode == Activity.RESULT_OK) {
-//
-//               DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-//               // here you will get nonce for the payment
-//               String nNonce = result.getPaymentMethodNonce().getNonce();
-//               // you also can check payment type is from paypal or Card
-//               String payment_type = result.getPaymentMethodType().getCanonicalName();
-//
-//               if (nNonce != null && payment_type != null) {
-//                   Log.e("nNoncenNonce","nNonce = " + nNonce);
-//                   Toast.makeText(mContext, "Payment done, Send this nonce to server", Toast.LENGTH_SHORT).show();
-//                   // doPayment(dataResult,requestId,payment_type,tripAmount,taxiPosition);
-//               }
-//
-//           } else if (resultCode == Activity.RESULT_CANCELED) {
-//               Toast.makeText(mContext, "Payment cancelled by user, go back to previous activity", Toast.LENGTH_SHORT).show();
-//           } else {
-//               // handle errors here, an exception may be available in
-//               Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-//               Log.e("errorerrorerror","error = " + error.getMessage());
-//               Log.e("errorerrorerror","error = " + error.getStackTrace());
-//               Log.e("errorerrorerror","error = " + error.getLocalizedMessage());
-//               Log.e("errorerrorerror","error = " + error.getCause());
-//               Toast.makeText(mContext, "Get some unknown error, go back to previous activity", Toast.LENGTH_SHORT).show();
-//           }
-           
-//            if(resultCode == Activity.RESULT_OK) {
-//                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-//                if (confirmation != null) {
-//                    try {
-//                        String paymentDetails = confirmation.toJSONObject().toString(4);
-//                        Log.e("dasdsdas","paymentDetails = " + paymentDetails);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                Toast.makeText(mContext, "Payment Success", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(mContext, "Payment Failed", Toast.LENGTH_SHORT).show();
-//            }
         }
-
-        Log.e("sfdasdfasd","requestCode = " + requestCode);
-        Log.e("sfdasdfasd","resultCode = " + resultCode);
-        Log.e("sfdasdfasd","bundle = " + data.getExtras());
 
     }
 

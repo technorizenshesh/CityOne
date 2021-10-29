@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
            } else if(TextUtils.isEmpty(binding.etPass.getText().toString().trim())){
                Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
            } else {
-               if(InternetConnection.checkConnection(mContext)){
+               if(InternetConnection.checkConnection(mContext)) {
                    loginApiCall();
                } else {
                    App.showConnectionDialog(mContext);
@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         paramHash.put("password",binding.etPass.getText().toString().trim());
         paramHash.put("lat","");
         paramHash.put("lon","");
+        paramHash.put("type","USER");
         paramHash.put("register_id",registerId);
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(jsonObject.getString("status").equals("1")) {
 
+                        Log.e("ahsjgdasd","responseString = " + responseString);
                         modelLogin = new Gson().fromJson(responseString, ModelLogin.class);
 
                         sharedPref.setBooleanValue(AppConstant.IS_REGISTER,true);

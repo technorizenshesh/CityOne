@@ -57,11 +57,8 @@ public class MyCartActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_my_cart);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-
         init();
-
         getCartApiCall();
-
     }
 
     private void init() {

@@ -53,6 +53,8 @@ public class ModelLogin implements Serializable {
 
         private String address;
 
+        private String my_referral_code;
+
         private String gender;
 
         private String category_id;
@@ -74,6 +76,14 @@ public class ModelLogin implements Serializable {
         private String online_status;
 
         private String date_time;
+
+        public String getMy_referral_code() {
+            return my_referral_code;
+        }
+
+        public void setMy_referral_code(String my_referral_code) {
+            this.my_referral_code = my_referral_code;
+        }
 
         public void setId(String id){
             this.id = id;

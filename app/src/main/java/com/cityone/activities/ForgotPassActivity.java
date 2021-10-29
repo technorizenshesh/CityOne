@@ -48,7 +48,7 @@ public class ForgotPassActivity extends AppCompatActivity {
         });
 
         binding.btSubmit.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(binding.etEmail.getText().toString().trim())){
+            if(TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_email_add), Toast.LENGTH_SHORT).show();
             } else {
                 forgotPassApiCall();

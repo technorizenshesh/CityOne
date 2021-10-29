@@ -43,17 +43,30 @@
                 android:background="@color/gray2"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="@string/select_card"
+                android:text="@string/select_card_for_payment"
                 android:textAllCaps="false"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:textColor="@color/black"
+                android:textColor="@color/darkGreen"
                 android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/press_and_hold_to_delete_the_card"
+                android:textAllCaps="false"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

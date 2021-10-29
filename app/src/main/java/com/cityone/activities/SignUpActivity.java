@@ -51,6 +51,7 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickCancel;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -75,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
     Api api;
     String registerId = "";
     LatLng latLng;
-    File fileImage,doc1Img,doc2Img;
+    File fileImage, doc1Img, doc2Img;
     Dialog dialog;
     SubmitRequestDialogBinding dialogBinding;
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -84,10 +85,12 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
-         FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseInstanceId
+                .getInstance()
+                .getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -104,7 +107,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
 
         if (!Places.isInitialized()) {
-            Places.initialize(mContext,getString(R.string.places_api_key));
+            Places.initialize(mContext, getString(R.string.places_api_key));
         }
 
         init();
@@ -120,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.spUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(binding.spUserType.getSelectedItemPosition() != 1) {
+                if (binding.spUserType.getSelectedItemPosition() != 1) {
                     binding.llDocuments.setVisibility(View.VISIBLE);
                 } else {
                     binding.llDocuments.setVisibility(View.GONE);
@@ -129,12 +132,12 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
+
         });
 
         binding.ivDoc1.setOnClickListener(v -> {
-            if(checkPermissions()) {
+            if (checkPermissions()) {
                 final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
@@ -149,11 +152,11 @@ public class SignUpActivity extends AppCompatActivity {
                             String path = r.getPath();
                             doc1Img = new File(path);
 
-                            Compress.get(mContext).setQuality(40)
+                            Compress.get(mContext).setQuality(70)
                                     .execute(new Compress.onSuccessListener() {
                                         @Override
                                         public void response(boolean status, String message, File file) {
-                                            Log.e("kjsgdfjklgdkjasf","file = " + file.length()/1024 + "kb      "+ message );
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
                                             doc1Img = file;
                                             binding.ivDoc1.setImageURI(r.getUri());
                                         }
@@ -174,7 +177,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.ivDoc2.setOnClickListener(v -> {
-            if(checkPermissions()) {
+            if (checkPermissions()) {
                 final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
@@ -189,11 +192,11 @@ public class SignUpActivity extends AppCompatActivity {
                             String path = r.getPath();
                             doc2Img = new File(path);
 
-                            Compress.get(mContext).setQuality(40)
+                            Compress.get(mContext).setQuality(70)
                                     .execute(new Compress.onSuccessListener() {
                                         @Override
                                         public void response(boolean status, String message, File file) {
-                                            Log.e("kjsgdfjklgdkjasf","file = " + file.length()/1024 + "kb      "+ message );
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
                                             doc2Img = file;
                                             binding.ivDoc2.setImageURI(r.getUri());
                                         }
@@ -221,70 +224,153 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.tvLogin.setOnClickListener(v -> {
-            startActivity(new Intent(mContext,LoginActivity.class));
+            startActivity(new Intent(mContext, LoginActivity.class));
         });
 
         binding.btSignUp.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(binding.etUsername.getText().toString().trim())) {
+            if (TextUtils.isEmpty(binding.etUsername.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_username), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_email_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etPhone.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etPhone.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_phone_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.address.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.address.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_select_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.landAddress.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.landAddress.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enterlandmark_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.pass.getText().toString().trim())){
+            } else if (TextUtils.isEmpty(binding.pass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.confirmPass.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.confirmPass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_conf_pass), Toast.LENGTH_SHORT).show();
-            } else if(!(binding.pass.getText().toString().trim().length() > 4 )) {
+            } else if (!(binding.pass.getText().toString().trim().length() > 4)) {
                 Toast.makeText(mContext, getString(R.string.password_validation_text), Toast.LENGTH_SHORT).show();
-            } else if(!(binding.pass.getText().toString().trim().equals(binding.confirmPass.getText().toString().trim()))){
+            } else if (!(binding.pass.getText().toString().trim().equals(binding.confirmPass.getText().toString().trim()))) {
                 Toast.makeText(mContext, getString(R.string.password_not_match), Toast.LENGTH_SHORT).show();
-            } else if(!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
+            } else if (!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
-            } else if(!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ","")
-                    ,binding.ccp.getSelectedCountryCode())) {
+            } else if (!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ", "")
+                    , binding.ccp.getSelectedCountryCode())) {
                 Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
             } else {
-                HashMap<String,String> params = new HashMap<>();
 
-                params.put("user_name",binding.etUsername.getText().toString().trim());
-                params.put("email",binding.etEmail.getText().toString().trim());
-                params.put("mobile",binding.etPhone.getText().toString().trim());
-                params.put("address",binding.address.getText().toString().trim());
-                params.put("land_mark",binding.landAddress.getText().toString().trim());
-                params.put("lat", String.valueOf(latLng.latitude));
-                params.put("lon", String.valueOf(latLng.longitude));
-                params.put("register_id",registerId);
-                params.put("password",binding.pass.getText().toString().trim());
-                params.put("type","USER");
+                if (TextUtils.isEmpty(binding.etReferralCode.getText().toString().trim())) {
+                    HashMap<String, String> params = new HashMap<>();
 
-                HashMap<String,File> fileHashMap = new HashMap<>();
+                    params.put("user_name", binding.etUsername.getText().toString().trim());
+                    params.put("email", binding.etEmail.getText().toString().trim());
+                    params.put("mobile", binding.etPhone.getText().toString().trim());
+                    params.put("address", binding.address.getText().toString().trim());
+                    params.put("register_id", registerId);
+                    params.put("lat", String.valueOf(latLng.latitude));
+                    params.put("lon", String.valueOf(latLng.longitude));
+                    params.put("land_mark", binding.landAddress.getText().toString().trim());
+                    params.put("password", binding.pass.getText().toString().trim());
+                    params.put("referral_code", binding.etReferralCode.getText().toString().trim());
+                    params.put("type", "USER");
 
-                fileHashMap.put("document1",doc1Img);
-                fileHashMap.put("document2",doc2Img);
+                    HashMap<String, File> fileHashMap = new HashMap<>();
 
-                String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
-                        + binding.etPhone.getText().toString().trim()).replace(" ","");
+                    fileHashMap.put("document1", doc1Img);
+                    fileHashMap.put("document2", doc2Img);
+                    fileHashMap.put("image", null);
 
-                startActivity(new Intent(mContext,VerifyOtpActivity.class)
-                        .putExtra("resgisterHashmap" , params)
-                        .putExtra("mobile" , mobileWithCounCode)
-                        .putExtra("request" , "user")
-                );
+                    String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
+                            + binding.etPhone.getText().toString().trim()).replace(" ", "");
+
+                    startActivity(new Intent(mContext, VerifyOtpActivity.class)
+                            .putExtra("resgisterHashmap", params)
+                            .putExtra("mobile", mobileWithCounCode)
+                            .putExtra("request", "user")
+                    );
+                } else {
+                    checkReferCode(binding.etReferralCode.getText().toString().trim());
+                }
 
             }
         });
 
     }
 
+    private void checkReferCode(String code) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("referral_code", code);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.checkReferApiCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        Log.e("afafasfasf", "stringResponse = " + stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+
+                            HashMap<String, String> params = new HashMap<>();
+
+                            params.put("user_name", binding.etUsername.getText().toString().trim());
+                            params.put("email", binding.etEmail.getText().toString().trim());
+                            params.put("mobile", binding.etPhone.getText().toString().trim());
+                            params.put("address", binding.address.getText().toString().trim());
+                            params.put("register_id", registerId);
+                            params.put("lat", String.valueOf(latLng.latitude));
+                            params.put("lon", String.valueOf(latLng.longitude));
+                            params.put("land_mark", binding.landAddress.getText().toString().trim());
+                            params.put("password", binding.pass.getText().toString().trim());
+                            params.put("referral_code", binding.etReferralCode.getText().toString().trim());
+                            params.put("type", "USER");
+
+                            HashMap<String, File> fileHashMap = new HashMap<>();
+
+                            fileHashMap.put("document1", doc1Img);
+                            fileHashMap.put("document2", doc2Img);
+                            fileHashMap.put("image", null);
+
+                            String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
+                                    + binding.etPhone.getText().toString().trim()).replace(" ", "");
+
+                            startActivity(new Intent(mContext, VerifyOtpActivity.class)
+                                    .putExtra("resgisterHashmap", params)
+                                    .putExtra("mobile", mobileWithCounCode)
+                                    .putExtra("request", "user")
+                            );
+
+                        } else {
+                            Toast.makeText(mContext, "Your referral code is wrong", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
     private void openRequestDialog() {
         dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
-                R.layout.submit_request_dialog,null,false);
+                R.layout.submit_request_dialog, null, false);
         dialog.setContentView(dialogBinding.getRoot());
 
         dialogBinding.address.setOnClickListener(v -> {
@@ -296,37 +382,37 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         dialogBinding.btSubmit.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(dialogBinding.etUsername.getText().toString().trim())) {
+            if (TextUtils.isEmpty(dialogBinding.etUsername.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_username), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(dialogBinding.etEmail.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(dialogBinding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_email_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(dialogBinding.etPhone.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(dialogBinding.etPhone.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_phone_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(dialogBinding.address.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(dialogBinding.address.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_select_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(dialogBinding.pass.getText().toString().trim())){
+            } else if (TextUtils.isEmpty(dialogBinding.pass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(dialogBinding.confirmPass.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(dialogBinding.confirmPass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_conf_pass), Toast.LENGTH_SHORT).show();
-            } else if(!(dialogBinding.pass.getText().toString().trim().length() > 4 )) {
+            } else if (!(dialogBinding.pass.getText().toString().trim().length() > 4)) {
                 Toast.makeText(mContext, getString(R.string.password_validation_text), Toast.LENGTH_SHORT).show();
-            } else if(!(dialogBinding.pass.getText().toString().trim().equals(dialogBinding.confirmPass.getText().toString().trim()))){
+            } else if (!(dialogBinding.pass.getText().toString().trim().equals(dialogBinding.confirmPass.getText().toString().trim()))) {
                 Toast.makeText(mContext, getString(R.string.password_not_match), Toast.LENGTH_SHORT).show();
-            } else if(!ProjectUtil.isValidEmail(dialogBinding.etEmail.getText().toString().trim())) {
+            } else if (!ProjectUtil.isValidEmail(dialogBinding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
-            } else if(!validateUsing_libphonenumber(dialogBinding.etPhone.getText().toString().replace(" ","")
-                    ,dialogBinding.ccp.getSelectedCountryCode())) {
+            } else if (!validateUsing_libphonenumber(dialogBinding.etPhone.getText().toString().replace(" ", "")
+                    , dialogBinding.ccp.getSelectedCountryCode())) {
                 Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
             } else {
-                HashMap<String,String> params = new HashMap<>();
+                HashMap<String, String> params = new HashMap<>();
 
-                params.put("name",dialogBinding.etUsername.getText().toString().trim());
-                params.put("email",dialogBinding.etEmail.getText().toString().trim());
-                params.put("mobile",dialogBinding.etPhone.getText().toString().trim());
-                params.put("address",dialogBinding.address.getText().toString().trim());
-                params.put("password",dialogBinding.pass.getText().toString().trim());
+                params.put("name", dialogBinding.etUsername.getText().toString().trim());
+                params.put("email", dialogBinding.etEmail.getText().toString().trim());
+                params.put("mobile", dialogBinding.etPhone.getText().toString().trim());
+                params.put("address", dialogBinding.address.getText().toString().trim());
+                params.put("password", dialogBinding.pass.getText().toString().trim());
 
-                requestProviderApiCall(params,dialog);
+                requestProviderApiCall(params, dialog);
             }
         });
 
@@ -334,8 +420,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    private void requestProviderApiCall(HashMap<String,String> params,Dialog dialog) {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+    private void requestProviderApiCall(HashMap<String, String> params, Dialog dialog) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         Call<ResponseBody> call = api.requestSubadmin(params);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -345,7 +431,7 @@ public class SignUpActivity extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
+                    if (jsonObject.getString("status").equals("1")) {
                         dialog.dismiss();
                         openProviderReqDialog();
                     } else {
@@ -354,7 +440,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -372,7 +458,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         ProviderReqDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext)
-                ,R.layout.provider_req_dialog,null,false);
+                , R.layout.provider_req_dialog, null, false);
         dialog.setCancelable(false);
         dialog.setContentView(dialogBinding.getRoot());
 
@@ -397,17 +483,17 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions (
+        ActivityCompat.requestPermissions(
                 this,
-                new String[] {
+                new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE },
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
                 PERMISSION_ID
         );
     }
 
-    private boolean validateUsing_libphonenumber(String phNumber,String code) {
+    private boolean validateUsing_libphonenumber(String phNumber, String code) {
 
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(code));
@@ -440,25 +526,26 @@ public class SignUpActivity extends AppCompatActivity {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 latLng = place.getLatLng();
                 try {
-                    String addresses = ProjectUtil.getCompleteAddressString(mContext,place.getLatLng().latitude, place.getLatLng().longitude);
+                    String addresses = ProjectUtil.getCompleteAddressString(mContext, place.getLatLng().latitude, place.getLatLng().longitude);
                     binding.address.setText(addresses);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
 
-        } else if(requestCode == AUTOCOMPLETE_REQUEST_DIALOG_CODE) {
+        } else if (requestCode == AUTOCOMPLETE_REQUEST_DIALOG_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 latLng = place.getLatLng();
                 try {
-                    String addresses = ProjectUtil.getCompleteAddressString(mContext,place.getLatLng().latitude, place.getLatLng().longitude);
+                    String addresses = ProjectUtil.getCompleteAddressString(mContext, place.getLatLng().latitude, place.getLatLng().longitude);
                     dialogBinding.address.setText(addresses);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
         }
 
 
     }
-
 
 
 }

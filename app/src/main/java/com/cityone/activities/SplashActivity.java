@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +18,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cityone.MainActivity;
 import com.cityone.R;
-import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
-import com.cityone.utils.InternetConnection;
 import com.cityone.utils.SharedPref;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,7 +33,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-
+import com.redeban.payment.Payment;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -55,21 +52,36 @@ public class SplashActivity extends AppCompatActivity
         setContentView(R.layout.activity_splash);
         sharedPref = SharedPref.getInstance(mContext);
 
+        printHashKey(mContext);
+
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo("com.cityone", PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        }
+//        catch (PackageManager.NameNotFoundException e) {}
+//        catch (NoSuchAlgorithmException e) {}
+
+    }
+
+    public static void printHashKey(Context pContext) {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.cityone",
+            PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(),
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.i("dsadadsdad", "printHashKey() Hash Key: " + hashKey);
             }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("dsadadsdad", "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e("dsadadsdad", "printHashKey()", e);
         }
-        catch (PackageManager.NameNotFoundException e) {
-        }
-        catch (NoSuchAlgorithmException e) {
-        }
-
     }
 
     private boolean checkPermissions() {
@@ -118,7 +130,7 @@ public class SplashActivity extends AppCompatActivity
             @Override
             public void run() {
                 if(sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
-                    startActivity(new Intent(mContext,DashboardActivity.class));
+                    startActivity(new Intent(mContext, DashboardActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(mContext,WelcomeActivity.class));
@@ -214,18 +226,15 @@ public class SplashActivity extends AppCompatActivity
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
+    public void onConnected(@Nullable Bundle bundle) { }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) {}
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
 }
+
+
+

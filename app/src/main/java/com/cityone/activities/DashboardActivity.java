@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+
 import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -19,14 +20,23 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.cityone.R;
+import com.cityone.adapters.AdapterPoints;
 import com.cityone.databinding.ActivityDashboardBinding;
 import com.cityone.entertainment.activities.EntHomeActivity;
 import com.cityone.meals.MealsHomeActivity;
 import com.cityone.models.ModelLogin;
+import com.cityone.models.ModelReferrals;
 import com.cityone.shipping.ShippingActivity;
 import com.cityone.stores.activities.StoresActivity;
+import com.cityone.stores.adapters.AdapterStoreCat;
+import com.cityone.stores.adapters.AdapterStores;
+import com.cityone.stores.models.ModelStoreCat;
+import com.cityone.stores.models.ModelStores;
 import com.cityone.taxi.activities.TaxiHomeActivity;
+import com.cityone.utils.Api;
+import com.cityone.utils.ApiFactory;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -39,6 +49,17 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
@@ -58,28 +79,133 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_dashboard);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         ProjectUtil.changeStatusBarColor(DashboardActivity.this);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
-        Log.e("fsdfdsfds","modelLogin = " + modelLogin.getResult().getId());
+        Log.e("fsdfdsfds", "modelLogin = " + modelLogin.getResult().getId());
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
 
         init();
 
+        getStoreCat();
+    }
+
+    private void getStoreCat() {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.getStoreCatDashApiCall();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    if (jsonObject.getString("status").equals("1")) {
+
+                        ModelStoreCat modelStoreCat = new Gson().fromJson(responseString, ModelStoreCat.class);
+
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext, modelStoreCat.getResult(), false, true);
+                        binding.rvStoresCat.setAdapter(adapterStoreCat);
+
+                        Log.e("responseString", "response = " + response);
+                        Log.e("responseString", "responseString = " + responseString);
+                        Log.e("responseString", "id = " + modelStoreCat.getResult().get(0).getId());
+
+                        getAllSTores(modelStoreCat.getResult().get(0).getId(), modelStoreCat.getResult().get(0).getName());
+
+                    } else {
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext, null, false, true);
+                        binding.rvStoresCat.setAdapter(adapterStoreCat);
+                    }
+
+                } catch (Exception e) {
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception", "Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
+    private void getAllSTores(String id, String name) {
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("restaurant_category_id", id);
+        param.put("restaurant_category_name", name);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.getStoreByCatApiCall(param);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    if (jsonObject.getString("status").equals("1")) {
+
+                        Log.e("responseString", "response = " + response);
+                        Log.e("responseString", "responseString = " + responseString);
+
+                        ModelStores modelStores = new Gson().fromJson(responseString, ModelStores.class);
+
+                        AdapterStores adapterStores = new AdapterStores(mContext, modelStores.getResult());
+                        binding.rvStores.setAdapter(adapterStores);
+
+                    } else {
+                        AdapterStores adapterStores = new AdapterStores(mContext, null);
+                        binding.rvStores.setAdapter(adapterStores);
+                    }
+
+                } catch (Exception e) {
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception", "Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+
+    }
+
+    public void getStoresById(String id, String name) {
+        Log.e("ididididid", "id = " + id);
+        Log.e("ididididid", "name = " + name);
+        getAllSTores(id, name);
     }
 
     private void init() {
 
-        if(checkPermissions()) {
-            if(isLocationEnabled()) {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
                 setCurrentLocation();
             }
         } else {
             requestPermissions();
         }
+
+        binding.cvCashBack.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, CashBackAct.class));
+        });
 
         binding.cvTaxi.setOnClickListener(v -> {
             startActivity(new Intent(mContext, TaxiHomeActivity.class));
@@ -90,7 +216,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         binding.navItems.tvMybooking.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(mContext,MyBookingActivity.class));
+            startActivity(new Intent(mContext, MyBookingActivity.class));
         });
 
         binding.navItems.tvMoveiBooks.setOnClickListener(v -> {
@@ -100,7 +226,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         binding.navItems.tvAccount.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(mContext,AccountActivity.class));
+            startActivity(new Intent(mContext, AccountActivity.class));
         });
 
         binding.navItems.tvLogout.setOnClickListener(v -> {
@@ -116,6 +242,10 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(new Intent(mContext, StoresActivity.class));
         });
 
+        binding.btViewAll.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, StoresActivity.class));
+        });
+
         binding.cvMeals.setOnClickListener(v -> {
             startActivity(new Intent(mContext, MealsHomeActivity.class));
         });
@@ -127,33 +257,15 @@ public class DashboardActivity extends AppCompatActivity {
         binding.cvShipping.setOnClickListener(v -> {
             startActivity(new Intent(mContext, ShippingActivity.class));
         });
-
-        binding.btFood.setOnClickListener(v -> {
-            binding.btGrocery.setBackgroundResource(R.drawable.gray_back_10);
-            binding.btPharmacy.setBackgroundResource(R.drawable.gray_back_10);
-            binding.btFood.setBackgroundResource(R.drawable.orange_back_10);
-        });
-
-        binding.btGrocery.setOnClickListener(v -> {
-            binding.btFood.setBackgroundResource(R.drawable.gray_back_10);
-            binding.btPharmacy.setBackgroundResource(R.drawable.gray_back_10);
-            binding.btGrocery.setBackgroundResource(R.drawable.orange_back_10);
-        });
-
-        binding.btPharmacy.setOnClickListener(v -> {
-            binding.btGrocery.setBackgroundResource(R.drawable.gray_back_10);
-            binding.btPharmacy.setBackgroundResource(R.drawable.orange_back_10);
-            binding.btFood.setBackgroundResource(R.drawable.gray_back_10);
-        });
-
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if(checkPermissions()) {
-            if(isLocationEnabled()) {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
                 setCurrentLocation();
             } else {
                 Toast.makeText(mContext, getString(R.string.turn_on_loc), Toast.LENGTH_LONG).show();
@@ -176,13 +288,13 @@ public class DashboardActivity extends AppCompatActivity {
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled (
+                || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER
         );
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions (
+        ActivityCompat.requestPermissions(
                 DashboardActivity.this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION,},
@@ -195,7 +307,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_LOCATION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if(isLocationEnabled()) {
+                if (isLocationEnabled()) {
                     setCurrentLocation();
                 } else {
                     Toast.makeText(DashboardActivity.this, getString(R.string.turn_on_loc), Toast.LENGTH_LONG).show();
@@ -207,7 +319,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission (
+        if (ActivityCompat.checkSelfPermission(
                 mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(DashboardActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -223,9 +335,9 @@ public class DashboardActivity extends AppCompatActivity {
                     Log.e("ivCurrentLocation", "location = " + location);
 
                     try {
-                        String address = ProjectUtil.getCompleteAddressString(mContext,currentLocation.getLatitude(), currentLocation.getLongitude());
+                        String address = ProjectUtil.getCompleteAddressString(mContext, currentLocation.getLatitude(), currentLocation.getLongitude());
 
-                        if(TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())){
+                        if (TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())) {
                             binding.tvAddress.setText(address);
                         }
                     } catch (Exception e) {
@@ -266,24 +378,24 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onLocationResult(LocationResult locationResult) {
 
-                if(currentLocation != null) {
+                if (currentLocation != null) {
                     try {
-                        String address = ProjectUtil.getCompleteAddressString(mContext,currentLocation.getLatitude(), currentLocation.getLongitude());
+                        String address = ProjectUtil.getCompleteAddressString(mContext, currentLocation.getLatitude(), currentLocation.getLongitude());
 
-                        if(TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())){
+                        if (TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())) {
                             binding.tvAddress.setText(address);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    if(locationResult != null) {
+                    if (locationResult != null) {
                         Log.e("hdasfkjhksdf", "Location = " + locationResult.getLastLocation());
                         currentLocation = locationResult.getLastLocation();
                         try {
-                            String address = ProjectUtil.getCompleteAddressString(mContext,currentLocation.getLatitude(), currentLocation.getLongitude());
+                            String address = ProjectUtil.getCompleteAddressString(mContext, currentLocation.getLatitude(), currentLocation.getLongitude());
 
-                            if(TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())){
+                            if (TextUtils.isEmpty(binding.tvAddress.getText().toString().trim())) {
                                 binding.tvAddress.setText(address);
                             }
                         } catch (Exception e) {

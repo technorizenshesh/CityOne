@@ -17,12 +17,17 @@ import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.braintreepayments.cardform.view.CardForm;
 import com.cityone.R;
 import com.cityone.activities.DashboardActivity;
 import com.cityone.databinding.ActivityStorePaymentBinding;
 import com.cityone.databinding.AddCardDialogBinding;
 import com.cityone.models.ModelLogin;
+import com.cityone.parentmodels.ModelPayCards;
+import com.cityone.parentmodels.ModelPayCardsPro;
 import com.cityone.stores.adapters.AdapterCards;
 import com.cityone.stores.models.ModelCards;
 import com.cityone.utils.Api;
@@ -31,10 +36,7 @@ import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
 import com.google.gson.Gson;
-import com.stripe.android.ApiResultCallback;
-import com.stripe.android.Stripe;
-import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
+import com.redeban.payment.model.Card;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -63,11 +65,8 @@ public class StorePaymentActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_store_payment);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-
-        param = (HashMap<String, String>) getIntent().getSerializableExtra("param");
-
+        param = (HashMap<String,String>) getIntent().getSerializableExtra("param");
         init();
-
     }
 
     private void init() {
@@ -92,47 +91,83 @@ public class StorePaymentActivity extends AppCompatActivity {
     }
 
     private void getAvailableCardApi() {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
 
-        HashMap<String,String> param = new HashMap<>();
-        param.put("user_id",modelLogin.getResult().getId());
+        AndroidNetworking.post(AppConstant.PAY_GET_ALL_CARD
+                + "user_id=" + modelLogin.getResult().getId())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        binding.swipReferesh.setRefreshing(false);
+                        try {
+                            String stringRes = response;
+                            Log.e("stringResstringRes","stringRes = " + stringRes);
+                            JSONObject jsonObject = new JSONObject(stringRes);
+                            if(jsonObject.getInt("result_size") != 0) {
+                                ModelPayCardsPro modelPayCardsPro = new Gson().fromJson(stringRes,ModelPayCardsPro.class);
+                               // ModelPayCards.Result data;
 
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.getCardApiCall(param);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ProjectUtil.pauseProgressDialog();
-                binding.swipReferesh.setRefreshing(false);
-                try {
-                    String stringRes = response.body().string();
-                    JSONObject jsonObject = new JSONObject(stringRes);
-                    if(jsonObject.getString("status").equals("1")) {
-                        ModelCards modelCards = new Gson().fromJson(stringRes,ModelCards.class);
-                        AdapterCards adapterCards = new AdapterCards(mContext,modelCards.getResult());
-                        binding.rvCards.setAdapter(adapterCards);
-                    } else {
-                        Toast.makeText(mContext,getString(R.string.please_add_card), Toast.LENGTH_SHORT).show();
-                        AdapterCards adapterCards = new AdapterCards(mContext,null);
-                        binding.rvCards.setAdapter(adapterCards);
+//                                modelPayCards.setMessage(jsonObject.getString("message"));
+//                                modelPayCards.setStatus(jsonObject.getString("status"));
+//
+//                                data = new Gson().fromJson(jsonObject.getString("result"),ModelPayCards.Result.class);
+//                                modelPayCards.setResult(data);
+
+                                AdapterCards adapterCards = new AdapterCards(mContext,modelPayCardsPro.getCards(),"store");
+                                binding.rvCards.setAdapter(adapterCards);
+
+                            } else {
+                                Toast.makeText(mContext,getString(R.string.please_add_card), Toast.LENGTH_SHORT).show();
+                                AdapterCards adapterCards = new AdapterCards(mContext,null,"store");
+                                binding.rvCards.setAdapter(adapterCards);
+                            }
+                        } catch (Exception e) {}
                     }
-                } catch (Exception e) {}
 
-            }
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                        binding.swipReferesh.setRefreshing(false);
+                    }
+                });
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ProjectUtil.pauseProgressDialog();
-                binding.swipReferesh.setRefreshing(false);
-            }
-
-        });
+//        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+//        Call<ResponseBody> call = api.getCardApiCall(param);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                ProjectUtil.pauseProgressDialog();
+//                binding.swipReferesh.setRefreshing(false);
+//                try {
+//                    String stringRes = response.body().string();
+//                    JSONObject jsonObject = new JSONObject(stringRes);
+//                    if(jsonObject.getString("status").equals("1")) {
+//                        ModelCards modelCards = new Gson().fromJson(stringRes,ModelCards.class);
+//                        AdapterCards adapterCards = new AdapterCards(mContext,modelCards.getResult());
+//                        binding.rvCards.setAdapter(adapterCards);
+//                    } else {
+//                        Toast.makeText(mContext,getString(R.string.please_add_card), Toast.LENGTH_SHORT).show();
+//                        AdapterCards adapterCards = new AdapterCards(mContext,null);
+//                        binding.rvCards.setAdapter(adapterCards);
+//                    }
+//                } catch (Exception e) {}
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                ProjectUtil.pauseProgressDialog();
+//                binding.swipReferesh.setRefreshing(false);
+//            }
+//        });
 
     }
 
     public void callBookingApiFromAdapter(String token) {
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
         Call<ResponseBody> call = api.bookingStoreApiCall(param);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -160,7 +195,7 @@ public class StorePaymentActivity extends AppCompatActivity {
 
                         Log.e("paramparam","param = " + param.toString());
 
-                        paymentApiCall(param);
+                        paymentApiCall(token,resultJson.getString("total_amount"));
 
                     } else {
 
@@ -180,40 +215,87 @@ public class StorePaymentActivity extends AppCompatActivity {
 
     }
 
-    private void paymentApiCall(HashMap<String,String> param) {
+    private void paymentApiCall(String token,String amount) {
 
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.paymentStoreApiCall(param);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ProjectUtil.pauseProgressDialog();
-                try {
-                    String stringRes = response.body().string();
+//        HashMap<String,String> paramas = new HashMap<>();
+//        paramas.put("amount",amount);
+//        paramas.put("token",token);
+//        paramas.put("request_id","");
+//        paramas.put("user_id",modelLogin.getResult().getId());
+//        paramas.put("email",modelLogin.getResult().getEmail());
 
-                    Log.e("stringResstringRes","stringRes = " + stringRes);
+        Log.e("adasdasd","PaymentUrl = " + AppConstant.PAY_PAYMENT_API+
+                "amount="+amount+
+                "&token="+token+
+                "&request_id="+
+                "&user_id="+modelLogin.getResult().getId()+
+                "&email="+modelLogin.getResult().getEmail());
 
-                    JSONObject jsonObject = new JSONObject(stringRes);
-                    if(jsonObject.getString("status").equals("1")) {
-                        Toast.makeText(StorePaymentActivity.this, getString(R.string.order_placed), Toast.LENGTH_SHORT).show();
-                        finishAffinity();
-                        startActivity(new Intent(mContext, DashboardActivity.class));
-                    } else {
+        AndroidNetworking.post(AppConstant.PAY_PAYMENT_API+
+                "amount="+amount+
+                "&token="+token+
+                "&request_id="+
+                "&user_id="+modelLogin.getResult().getId()+
+                "&email="+modelLogin.getResult().getEmail())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            String stringRes = response;
 
+                            Log.e("stringResstringRes","stringRes = " + stringRes);
+
+                            JSONObject jsonObject = new JSONObject(stringRes);
+                            if(jsonObject.getString("status").equals("1")) {
+                                Toast.makeText(StorePaymentActivity.this, getString(R.string.order_placed), Toast.LENGTH_SHORT).show();
+                                finishAffinity();
+                                startActivity(new Intent(mContext, DashboardActivity.class));
+                            } else {}
+                        } catch (Exception e) {}
                     }
-                } catch (Exception e) {
 
-                }
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
 
-            }
+                });
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ProjectUtil.pauseProgressDialog();
-            }
+//        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+//        Call<ResponseBody> call = api.paymentStoreApiCall(param);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                ProjectUtil.pauseProgressDialog();
+//                try {
+//                    String stringRes = response.body().string();
+//
+//                    Log.e("stringResstringRes","stringRes = " + stringRes);
+//
+//                    JSONObject jsonObject = new JSONObject(stringRes);
+//                    if(jsonObject.getString("status").equals("1")) {
+//                        Toast.makeText(StorePaymentActivity.this, getString(R.string.order_placed), Toast.LENGTH_SHORT).show();
+//                        finishAffinity();
+//                        startActivity(new Intent(mContext, DashboardActivity.class));
+//                    } else {
+//
+//                    }
+//                } catch (Exception e) {
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                ProjectUtil.pauseProgressDialog();
+//            }
+//
+//        });
 
-        });
     }
 
     private void addCardDialog() {
@@ -221,81 +303,37 @@ public class StorePaymentActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
 
         AddCardDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,null,false);
+                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,
+                        null,false);
         dialog.setContentView(dialogBinding.getRoot());
 
-        dialogBinding.cardForm.cardRequired(true)
-                .expirationRequired(true)
-                .cvvRequired(true)
-                .postalCodeRequired(false)
-                .mobileNumberRequired(false)
-                .cardholderName(CardForm.FIELD_REQUIRED)
-                .setup(StorePaymentActivity.this);
-
-        dialogBinding.cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-
         dialogBinding.btMakePayment.setOnClickListener(v -> {
-            if (dialogBinding.cardForm.isValid()) {
-                alertBuilder = new AlertDialog.Builder(mContext);
-                alertBuilder.setTitle("Confirm before purchase");
-                alertBuilder.setMessage("Card number: " + dialogBinding.cardForm.getCardNumber() + "\n" +
-                        "Card expiry date: " + dialogBinding.cardForm.getExpirationDateEditText().getText().toString() + "\n" +
-                        "Card CVV: " + dialogBinding.cardForm.getCvv() + "\n");
-                alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
 
-                        Card.Builder card = new Card.Builder(dialogBinding.cardForm.getCardNumber(),
-                                Integer.valueOf(dialogBinding.cardForm.getExpirationMonth()),
-                                Integer.valueOf(dialogBinding.cardForm.getExpirationYear()),
-                                dialogBinding.cardForm.getCvv());
+            Card cardToSave = dialogBinding.cardForm.getCard();
 
-                        if (!card.build().validateCard()) {
-                            Toast.makeText(mContext, "Card Not Valid", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        // Stripe stripe = new Stripe(mContext, "pk_test_51HGVYvEA8txfY5aoKS3kcgQ7PsKWlkRpwf0gB6R9hERR2iQyS7qNf1Gx5IfRkAOAf5SLBYrpdrRg3LadRPyl0fjo005Z3Z8G3Z");
-                        Stripe stripe = new Stripe(mContext, getString(R.string.stripe_test_key));
-
-                        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
-                        stripe.createCardToken(
-                                card.build(), new ApiResultCallback<Token>() {
-                                    @Override
-                                    public void onSuccess(Token token) {
-                                        ProjectUtil.pauseProgressDialog();
-                                        dialog.dismiss();
-                                        String name = dialogBinding.cardForm.getCardholderName();
-
-                                        Log.e("stripeToken","token = " + token.getId());
-                                        addCardApi(name,dialog,dialogBinding.cardForm.getCardNumber(),
-                                                dialogBinding.cardForm.getExpirationMonth()+"/"+
-                                                        dialogBinding.cardForm.getExpirationYear(),
-                                                 dialogBinding.cardForm.getExpirationMonth()
-                                                ,dialogBinding.cardForm.getCvv(),token.getId());
-                                    }
-
-                                    @Override
-                                    public void onError(@NotNull Exception e) {
-                                        ProjectUtil.pauseProgressDialog();
-                                    }
-                                });
-                    }
-                });
-                alertBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialog = alertBuilder.create();
-                alertDialog.show();
-
+            if (cardToSave == null) {
+                Toast.makeText(mContext, getString(R.string.Invalid_card_info), Toast.LENGTH_SHORT).show();
+                return;
             } else {
-                Toast.makeText(mContext, "Please complete the form", Toast.LENGTH_LONG).show();
+
+                HashMap<String,String> param = new HashMap<>();
+                param.put("user_id",modelLogin.getResult().getId());
+                param.put("number",cardToSave.getNumber());
+                param.put("holder_name",cardToSave.getHolderName());
+                param.put("expiry_month",String.valueOf(cardToSave.getExpiryMonth()));
+                param.put("expiry_year",String.valueOf(cardToSave.getExpiryYear()));
+                param.put("cvc",cardToSave.getCVC());
+                param.put("email",modelLogin.getResult().getEmail());
+
+                addCardApi(dialog,
+                        cardToSave.getNumber(),
+                        cardToSave.getHolderName(),
+                        String.valueOf(cardToSave.getExpiryMonth()),
+                        String.valueOf(cardToSave.getExpiryYear()),
+                        cardToSave.getCVC());
+
             }
+
         });
 
         dialogBinding.ivBack.setOnClickListener(v -> {
@@ -306,48 +344,82 @@ public class StorePaymentActivity extends AppCompatActivity {
 
     }
 
-    private void addCardApi(String name,Dialog dialog,String cardNo,String expDate,String expMonth,String cvv,String tokenId) {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+    private void addCardApi(Dialog dialog,String number,
+                            String holderName,
+                            String exp_mon,
+                            String exp_year,
+                            String cvc) {
 
-        HashMap<String,String> param = new HashMap<>();
-        param.put("user_id",modelLogin.getResult().getId());
-        param.put("card_number",cardNo);
-        param.put("expiry_date",expDate);
-        param.put("expiry_month",expMonth);
-        param.put("cvc_code",cvv);
-        param.put("holder_name",name);
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+
+        AndroidNetworking.post(AppConstant.PAY_ADD_CARD +
+                "number="+number+"&" +
+                "holder_name="+holderName+"&" +
+                "expiry_month="+exp_mon+"&" +
+                "expiry_year="+exp_year+"&" +
+                "cvc="+cvc+"&" +
+                "user_id="+modelLogin.getResult().getId()+"&" +
+                "email="+modelLogin.getResult().getEmail())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            String stringRes = response;
+                            JSONObject jsonObject = new JSONObject(stringRes);
+
+                            Log.e("dfsdfdsf","stringRes = " + stringRes);
+                            // Log.e("dfsdfdsf","params = " + params.toString());
+
+                            if(jsonObject.getString("status").equals("1")) {
+                                dialog.dismiss();
+                                getAvailableCardApi();
+                            } else {}
+                        } catch (Exception e) {}
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                        Log.e("dfsdfdsf","anError = " + anError.getErrorBody());
+                        Log.e("dfsdfdsf","anError = " + anError.getErrorDetail());
+                    }
+                });
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         Log.e("sdfgdsfd","param = " + param.toString());
 
-        Call<ResponseBody> call = api.addCardApiCall(param);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ProjectUtil.pauseProgressDialog();
-                try {
-                    String stringRes = response.body().string();
-                    JSONObject jsonObject = new JSONObject(stringRes);
+//        Call<ResponseBody> call = api.addCardApiCall(param);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                ProjectUtil.pauseProgressDialog();
+//                try {
+//                    String stringRes = response.body().string();
+//                    JSONObject jsonObject = new JSONObject(stringRes);
+//
+//                    Log.e("dfsdfdsf","stringRes = " + stringRes);
+//
+//                    if(jsonObject.getString("status").equals("1")) {
+//                        dialog.dismiss();
+//                        getAvailableCardApi();
+//                    } else {
+//
+//                    }
+//                } catch (Exception e) {
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                ProjectUtil.pauseProgressDialog();
+//            }
+//        });
 
-                    Log.e("dfsdfdsf","stringRes = " + stringRes);
-
-                    if(jsonObject.getString("status").equals("1")) {
-                        dialog.dismiss();
-                        getAvailableCardApi();
-                    } else {
-
-                    }
-                } catch (Exception e) {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ProjectUtil.pauseProgressDialog();
-            }
-        });
     }
 
 

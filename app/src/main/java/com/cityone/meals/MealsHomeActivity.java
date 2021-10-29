@@ -95,7 +95,7 @@ public class MealsHomeActivity extends AppCompatActivity {
 
                         ModelStoreCat modelStoreCat = new Gson().fromJson(responseString, ModelStoreCat.class);
 
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),true);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),true,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
 
                         Log.e("responseString","response = " + response);
@@ -106,7 +106,7 @@ public class MealsHomeActivity extends AppCompatActivity {
                                 ,modelStoreCat.getResult().get(0).getName());
 
                     } else {
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,true);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,true,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
                     }
 

@@ -79,12 +79,14 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
                 android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:orientation="vertical">
 
                     <TextView
@@ -334,7 +336,7 @@
                             android:orientation="vertical">
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/cvFoodDelivery"
+                                android:id="@+id/cvCashBack"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:elevation="@dimen/_15sdp"
@@ -374,6 +376,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="start"
+                        android:visibility="gone"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:text="@string/popular_meals"
@@ -386,6 +389,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
+                        android:visibility="gone"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:scrollbars="none">
@@ -617,237 +621,57 @@
 
                     </HorizontalScrollView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="start"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:text="@string/nearby_store"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginRight="@dimen/_12sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:weightSum="3"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="@dimen/_10sdp">
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btGrocery"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/popular_store"
+                            android:textAllCaps="false"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btViewAll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_35sdp"
                             android:background="@drawable/orange_back_10"
                             android:textColor="@color/white"
                             android:textAllCaps="false"
+                            android:layout_alignParentRight="true"
                             android:textStyle="bold"
                             android:includeFontPadding="false"
                             android:textSize="@dimen/_9sdp"
-                            android:text="@string/grocery"
+                            android:text="@string/view_all"
                             android:fontFamily="@font/poppins_bold" />
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btFood"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gray_back_10"
-                            android:textColor="@color/white"
-                            android:textAllCaps="false"
-                            android:includeFontPadding="false"
-                            android:textSize="@dimen/_9sdp"
-                            android:layout_marginLeft="@dimen/_3sdp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="@string/food"/>
+                    </RelativeLayout>
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btPharmacy"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gray_back_10"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="@string/pharmacy"
-                            android:includeFontPadding="false"
-                            android:textSize="@dimen/_9sdp"
-                            android:layout_marginLeft="@dimen/_3sdp"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <HorizontalScrollView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvStoresCat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:scrollbars="none">
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="@dimen/_150sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_5sdp"
-                                app:cardCornerRadius="@dimen/_10sdp"
-                                android:elevation="@dimen/_10sdp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <com.makeramen.roundedimageview.RoundedImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_150sdp"
-                                        android:scaleType="centerCrop"
-                                        app:riv_corner_radius="@dimen/_10sdp"
-                                        android:src="@drawable/grocery1"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/poppins_bold"
-                                        android:gravity="start"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:layout_marginTop="@dimen/_5sdp"
-                                        android:text="Grocery Store"
-                                        android:textAllCaps="false"
-                                        android:textColor="@color/black"
-                                        android:textSize="@dimen/_12sdp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/poppins_regular"
-                                        android:gravity="start"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:text="Nk Tantuni, Kadikoy"
-                                        android:textAllCaps="false"
-                                        android:textColor="@color/gray"
-                                        android:textSize="@dimen/_10sdp" />
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/_3sdp"
-                                        android:gravity="center"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:layout_marginBottom="@dimen/_5sdp"
-                                        android:orientation="horizontal">
-
-                                        <RatingBar
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:rating="5"
-                                            style="@style/Widget.AppCompat.RatingBar.Small"/>
-
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:text="5.0"
-                                            android:textStyle="bold"
-                                            android:layout_marginLeft="@dimen/_5sdp"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:textColor="@color/black"
-                                            android:inputType="textVisiblePassword" />
-
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                            </androidx.cardview.widget.CardView>
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="@dimen/_150sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_5sdp"
-                                app:cardCornerRadius="@dimen/_10sdp"
-                                android:elevation="@dimen/_10sdp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <com.makeramen.roundedimageview.RoundedImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_150sdp"
-                                        android:scaleType="centerCrop"
-                                        app:riv_corner_radius="@dimen/_10sdp"
-                                        android:src="@drawable/grocery2"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/poppins_bold"
-                                        android:gravity="start"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:layout_marginTop="@dimen/_5sdp"
-                                        android:text="Grocery Store"
-                                        android:textAllCaps="false"
-                                        android:textColor="@color/black"
-                                        android:textSize="@dimen/_12sdp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/poppins_regular"
-                                        android:gravity="start"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:text="Nk Tantuni, Kadikoy"
-                                        android:textAllCaps="false"
-                                        android:textColor="@color/gray"
-                                        android:textSize="@dimen/_10sdp" />
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/_3sdp"
-                                        android:gravity="center"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:layout_marginBottom="@dimen/_5sdp"
-                                        android:orientation="horizontal">
-
-                                        <RatingBar
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:rating="5"
-                                            style="@style/Widget.AppCompat.RatingBar.Small"/>
-
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:text="5.0"
-                                            android:textStyle="bold"
-                                            android:layout_marginLeft="@dimen/_5sdp"
-                                            android:textSize="@dimen/_10sdp"
-                                            android:textColor="@color/black"
-                                            android:inputType="textVisiblePassword" />
-
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                            </androidx.cardview.widget.CardView>
-
-                        </LinearLayout>
-
-                    </HorizontalScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvStores"
+                        android:layout_width="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 

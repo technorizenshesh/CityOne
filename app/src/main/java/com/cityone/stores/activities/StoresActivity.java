@@ -3,15 +3,11 @@ package com.cityone.stores.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.cityone.R;
-import com.cityone.activities.DashboardActivity;
 import com.cityone.databinding.ActivityStoresBinding;
 import com.cityone.models.ModelLogin;
 import com.cityone.stores.adapters.AdapterStoreCat;
@@ -24,11 +20,8 @@ import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
 import com.google.gson.Gson;
-
 import org.json.JSONObject;
-
 import java.util.HashMap;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,11 +40,8 @@ public class StoresActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_stores);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-
         init();
-
         getStoreCat();
-
     }
 
     private void init() {
@@ -106,7 +96,6 @@ public class StoresActivity extends AppCompatActivity {
                     }
 
                 } catch (Exception e) {
-                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("Exception","Exception = " + e.getMessage());
                 }
 
@@ -145,7 +134,7 @@ public class StoresActivity extends AppCompatActivity {
 
                         ModelStoreCat modelStoreCat = new Gson().fromJson(responseString, ModelStoreCat.class);
 
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),false);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),false,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
 
                         Log.e("responseString","response = " + response);
@@ -155,19 +144,18 @@ public class StoresActivity extends AppCompatActivity {
                         getAllSTores(modelStoreCat.getResult().get(0).getId(),modelStoreCat.getResult().get(0).getName());
 
                     } else {
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,false);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,false,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
                     }
 
                 } catch (Exception e) {
-                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("Exception","Exception = " + e.getMessage());
                 }
 
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call,Throwable t) {
                 ProjectUtil.pauseProgressDialog();
                 binding.swipLayout.setRefreshing(false);
             }

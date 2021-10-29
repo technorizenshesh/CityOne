@@ -63,7 +63,6 @@ public class GetStartedActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
     static final int GOOGLE_SIGN_IN_REQUEST_CODE = 1234;
-
     SharedPref sharedPref;
     ModelLogin modelLogin;
     private CallbackManager callbackManager;
@@ -97,7 +96,8 @@ public class GetStartedActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(mContext);
 
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -106,8 +106,7 @@ public class GetStartedActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
 
         init();
 
@@ -142,7 +141,6 @@ public class GetStartedActivity extends AppCompatActivity {
             anim.setStartOffset(20);
             anim.setRepeatMode(Animation.REVERSE);
             binding.btfacebook.startAnimation(anim);
-
         });
 
         binding.btGoogle.setOnClickListener(v -> {
@@ -208,7 +206,11 @@ public class GetStartedActivity extends AppCompatActivity {
 
         HashMap<String,String> paramHash = new HashMap<>();
         paramHash.put("user_name",username);
-        paramHash.put("email",email);
+        if(email == null) {
+            paramHash.put("email","");
+        } else {
+            paramHash.put("email",email);
+        }
         paramHash.put("mobile","");
         paramHash.put("address","");
         paramHash.put("land_mark","");

@@ -84,7 +84,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(modelStoreItemFilterCat != null) {
                     if(position != 0) {
-                        if(position == 1 ) {
+                        if(position == 1) {
                             fetchAllStoreItems();
                         } else {
                             searchCategory(modelStoreItemFilterCat.getResult().get(position-2).getId());
@@ -271,7 +271,10 @@ public class StoreDetailsActivity extends AppCompatActivity {
         AdapterStoreItemCat adapterStoreItemCat = new AdapterStoreItemCat(mContext, modelStoreDetails.getResult().getRestaurant_sub_category());
         binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
 
-        getStoreItems(modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
+        try {
+            getStoreItems(modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
+        } catch (Exception e) {}
+
     }
 
     private void getStoreDetails() {
@@ -350,8 +353,8 @@ public class StoreDetailsActivity extends AppCompatActivity {
                     if(jsonObject.getString("status").equals("1")) {
                         binding.swipLayout.setRefreshing(false);
 
-                        Log.e("responseString","response = " + response);
-                        Log.e("responseString","responseString = " + responseString);
+                        Log.e("fetchCategory","response = " + response);
+                        Log.e("fetchCategory","responseString = " + responseString);
 
                         modelStoreItemFilterCat = new Gson().fromJson(responseString, ModelStoreItemFilterCat.class);
 
@@ -418,6 +421,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
                         binding.rvStoresItems.setAdapter(adapterStoreItems);
 
                     } else {
+                        Log.e("responseString","responseString = " + responseString);
                         AdapterStoreItems adapterStoreItems = new AdapterStoreItems(mContext,null);
                         binding.rvStoresItems.setAdapter(adapterStoreItems);
                     }

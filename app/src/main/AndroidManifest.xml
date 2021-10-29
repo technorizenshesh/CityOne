@@ -5,9 +5,11 @@
     xmlns:uses-permissionandroid="http://schemas.android.com/apk/distribution"
     package="com.cityone">
 
-    <uses-feature android:name="android.hardware.camera"
-        android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,10 +33,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CityOne"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".taxi.activities.TripHistoryAct"
+        <activity
+            android:name=".activities.CashBackAct"
+            android:exported="true" />
+        <activity
+            android:name=".activities.PaypalWebviewAct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".taxi.activities.TripHistoryAct"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".taxi.activities.TaxiChatingActivity"
             android:screenOrientation="portrait"
@@ -270,21 +278,22 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/maps_api_key" />
 
-        <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+        <activity
+            android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="${applicationId}.braintree" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

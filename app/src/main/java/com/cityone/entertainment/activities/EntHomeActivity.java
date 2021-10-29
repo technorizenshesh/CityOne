@@ -90,7 +90,7 @@ public class EntHomeActivity extends AppCompatActivity {
                         getAllEnt(modelStoreCat.getResult().get(0).getId(),modelStoreCat.getResult().get(0).getName());
 
                     } else {
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,false);
+                        AdapterEntCat adapterStoreCat = new AdapterEntCat(mContext,null,EntHomeActivity.this::updateEnt);
                         binding.rvEntCat.setAdapter(adapterStoreCat);
                     }
 

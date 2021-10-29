@@ -104,7 +104,7 @@ public class TrackTaxiAct extends AppCompatActivity
     AlertDialog.Builder builder1;
     String driverStatus = "",driverId=null,driverName="",driverImage="",driverMobile=null,driverLat,driverLon;
     private PolylineOptions lineOptions;
-//    private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
+//  private PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
 //            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
 //            .clientId(PaypalClientId.PAYPAL_CLIENT_ID_SENDBOX);
 

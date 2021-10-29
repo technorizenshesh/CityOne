@@ -203,7 +203,6 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-    // Trigger new location updates at interval
     protected void startLocationUpdates() {
 
         Log.e("hdasfkjhksdf", "Location = ");
@@ -339,7 +338,7 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }

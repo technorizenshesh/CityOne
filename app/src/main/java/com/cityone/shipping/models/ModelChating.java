@@ -28,7 +28,7 @@ public class ModelChating implements Serializable {
         return this.status;
     }
 
-    public class Result
+    public class Result implements Serializable
     {
         private String id;
 
@@ -175,7 +175,7 @@ public class ModelChating implements Serializable {
             return this.receiver_detail;
         }
 
-        public class Sender_detail {
+        public class Sender_detail implements Serializable{
 
             private String id;
 
@@ -361,10 +361,11 @@ public class ModelChating implements Serializable {
             public String getSender_image(){
                 return this.sender_image;
             }
+
         }
 
-        public class Receiver_detail
-        {
+        public class Receiver_detail implements Serializable {
+
             private String receiver_image;
 
             private String id;

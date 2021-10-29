@@ -1,11 +1,13 @@
 package com.cityone.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import com.braintreepayments.cardform.view.CardForm;
 import com.cityone.R;
 import com.cityone.databinding.ActivityPaymentMethodBinding;
 import com.cityone.databinding.AddCartDialogBinding;
+import com.redeban.payment.model.Card;
 
 import java.util.HashMap;
 
@@ -43,35 +46,46 @@ public class PaymentMethodActivity extends AppCompatActivity {
     }
 
     private void addCardDialog() {
+
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
 
         AddCartDialogBinding addCartDialogBinding = DataBindingUtil.
                 inflate(LayoutInflater.from(mContext),R.layout.add_cart_dialog,null,false);
         dialog.setContentView(addCartDialogBinding.getRoot());
 
-        addCartDialogBinding.cardForm.cardRequired(true)
-                .expirationRequired(true)
-                .cvvRequired(true)
-                .cardholderName(CardForm.FIELD_REQUIRED)
-                .postalCodeRequired(false)
-                .mobileNumberRequired(false)
-                .setup(PaymentMethodActivity.this);
-
-        addCartDialogBinding.cardForm.getCvvEditText()
-                .setInputType(InputType.TYPE_CLASS_NUMBER |
-                        InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-
         addCartDialogBinding.ivBack.setOnClickListener(v -> {
             finish();
         });
 
         addCartDialogBinding.btAdd.setOnClickListener(v -> {
-            finish();
+            Card cardToSave = addCartDialogBinding.cardMulticarWedjet.getCard();
+            if (cardToSave == null) {
+                showAlert("Invalid card informations");
+                // Toast.makeText(mContext,"Invalid card informations", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            addCardApiCall(cardToSave);
         });
 
         dialog.show();
 
     }
+
+    private void addCardApiCall(Card cardToSave) {
+
+    }
+
+    private void showAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(message);
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
 
 
 }

@@ -2,11 +2,14 @@ package com.cityone.stores.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.cityone.R;
 import com.cityone.databinding.AdapterStoresBinding;
 import com.cityone.stores.activities.StoreDetailsActivity;
@@ -40,7 +43,10 @@ public class AdapterStores extends RecyclerView.Adapter<AdapterStores.StoreHolde
         holder.binding.tvName.setText(data.getRestaurant_name());
         holder.binding.tvAddress.setText(data.getAddress());
 
-        Picasso.get().load(data.getImage()).into(holder.binding.ivStoreImg);
+        Log.e("imageurls","image = " + data.getImage());
+
+        Glide.with(mContext).load(data.getImage()).into(holder.binding.ivStoreImg);
+        // Picasso.get().load(data.getImage()).into(holder.binding.ivStoreImg);
 
         holder.binding.ivStoreImg.setOnClickListener(v -> {
             mContext.startActivity(new Intent(mContext, StoreDetailsActivity.class)

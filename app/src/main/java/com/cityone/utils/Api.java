@@ -14,6 +14,18 @@ public interface Api {
     Call<ResponseBody> forgotPass(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("check_referral_code")
+    Call<ResponseBody> checkReferApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_referral_point")
+    Call<ResponseBody> getReferralPOints(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("referral_code")
+    Call<ResponseBody> referralCodeApi(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("social_login")
     Call<ResponseBody> socialLogin(@FieldMap Map<String,String> params);
 
@@ -135,6 +147,9 @@ public interface Api {
     @POST("get_restaurant_category")
     Call<ResponseBody> getStoreCatApiCall();
 
+    @POST("get_restaurant_category_dash")
+    Call<ResponseBody> getStoreCatDashApiCall();
+
     @POST("get_upcoming_movie")
     Call<ResponseBody> getUpMoviesApiCall();
 
@@ -178,6 +193,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("add_to_cart")
     Call<ResponseBody> addToCartApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("remove_cart")
+    Call<ResponseBody> removeCartApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("add_to_cart_entertentment")
