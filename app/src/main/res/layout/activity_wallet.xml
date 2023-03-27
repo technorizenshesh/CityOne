@@ -44,7 +44,7 @@
             android:background="@color/orange"
             android:textSize="@dimen/_20sdp"
             android:textColor="@color/white"
-            android:text="$ 2000.00"/>
+            android:text="COP 0"/>
 
         <View
             android:layout_width="match_parent"
@@ -156,6 +156,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/_10sdp"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             android:fontFamily="@font/poppins_bold"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/_10sdp"
@@ -169,6 +170,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_10sdp"
             android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
             android:layout_margin="@dimen/_5sdp"
             app:contentPadding="@dimen/_5sdp">
 
@@ -251,6 +253,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_10sdp"
             android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
             android:layout_margin="@dimen/_5sdp"
             app:contentPadding="@dimen/_5sdp">
 

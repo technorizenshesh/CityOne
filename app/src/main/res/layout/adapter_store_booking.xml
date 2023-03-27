@@ -155,16 +155,16 @@
                     android:id="@+id/tvDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/black_outline_20"
                     android:fontFamily="@font/poppins_bold"
-                    android:textSize="@dimen/_9sdp"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_30sdp"
                     android:paddingLeft="@dimen/_30sdp"
                     android:paddingTop="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_30sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="@string/details"
                     android:textColor="@color/black"
-                    android:background="@drawable/black_outline_20"
-                    android:text="@string/details"/>
+                    android:textSize="@dimen/_9sdp" />
 
                 <TextView
                     android:id="@+id/tvStatus"

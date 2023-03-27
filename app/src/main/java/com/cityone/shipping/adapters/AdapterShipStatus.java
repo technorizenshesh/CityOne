@@ -131,6 +131,9 @@ public class AdapterShipStatus extends RecyclerView.Adapter<AdapterShipStatus.St
         dialog.show();
     }
 
+
+
+
     private void addFeedbackApi(ModelMySendings.Result data,Dialog dialog,String rating,String comment) {
         ProjectUtil.showProgressDialog(mContext,false,mContext.getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);

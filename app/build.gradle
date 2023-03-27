@@ -91,10 +91,17 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.facebook.android:facebook-login:[5,6)'
+//    implementation 'com.facebook.android:facebook-login:[8,9)'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.hbb20:ccp:2.3.9'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+
+    //Android Navigation
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
 }
 googleServices.disableVersionCheck = true
 

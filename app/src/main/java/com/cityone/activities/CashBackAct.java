@@ -1,11 +1,13 @@
 package com.cityone.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import com.cityone.models.ModelLogin;
 import com.cityone.models.ModelReferrals;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -46,6 +49,9 @@ public class CashBackAct extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cash_back);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
+
         itit();
     }
 
@@ -64,6 +70,25 @@ public class CashBackAct extends AppCompatActivity {
             }
         });
 
+        binding.ivReferesh.setOnClickListener(v -> {
+            getAllPoints();
+        });
+
+        binding.tvShare.setOnClickListener(v -> {
+            referralCodeDialogAlert();
+        });
+
+    }
+
+    private void referralCodeDialogAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Your Referral code is : " + modelLogin.getResult().getMy_referral_code());
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 
     private void getAllPoints() {
@@ -88,6 +113,8 @@ public class CashBackAct extends AppCompatActivity {
 
                             Log.e("asfddasfasdf", "response = " + stringResponse);
                             ModelReferrals modelReferrals = new Gson().fromJson(stringResponse, ModelReferrals.class);
+
+                            binding.tvExpiryDate.setText("Note : You need to Purchased at least COP 50,000 before the exipry date otherwise your points will be set to zero(0)\nYour Expiry date is : " + modelReferrals.getReferral_point_fifteen_date());
 
                             AdapterPoints adapterPoints = new AdapterPoints(mContext, modelReferrals.getResult());
                             binding.rvPoints.setAdapter(adapterPoints);
@@ -133,6 +160,7 @@ public class CashBackAct extends AppCompatActivity {
         if (shareIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(shareIntent);
         }
+
     }
 
 

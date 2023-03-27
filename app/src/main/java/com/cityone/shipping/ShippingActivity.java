@@ -28,6 +28,7 @@ import com.cityone.shipping.adapters.AdapterShipRequest;
 import com.cityone.shipping.models.ModelShipRequest;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.DataParser;
 import com.cityone.utils.ProjectUtil;
@@ -88,6 +89,8 @@ public class ShippingActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_shipping);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
 
         if (!Places.isInitialized()) {
             Places.initialize(mContext, getString(R.string.places_api_key));
@@ -209,7 +212,12 @@ public class ShippingActivity extends AppCompatActivity {
                 Toast.makeText(mContext,getString(R.string.all_fields_are_mandatory), Toast.LENGTH_SHORT).show();
             } else if(dialogBinding.spQuantity.getSelectedItemPosition() == 0) {
                 Toast.makeText(mContext,getString(R.string.please_select_item_quantity), Toast.LENGTH_SHORT).show();
-            } else if(dialogBinding.spItemCat.getSelectedItemPosition() == 0) {
+            }
+            else if(dialogBinding.spVecType.getSelectedItemPosition() == 0) {
+                Toast.makeText(mContext,getString(R.string.please_select_vehicle), Toast.LENGTH_SHORT).show();
+            }
+
+            else if(dialogBinding.spItemCat.getSelectedItemPosition() == 0) {
                 Toast.makeText(mContext,getString(R.string.please_select_item_category), Toast.LENGTH_SHORT).show();
             } else if(TextUtils.isEmpty(dialogBinding.etItemDetail.getText().toString().trim())) {
                 Toast.makeText(mContext,getString(R.string.all_fields_are_mandatory), Toast.LENGTH_SHORT).show();
@@ -230,6 +238,7 @@ public class ShippingActivity extends AppCompatActivity {
                 paramHash.put("mobile_no",dialogBinding.etMobile.getText().toString().trim());
                 paramHash.put("parcel_quantity",dialogBinding.spQuantity.getSelectedItem().toString());
                 paramHash.put("parcel_category",dialogBinding.spItemCat.getSelectedItem().toString());
+                paramHash.put("vehicle_id",dialogBinding.spVecType.getSelectedItem().toString());
                 paramHash.put("item_detail",dialogBinding.etItemDetail.getText().toString().trim());
                 paramHash.put("dev_instruction",dialogBinding.etDevInstruction.getText().toString().trim());
                 paramHash.put("direction_json","");

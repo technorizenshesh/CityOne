@@ -108,5 +108,4 @@ public class ForgotPassActivity extends AppCompatActivity {
         });
     }
 
-
 }

@@ -22,6 +22,7 @@ import com.cityone.shipping.models.ModelMySendings;
 import com.cityone.shipping.models.ModelShipRequest;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -50,6 +51,8 @@ public class ShippStatusActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_shipp_status);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
 
         init();
 

@@ -82,6 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:text="10% Off"
+                        android:visibility="gone"
                         android:singleLine="true"
                         android:textColor="@color/darkGreen"
                         android:textSize="@dimen/_10sdp"
@@ -113,6 +114,36 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llExtra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/extras"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvExtras"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10sdp"
+                    android:singleLine="false"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/_10sdp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </LinearLayout>
 

@@ -21,6 +21,7 @@ import com.cityone.stores.adapters.AdapterStoreItemCat;
 import com.cityone.stores.models.ModelStoreDetails;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -50,8 +51,9 @@ public class MyBookingActivity extends AppCompatActivity {
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
-        init();
+        App.checkToken(mContext);
 
+        init();
     }
 
     private void init() {

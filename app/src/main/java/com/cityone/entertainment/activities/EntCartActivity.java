@@ -22,6 +22,7 @@ import com.cityone.stores.adapters.AdapterMyCart;
 import com.cityone.stores.models.ModelMyStoreCart;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -53,6 +54,8 @@ public class EntCartActivity extends AppCompatActivity implements UpdateCartEntI
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ent_cart);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
 
         init();
 

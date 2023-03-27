@@ -23,11 +23,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/stores"
                 android:textAllCaps="false"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/_10sdp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold" />
@@ -97,7 +97,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvStores"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
                 android:orientation="vertical"
                 android:layout_height="match_parent"/>
 

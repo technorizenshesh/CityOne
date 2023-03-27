@@ -112,20 +112,20 @@
                         android:id="@+id/tvStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{parcel.bid_status}"
-                        android:textStyle="bold"
-                        android:paddingRight="@dimen/_15sdp"
-                        android:paddingLeft="@dimen/_15sdp"
-                        android:paddingTop="@dimen/_6sdp"
-                        android:paddingBottom="@dimen/_6sdp"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/orange_outline_back"
                         android:fontFamily="@font/poppins_bold"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:textSize="@dimen/_11sdp"
+                        android:inputType="textVisiblePassword"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_6sdp"
+                        android:paddingRight="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_6sdp"
+                        android:text="@{parcel.bid_status}"
                         android:textColor="@color/green"
-                        android:inputType="textVisiblePassword" />
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 

@@ -1,14 +1,19 @@
 package com.cityone.entertainment.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.cityone.R;
 import com.cityone.databinding.AdapterStoreCategoryBinding;
+import com.cityone.databinding.ItemEntertainmentBinding;
 import com.cityone.entertainment.models.ModelEntCat;
+import com.cityone.entertainment.movies.activities.MovieHomeActivity;
 
 import java.util.ArrayList;
 
@@ -30,8 +35,8 @@ public class AdapterEntCat extends RecyclerView.Adapter<AdapterEntCat.StoreCatHo
     @NonNull
     @Override
     public AdapterEntCat.StoreCatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        AdapterStoreCategoryBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext), R.layout.adapter_store_category,parent,false);
+        ItemEntertainmentBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(mContext), R.layout.item_entertainment,parent,false);
         return new StoreCatHolder(binding);
     }
 
@@ -40,19 +45,19 @@ public class AdapterEntCat extends RecyclerView.Adapter<AdapterEntCat.StoreCatHo
 
         ModelEntCat.Result data = entList.get(position);
 
-        holder.binding.btCatName.setText(data.getName());
+        holder.binding.tvName.setText(data.getName());
 
-        holder.binding.btCatName.setOnClickListener(v -> {
-            index = position;
-            updateDataInterf.onSuccess(data.getId());
-            notifyDataSetChanged();
+        Glide.with(mContext).load(data.getImage()).into(holder.binding.ivImage);
+
+        holder.binding.layoutEn.setOnClickListener(v -> {
+          //  index = position;
+         //   updateDataInterf.onSuccess(data.getId());
+          //  notifyDataSetChanged();
+        if(data.getName().equals("Movies"))    mContext.startActivity(new Intent(mContext, MovieHomeActivity.class));
+
         });
 
-        if(index == position) {
-            holder.binding.btCatName.setBackgroundResource(R.drawable.orange_back_20);
-        } else {
-            holder.binding.btCatName.setBackgroundResource(R.drawable.gray_back_20);
-        }
+
 
     }
 
@@ -67,8 +72,8 @@ public class AdapterEntCat extends RecyclerView.Adapter<AdapterEntCat.StoreCatHo
 
     public class StoreCatHolder extends RecyclerView.ViewHolder{
 
-        AdapterStoreCategoryBinding binding;
-        public StoreCatHolder(AdapterStoreCategoryBinding binding) {
+        ItemEntertainmentBinding binding;
+        public StoreCatHolder(ItemEntertainmentBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/shippingStart"
+        android:title="@string/start"
+        app:showAsAction="withText"
+        android:icon="@drawable/home"
+        />
+
+    <!--    <item-->
+    <!--        android:id="@+id/search"-->
+    <!--        android:title="@string/cart"-->
+    <!--        app:showAsAction="always"-->
+    <!--        android:icon="@drawable/cart"/>-->
+
+    <item
+        android:id="@+id/shippingServices"
+        android:title="@string/services"
+        app:showAsAction="withText"
+        android:icon="@drawable/home"
+
+        />
+
+    <item
+        android:id="@+id/shippingProfile"
+        android:title="@string/profile"
+        app:showAsAction="withText"
+        android:icon="@drawable/home"
+
+        />
+
+
+
+</menu>

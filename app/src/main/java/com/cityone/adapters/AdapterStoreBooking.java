@@ -71,6 +71,7 @@ public class AdapterStoreBooking extends RecyclerView.Adapter<AdapterStoreBookin
         dialogBinding.tvDevAddress.setText(data.getAddress());
         dialogBinding.tvOrderId.setText(data.getOrder_id());
         dialogBinding.tvStatus.setText(data.getStatus());
+        dialogBinding.tvInstruction.setText(data.getComment());
 
         AdapterOrderItems adapterOrderItems = new AdapterOrderItems(mContext,data.getItem_data());
         dialogBinding.rvItems.setAdapter(adapterOrderItems);

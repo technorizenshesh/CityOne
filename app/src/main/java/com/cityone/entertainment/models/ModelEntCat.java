@@ -34,7 +34,7 @@ public class ModelEntCat implements Serializable {
 
         private String name;
 
-        private String date_time;
+        private String image;
 
         public void setId(String id){
             this.id = id;
@@ -48,11 +48,11 @@ public class ModelEntCat implements Serializable {
         public String getName(){
             return this.name;
         }
-        public void setDate_time(String date_time){
-            this.date_time = date_time;
+        public void setImage(String image){
+            this.image = image;
         }
-        public String getDate_time(){
-            return this.date_time;
+        public String getImage(){
+            return this.image;
         }
     }
 

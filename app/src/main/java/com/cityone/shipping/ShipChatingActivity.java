@@ -17,6 +17,7 @@ import com.cityone.shipping.adapters.AdapterChating;
 import com.cityone.shipping.models.ModelChating;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.BottomReachedInterface;
 import com.cityone.utils.ProjectUtil;
 import com.google.gson.Gson;
@@ -48,6 +49,8 @@ public class ShipChatingActivity extends AppCompatActivity implements BottomReac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ship_chating);
+
+        App.checkToken(mContext);
 
         senderId = getIntent().getStringExtra("sender_id");
         receiverId = getIntent().getStringExtra("receiver_id");

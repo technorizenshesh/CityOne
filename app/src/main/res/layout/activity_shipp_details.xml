@@ -254,22 +254,21 @@
 
                         <TextView
                             android:id="@+id/tvStatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{ship.status}"
-                            android:includeFontPadding="false"
-                            android:textStyle="bold"
-                            android:paddingRight="@dimen/_15sdp"
-                            android:paddingLeft="@dimen/_15sdp"
-                            android:paddingTop="@dimen/_6sdp"
-                            android:paddingBottom="@dimen/_6sdp"
-                            android:layout_centerVertical="true"
+                            android:layout_width="22dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:background="@drawable/orange_outline_back"
                             android:fontFamily="@font/poppins_bold"
-                            android:layout_marginTop="@dimen/_5sdp"
+                            android:includeFontPadding="false"
+                            android:paddingLeft="@dimen/_15sdp"
+                            android:paddingTop="@dimen/_6sdp"
+                            android:paddingRight="@dimen/_15sdp"
+                            android:paddingBottom="@dimen/_6sdp"
+                            android:textColor="@color/green"
                             android:textSize="@dimen/_11sdp"
-                            android:textColor="@color/green" />
+                            android:textStyle="bold" />
 
                     </RelativeLayout>
 

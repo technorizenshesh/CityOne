@@ -1,10 +1,11 @@
- package com.cityone.utils;
+package com.cityone.utils;
 
 import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface Api {
@@ -14,8 +15,16 @@ public interface Api {
     Call<ResponseBody> forgotPass(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("change_password")
+    Call<ResponseBody> changePassApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("check_referral_code")
     Call<ResponseBody> checkReferApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("check_token")
+    Call<ResponseBody> chechTokenApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_referral_point")
@@ -89,12 +98,14 @@ public interface Api {
     @POST("get_restaurant_details")
     Call<ResponseBody> getStoreDetailApiCall(@FieldMap Map<String,String> params);
 
+
     @FormUrlEncoded
     @POST("find_specialist_category")
     Call<ResponseBody> searchStoreApiCall(@FieldMap Map<String,String> params);
 
+    @FormUrlEncoded
     @POST("get_specialist_category")
-    Call<ResponseBody> getSpecialCatApiCall();
+    Call<ResponseBody> getSpecialCatApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_order_history")
@@ -131,6 +142,14 @@ public interface Api {
     @FormUrlEncoded
     @POST("strips_payment")
     Call<ResponseBody> paymentStoreApiCall(@FieldMap Map<String,String> params);
+    
+    @FormUrlEncoded
+    @POST("get_profile")
+    Call<ResponseBody> getProfileApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("wallet_amount_transfer")
+    Call<ResponseBody> sendMoneyApi(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_account_details")
@@ -144,11 +163,17 @@ public interface Api {
     @POST("get_entertentment_details")
     Call<ResponseBody> addEntDetailsCall(@FieldMap Map<String,String> params);
 
-    @POST("get_restaurant_category")
-    Call<ResponseBody> getStoreCatApiCall();
+    @FormUrlEncoded
+    @POST("add_wallet")
+    Call<ResponseBody> addWalletAmountApi(@FieldMap Map<String,String> params);
 
+    @FormUrlEncoded
+    @POST("get_restaurant_category")
+    Call<ResponseBody> getStoreCatApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_restaurant_category_dash")
-    Call<ResponseBody> getStoreCatDashApiCall();
+    Call<ResponseBody> getStoreCatDashApiCall(@FieldMap Map<String,String> params);
 
     @POST("get_upcoming_movie")
     Call<ResponseBody> getUpMoviesApiCall();
@@ -159,8 +184,14 @@ public interface Api {
     @POST("get_entertentment_category")
     Call<ResponseBody> getEntCatApiCall();
 
+
+    @FormUrlEncoded
+    @POST("get_sub_category")
+    Call<ResponseBody> getEntCatApiCallNew(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_restaurant_item_meals")
-    Call<ResponseBody> getStoreMealsCatApiCall();
+    Call<ResponseBody> getStoreMealsCatApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("login")
@@ -267,5 +298,55 @@ public interface Api {
 
     @POST("get_access_token")
     Call<ResponseBody> getClientTokenApi();
+
+
+
+    @GET("get_main_category")
+    Call<ResponseBody> getAllHomeCate();
+
+
+    @FormUrlEncoded
+    @POST("get_sub_category")
+    Call<ResponseBody> getAllStoreCats(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_restaurant_by_sub_cate_id")
+    Call<ResponseBody> getStoreByCatApiCallNew(@FieldMap Map<String,String> params);
+
+
+    @FormUrlEncoded
+    @POST("get_item_by_restu_id")
+    Call<ResponseBody> getStoreItemsSubApiCallNew(@FieldMap Map<String,String> params);
+
+
+    @FormUrlEncoded
+    @POST("get_sub_item")
+    Call<ResponseBody> getStoreItemsApiCallNew(@FieldMap Map<String,String> params);
+
+
+    @FormUrlEncoded
+    @POST("get_restaurant_by_subcateid")
+    Call<ResponseBody> getStoreList(@FieldMap Map<String,String> params);
+
+
+    @GET("get_banner")
+    Call<ResponseBody> getAllBanners();
+
+
+    @POST("get_movie")
+    Call<ResponseBody> getRecommandedMoviesApiCall();
+
+    @FormUrlEncoded
+    @POST("get_events")
+    Call<ResponseBody> getEventsApiCall(@FieldMap Map<String,String> params);
+
+
+    @FormUrlEncoded
+    @POST("get_all_theaters")
+    Call<ResponseBody> getTheaterApiCall2(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_all_theaters_by_id")
+    Call<ResponseBody> getTheaterDetailsApiCallNew(@FieldMap Map<String,String> params);
 
 }

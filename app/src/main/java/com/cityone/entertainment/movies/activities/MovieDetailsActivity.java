@@ -12,6 +12,7 @@ import com.cityone.entertainment.movies.adapters.AdapterMovieDetailBanners;
 import com.cityone.entertainment.movies.models.ModelMovieDetails;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.ProjectUtil;
 import com.google.gson.Gson;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -36,6 +37,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_movie_details);
         movieId = getIntent().getStringExtra("id");
+        App.checkToken(mContext);
         init();
     }
 

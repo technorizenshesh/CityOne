@@ -13,12 +13,16 @@ import android.view.View;
 import com.cityone.R;
 import com.cityone.databinding.ActivityTheaterDetailBinding;
 import com.cityone.entertainment.movies.adapters.AdapterAvailDates;
+import com.cityone.entertainment.movies.adapters.AdapterAvailDatesNew;
 import com.cityone.entertainment.movies.adapters.AdapterRemMovies;
+import com.cityone.entertainment.movies.adapters.SlotAdapter;
 import com.cityone.entertainment.movies.models.ModelMovieDetails;
 import com.cityone.entertainment.movies.models.ModelTheaterDetails;
+import com.cityone.entertainment.movies.models.ModelTheaterDetailsNew;
 import com.cityone.entertainment.movies.models.ModelUpcMovies;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.ProjectUtil;
 import com.google.gson.Gson;
 
@@ -36,13 +40,15 @@ public class TheaterDetailActivity extends AppCompatActivity {
     Context mContext = TheaterDetailActivity.this;
     ActivityTheaterDetailBinding binding;
     private String id,selectedDate,SelectedTimeSlot = null;
-    ModelTheaterDetails modelTheaterDetails;
+   //ModelTheaterDetails modelTheaterDetails;
+    ModelTheaterDetailsNew modelTheaterDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_theater_detail);
         id = getIntent().getStringExtra("id");
+        App.checkToken(mContext);
         init();
     }
 
@@ -63,13 +69,13 @@ public class TheaterDetailActivity extends AppCompatActivity {
 
         binding.btSeat.setOnClickListener(v -> {
             if(modelTheaterDetails != null) {
-                startActivity(new Intent(mContext, AvailSeatsActivity.class)
-                  .putExtra("data",modelTheaterDetails)
-                );
+              //  startActivity(new Intent(mContext, AvailSeatsActivity.class)
+              //    .putExtra("data",modelTheaterDetails)
+              //  );
             }
         });
 
-        binding.bttime1.setOnClickListener(v -> {
+        /*binding.bttime1.setOnClickListener(v -> {
             SelectedTimeSlot = modelTheaterDetails.getResult().getTreater_time_slote1();
             binding.bttime1.setBackgroundResource(R.drawable.orange_light_back);
             binding.bttime2.setBackgroundResource(R.drawable.orange_outline_back);
@@ -88,7 +94,7 @@ public class TheaterDetailActivity extends AppCompatActivity {
             binding.bttime3.setBackgroundResource(R.drawable.orange_light_back);
             binding.bttime2.setBackgroundResource(R.drawable.orange_outline_back);
             binding.bttime1.setBackgroundResource(R.drawable.orange_outline_back);
-        });
+        });*/
 
         //        binding.btDate1.setOnClickListener(v -> {
 //            binding.btDate1.setBackgroundResource(R.drawable.light_orange_back_5);
@@ -136,9 +142,9 @@ public class TheaterDetailActivity extends AppCompatActivity {
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         HashMap<String,String> param = new HashMap<>();
-        param.put("treater_id",id);
-
-        Call<ResponseBody> call = api.getTheaterDetailsApiCall(param);
+        param.put("id",id);
+        param.put("movie_id","1");
+        Call<ResponseBody> call = api.getTheaterDetailsApiCallNew(param);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -152,13 +158,13 @@ public class TheaterDetailActivity extends AppCompatActivity {
 
                     if(jsonObject.getString("status").equals("1")) {
 
-                        modelTheaterDetails = new Gson().fromJson(responseString,ModelTheaterDetails.class);
-                        AdapterAvailDates adapterAvailDates = new AdapterAvailDates(mContext,modelTheaterDetails.getSlote(),TheaterDetailActivity.this::availDate);
-                        binding.rvAvailDates.setAdapter(adapterAvailDates);
+                        modelTheaterDetails = new Gson().fromJson(responseString,ModelTheaterDetailsNew.class);
+                        SlotAdapter slotAdapter = new SlotAdapter(mContext,modelTheaterDetails.getResult().getSlots());
+                        binding.rvAvailDates.setAdapter(slotAdapter);
 
                         binding.setData(modelTheaterDetails);
 
-                        if(modelTheaterDetails.getResult().getTreater_time_slote1() == null
+                      /*  if(modelTheaterDetails.getResult().getTreater_time_slote1() == null
                                 || modelTheaterDetails.getResult().getTreater_time_slote1().equals("")) {
                             binding.bttime1.setVisibility(View.GONE);
                         } else {
@@ -184,7 +190,7 @@ public class TheaterDetailActivity extends AppCompatActivity {
                                 binding.bttime3.setBackgroundResource(R.drawable.light_orange_back_5);
                                 SelectedTimeSlot = modelTheaterDetails.getResult().getTreater_time_slote3();
                             }
-                        }
+                        }*/
 
                     } else {
 

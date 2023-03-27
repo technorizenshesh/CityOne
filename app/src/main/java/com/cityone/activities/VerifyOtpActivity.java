@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.gson.Gson;
 
@@ -94,8 +95,11 @@ public class VerifyOtpActivity extends AppCompatActivity {
                 Toast.makeText(mContext, getString(R.string.please_enter_otp), Toast.LENGTH_SHORT).show();
             } else {
                 ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, binding.etOtp.getText().toString().trim());
-                signInWithPhoneAuthCredential(credential);
+                Log.e("Otp code===", binding.etOtp.getText().toString());
+                Log.e("id verify===", id);
+
+                   PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, binding.etOtp.getText().toString().trim());
+               signInWithPhoneAuthCredential(credential);
             }
         });
 
@@ -127,7 +131,40 @@ public class VerifyOtpActivity extends AppCompatActivity {
             }
         }.start();
 
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber( mobile.replace(" ", ""))       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            @Override
+                            public void onCodeSent(@NonNull String id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                //   super.onCodeSent(id, forceResendingToken);
+                                VerifyOtpActivity.this.id = id;
+                                Log.e("send id===", id);
+                                Toast.makeText(mContext, getString(R.string.enter_6_digit_code), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                                ProjectUtil.pauseProgressDialog();
+                                binding.etOtp.setText(phoneAuthCredential.getSmsCode());
+                                //   Toast.makeText(VerifyAct.this, ""+phoneAuthCredential.getSmsCode(), Toast.LENGTH_SHORT).show();
+                                signInWithPhoneAuthCredential(phoneAuthCredential);
+                            }
+
+                            @Override
+                            public void onVerificationFailed(@NonNull FirebaseException e) {
+                                ProjectUtil.pauseProgressDialog();
+                                Toast.makeText(VerifyOtpActivity.this, "Failed"+e, Toast.LENGTH_SHORT).show();
+                            }
+                        })          // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+
+
+       /* PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 mobile.replace(" ", ""), // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
@@ -151,7 +188,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
                         ProjectUtil.pauseProgressDialog();
                         Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
                     }
-                });        // OnVerificationStateChangedCallbacks
+                });*/        // OnVerificationStateChangedCallbacks
 
     }
 
@@ -175,9 +212,10 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
                         } else {
                             ProjectUtil.pauseProgressDialog();
-                            Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, getString(R.string.invalid_otp), Toast.LENGTH_SHORT).show();
 
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+
                             }
 
                         }
@@ -216,7 +254,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
                                 Log.e("zdgfxsdgfxdg", "response = " + response);
 
                             } else {
-                                // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                              //   Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (Exception e) {
@@ -294,7 +332,6 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
         });
 
-
     }
 
     private void referApiCall() {
@@ -337,9 +374,9 @@ public class VerifyOtpActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 ProjectUtil.pauseProgressDialog();
             }
-
         });
     }
+
 
 
 }

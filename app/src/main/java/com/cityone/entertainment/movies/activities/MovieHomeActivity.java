@@ -13,6 +13,7 @@ import com.cityone.entertainment.movies.adapters.AdapterUpcomeMovies;
 import com.cityone.entertainment.movies.models.ModelUpcMovies;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.ProjectUtil;
 import com.google.gson.Gson;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -34,7 +35,7 @@ public class MovieHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_movie_home);
-
+        App.checkToken(mContext);
         init();
 
     }

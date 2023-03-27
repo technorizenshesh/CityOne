@@ -47,19 +47,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-           <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/llSummary">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCartItem"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/swipLayout"
-                android:layout_above="@+id/llSummary">
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:id="@+id/rvCartItem"/>
-
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
             android:id="@+id/llSummary"

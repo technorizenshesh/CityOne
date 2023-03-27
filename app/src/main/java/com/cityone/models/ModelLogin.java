@@ -47,11 +47,15 @@ public class ModelLogin implements Serializable {
 
         private String social_id;
 
+        private String token;
+
         private String lat;
 
         private String lon;
 
         private String address;
+
+        private String land_mark;
 
         private String my_referral_code;
 
@@ -76,6 +80,32 @@ public class ModelLogin implements Serializable {
         private String online_status;
 
         private String date_time;
+        
+        private String wallet_amount;
+
+        public String getLand_mark() {
+            return land_mark;
+        }
+
+        public void setLand_mark(String land_mark) {
+            this.land_mark = land_mark;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public String getWallet_amount() {
+            return wallet_amount;
+        }
+
+        public void setWallet_amount(String wallet_amount) {
+            this.wallet_amount = wallet_amount;
+        }
 
         public String getMy_referral_code() {
             return my_referral_code;

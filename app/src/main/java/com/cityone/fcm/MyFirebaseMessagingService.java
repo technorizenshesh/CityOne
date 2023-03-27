@@ -1,6 +1,7 @@
 package com.cityone.fcm;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -204,12 +205,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         String channelId = "1";
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(getString(R.string.app_name))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setContentText(msg)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
@@ -245,12 +246,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         String channelId = "1";
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(getString(R.string.app_name))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setContentText(msg)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

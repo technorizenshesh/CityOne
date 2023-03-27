@@ -11,17 +11,22 @@ import com.cityone.R;
 import com.cityone.databinding.ActivityStoresBinding;
 import com.cityone.models.ModelLogin;
 import com.cityone.stores.adapters.AdapterStoreCat;
+import com.cityone.stores.adapters.AdapterStoreCat1;
 import com.cityone.stores.adapters.AdapterStores;
 import com.cityone.stores.models.ModelStoreCat;
+import com.cityone.stores.models.ModelStoreCat1;
 import com.cityone.stores.models.ModelStores;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.util.HashMap;
+import java.util.Map;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +38,7 @@ public class StoresActivity extends AppCompatActivity {
     ActivityStoresBinding binding;
     SharedPref sharedPref;
     ModelLogin modelLogin;
+    String id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +46,13 @@ public class StoresActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_stores);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+        App.checkToken(mContext);
         init();
-        getStoreCat();
+
+        if(getIntent()!=null){
+            id = getIntent().getStringExtra("id");
+            getStoreCat();
+        }
     }
 
     private void init() {
@@ -118,9 +129,10 @@ public class StoresActivity extends AppCompatActivity {
 
     private void getStoreCat() {
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
-
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.getStoreCatApiCall();
+        Map<String,String> map = new HashMap<>();
+        map.put("main_category_id",id);
+        Call<ResponseBody> call = api.getStoreCatApiCall(map);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -132,9 +144,9 @@ public class StoresActivity extends AppCompatActivity {
 
                     if(jsonObject.getString("status").equals("1")) {
 
-                        ModelStoreCat modelStoreCat = new Gson().fromJson(responseString, ModelStoreCat.class);
+                        ModelStoreCat1 modelStoreCat = new Gson().fromJson(responseString, ModelStoreCat1.class);
 
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),false,false);
+                        AdapterStoreCat1 adapterStoreCat = new AdapterStoreCat1(mContext,modelStoreCat.getResult(),false,false,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
 
                         Log.e("responseString","response = " + response);
@@ -144,7 +156,7 @@ public class StoresActivity extends AppCompatActivity {
                         getAllSTores(modelStoreCat.getResult().get(0).getId(),modelStoreCat.getResult().get(0).getName());
 
                     } else {
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,false,false);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,false,false,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
                     }
 

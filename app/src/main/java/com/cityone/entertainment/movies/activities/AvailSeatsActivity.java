@@ -17,6 +17,7 @@ import com.cityone.entertainment.movies.adapters.AdapterClassicSeats;
 import com.cityone.entertainment.movies.adapters.AdapterExclutiveSeats;
 import com.cityone.entertainment.movies.adapters.AdapterNormalSeats;
 import com.cityone.entertainment.movies.models.ModelTheaterDetails;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 
 import java.util.ArrayList;
@@ -112,6 +113,7 @@ public class AvailSeatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_avail_seats);
         modelTheaterDetails = (ModelTheaterDetails) getIntent().getSerializableExtra("data");
+        App.checkToken(mContext);
         init();
     }
 

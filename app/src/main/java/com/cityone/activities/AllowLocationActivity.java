@@ -1,15 +1,14 @@
 package com.cityone.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.cityone.R;
 import com.cityone.databinding.ActivityAllowLocationBinding;
-import com.cityone.databinding.ActivityForgotPassBinding;
 
 public class AllowLocationActivity extends AppCompatActivity {
 
@@ -19,10 +18,8 @@ public class AllowLocationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_allow_location);
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_allow_location);
         init();
-
     }
 
     private void init() {
@@ -32,7 +29,7 @@ public class AllowLocationActivity extends AppCompatActivity {
         });
 
         binding.btAllow.setOnClickListener(v -> {
-            startActivity(new Intent(mContext,GetStartedActivity.class));
+            startActivity(new Intent(mContext, GetStartedActivity.class));
         });
 
     }

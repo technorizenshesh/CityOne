@@ -15,13 +15,16 @@ import com.cityone.R;
 import com.cityone.databinding.ActivityStoreDetailsBinding;
 import com.cityone.models.ModelLogin;
 import com.cityone.stores.adapters.AdapterStoreItemCat;
+import com.cityone.stores.adapters.AdapterStoreItemCat1;
 import com.cityone.stores.adapters.AdapterStoreItemCatFilter;
 import com.cityone.stores.adapters.AdapterStoreItems;
+import com.cityone.stores.models.ItemSubModel;
 import com.cityone.stores.models.ModelStoreDetails;
 import com.cityone.stores.models.ModelStoreItems;
 import com.cityone.stores.models.ModelStoreItemFilterCat;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -63,9 +66,11 @@ public class StoreDetailsActivity extends AppCompatActivity {
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         bookingParam.put("store_id",storeId);
 
+        App.checkToken(mContext);
+
         init();
 
-        fetchCategory();
+        fetchCategory(storeId);
         getStoreDetails();
 
     }
@@ -87,7 +92,9 @@ public class StoreDetailsActivity extends AppCompatActivity {
                         if(position == 1) {
                             fetchAllStoreItems();
                         } else {
-                            searchCategory(modelStoreItemFilterCat.getResult().get(position-2).getId());
+                           // searchCategory(modelStoreItemFilterCat.getResult().get(position-2).getId());
+                            searchCategory(modelStoreItemFilterCat.getResult().get(position).getId());
+
                         }
                     }
                 }
@@ -239,10 +246,12 @@ public class StoreDetailsActivity extends AppCompatActivity {
 
                         ArrayList<ModelStoreDetails.Result.Restaurant_sub_category> storeList = new Gson().fromJson(jsonArray.toString(),new TypeToken<ArrayList<ModelStoreDetails.Result.Restaurant_sub_category>>(){}.getType());
 
-                        AdapterStoreItemCat adapterStoreItemCat = new AdapterStoreItemCat(mContext, storeList);
-                        binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
+                   //     AdapterStoreItemCat adapterStoreItemCat = new AdapterStoreItemCat(mContext, storeList);
+                   //     binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
 
-                        getStoreItems(storeList.get(0).getId());
+                   //     getStoreItems(storeList.get(0).getId());
+
+                        getStoreMainItem(modelStoreDetails.getResult().getId());
 
                     } else {
                         AdapterStoreItemCat adapterStores = new AdapterStoreItemCat(mContext,null);
@@ -272,7 +281,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
         binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
 
         try {
-            getStoreItems(modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
+            getStoreMainItem(storeId);
         } catch (Exception e) {}
 
     }
@@ -308,12 +317,12 @@ public class StoreDetailsActivity extends AppCompatActivity {
                         binding.tvTime.setText(modelStoreDetails.getResult().getOpen_time() + " - " +
                                 modelStoreDetails.getResult().getClose_time());
 
-                        AdapterStoreItemCat adapterStoreItemCat = new AdapterStoreItemCat(mContext, modelStoreDetails.getResult().getRestaurant_sub_category());
-                        binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
+
 
                         Log.e("adasdasda",modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
 
-                        getStoreItems(modelStoreDetails.getResult().getRestaurant_sub_category().get(0).getId());
+                        getStoreMainItem(modelStoreDetails.getResult().getId());
+
 
                     } else {
                         AdapterStoreItemCat adapterStores = new AdapterStoreItemCat(mContext,null);
@@ -332,15 +341,72 @@ public class StoreDetailsActivity extends AppCompatActivity {
                 binding.swipLayout.setRefreshing(false);
                 ProjectUtil.pauseProgressDialog();
             }
+
         });
 
     }
 
-    private void fetchCategory() {
+    private void getStoreMainItem(String id) {
+
+
+            ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+            Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+            HashMap<String,String> param = new HashMap<>();
+            param.put("restaurant_id",id);
+
+            Call<ResponseBody> call = api.getStoreItemsSubApiCallNew(param);
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    ProjectUtil.pauseProgressDialog();
+                    try {
+                        String responseString = response.body().string();
+                        JSONObject jsonObject = new JSONObject(responseString);
+
+                        if(jsonObject.getString("status").equals("1")) {
+                            binding.swipLayout.setRefreshing(false);
+
+                            Log.e("responseString","response = " + response);
+                            Log.e("responseString","responseString = " + responseString);
+
+                            ItemSubModel modelStoreItems = new Gson().fromJson(responseString, ItemSubModel.class);
+
+                            AdapterStoreItemCat1 adapterStoreItemCat = new AdapterStoreItemCat1(mContext, (ArrayList<ItemSubModel.Result>) modelStoreItems.getResult());
+                            binding.rvStoresItemCat.setAdapter(adapterStoreItemCat);
+                             getStoreItems(modelStoreItems.getResult().get(0).getId());
+
+                        } else {
+                            Log.e("responseString","responseString = " + responseString);
+                            AdapterStoreItems adapterStoreItems = new AdapterStoreItems(mContext,null);
+                            binding.rvStoresItems.setAdapter(adapterStoreItems);
+                        }
+
+                    } catch (Exception e) {
+                        // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Exception","Exception = " + e.getMessage());
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    binding.swipLayout.setRefreshing(false);
+                    ProjectUtil.pauseProgressDialog();
+                }
+            });
+    }
+
+    private void fetchCategory(String id) {
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
-        Call<ResponseBody> call = api.getSpecialCatApiCall();
+
+        HashMap<String,String> param = new HashMap<>();
+        param.put("restaurant_id",id);
+
+        Call<ResponseBody> call = api.getSpecialCatApiCall(param);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -378,7 +444,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
                     }
 
                 } catch (Exception e) {
-                    //Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("Exception","Exception = " + e.getMessage());
                 }
 
@@ -389,6 +455,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
                 binding.swipLayout.setRefreshing(false);
                 ProjectUtil.pauseProgressDialog();
             }
+
         });
     }
 
@@ -397,9 +464,8 @@ public class StoreDetailsActivity extends AppCompatActivity {
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         HashMap<String,String> param = new HashMap<>();
-        param.put("restaurant_sub_category_id",id);
-
-        Call<ResponseBody> call = api.getStoreItemsApiCall(param);
+        param.put("item_id",id);
+        Call<ResponseBody> call = api.getStoreItemsApiCallNew(param);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -427,7 +493,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
                     }
 
                 } catch (Exception e) {
-                    //Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("Exception","Exception = " + e.getMessage());
                 }
 

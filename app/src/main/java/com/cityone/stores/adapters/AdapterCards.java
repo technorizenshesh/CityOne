@@ -18,11 +18,13 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.cityone.R;
+import com.cityone.SelectCardActivity;
 import com.cityone.databinding.AdapterStoresBinding;
 import com.cityone.databinding.AdaptersCardsBinding;
 import com.cityone.models.ModelLogin;
 import com.cityone.parentmodels.ModelPayCards;
 import com.cityone.parentmodels.ModelPayCardsPro;
+import com.cityone.shipping.ShippingPayAct;
 import com.cityone.stores.activities.StoreDetailsActivity;
 import com.cityone.stores.activities.StorePaymentActivity;
 import com.cityone.stores.models.ModelCards;
@@ -80,6 +82,11 @@ public class AdapterCards extends RecyclerView.Adapter<AdapterCards.StoreHolder>
         holder.binding.card.setOnClickListener(v -> {
             if(type.equals("store")) {
                 ((StorePaymentActivity)mContext).callBookingApiFromAdapter(data.getToken());
+            } else if (type.equals("wallet")) {
+                ((SelectCardActivity)mContext).paymentApiCall(data.getToken());
+            }
+            else if (type.equals("shipping")) {
+                ((ShippingPayAct)mContext).paymentApiCall(data.getToken(),"");
             }
         });
 

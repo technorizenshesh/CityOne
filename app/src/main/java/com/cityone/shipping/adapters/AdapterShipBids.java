@@ -19,6 +19,7 @@ import com.cityone.databinding.BidDetailDialogBinding;
 import com.cityone.models.ModelLogin;
 import com.cityone.shipping.ShippDetailsActivity;
 import com.cityone.shipping.ShippingActivity;
+import com.cityone.shipping.ShippingPayAct;
 import com.cityone.shipping.models.ModelShipBid;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
@@ -96,13 +97,17 @@ public class AdapterShipBids extends RecyclerView.Adapter<AdapterShipBids.MyBids
         dialogBinding.pickDate.setText(data.getPick_date());
         dialogBinding.dropDate.setText(data.getDrop_date());
         dialogBinding.comment.setText(data.getComment());
+        dialogBinding.bidPrice.setText("$"+data.getPrice());
 
         dialogBinding.ivBack.setOnClickListener(v -> {
             dialog.dismiss();
         });
 
         dialogBinding.btAccept.setOnClickListener(v -> {
-            acceptRejectBids(data,dialog,"Accept");
+         //   acceptRejectBids(data,dialog,"Accept");
+            mContext.startActivity(new Intent(mContext,ShippingPayAct.class).putExtra("data",data)
+                    .putExtra("status","Accept"));
+            dialog.dismiss();
         });
 
         dialogBinding.btReject.setOnClickListener(v -> {
@@ -111,6 +116,10 @@ public class AdapterShipBids extends RecyclerView.Adapter<AdapterShipBids.MyBids
 
         dialog.show();
     }
+
+
+
+
 
     private void acceptRejectBids(ModelShipBid.Result data,Dialog dialog,String status){
         ProjectUtil.showProgressDialog(mContext,false,mContext.getString(R.string.please_wait));

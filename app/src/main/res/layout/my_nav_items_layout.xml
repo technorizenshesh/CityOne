@@ -81,6 +81,60 @@
                 android:background="@color/gray"/>
 
             <TextView
+                android:id="@+id/tvWantSupplier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/i_want_to_be_a_supplier"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:padding="@dimen/_10sdp"
+                android:background="?android:selectableItemBackground"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/_12sdp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/gray"/>
+
+            <TextView
+                android:id="@+id/tvWallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/my_wallet"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:padding="@dimen/_10sdp"
+                android:background="?android:selectableItemBackground"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/_12sdp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/gray"/>
+
+            <TextView
+                android:id="@+id/tvChangeLan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/change_language"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:padding="@dimen/_10sdp"
+                android:background="?android:selectableItemBackground"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/_12sdp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/gray"/>
+
+            <TextView
                 android:id="@+id/tvAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

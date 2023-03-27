@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +38,15 @@ public class ProjectUtil {
         mProgressDialog.show();
         mProgressDialog.setCancelable(isCancelable);
         return mProgressDialog;
+    }
+
+    public static void updateResources(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
     public static void pauseProgressDialog() {
@@ -134,6 +146,31 @@ public class ProjectUtil {
             }
         }
         return strAdd;
+    }
+
+
+    public static String  getAddress(Context context, double latitude, double longitute) {
+        List<Address> addresses;
+        String addressStreet="",city="";
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitute, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            addressStreet = addresses.get(0).getAddressLine(0);
+            // address2 = addresses.get(0).getAddressLine(1); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+              city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String region = addresses.get(0).getAdminArea();
+            // Log.e("addressStreet====", addressStreet);
+            //   Log.e("city====", city);
+            Log.e("region====", region);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return city;
+
     }
 
 }

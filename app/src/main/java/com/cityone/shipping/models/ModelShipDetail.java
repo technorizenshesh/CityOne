@@ -69,6 +69,10 @@ public class ModelShipDetail implements Serializable {
 
         private String dropoff_date;
 
+        private String bid_status;
+
+
+
         public void setId(String id){
             this.id = id;
         }
@@ -188,6 +192,14 @@ public class ModelShipDetail implements Serializable {
         }
         public String getDropoff_date(){
             return this.dropoff_date;
+        }
+
+        public String getBid_status() {
+            return bid_status;
+        }
+
+        public void setBid_status(String bid_status) {
+            this.bid_status = bid_status;
         }
     }
 

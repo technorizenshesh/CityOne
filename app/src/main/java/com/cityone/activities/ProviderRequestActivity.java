@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.cityone.R;
 import com.cityone.databinding.ActivityProviderRequestBinding;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.Compress;
 import com.cityone.utils.ProjectUtil;
@@ -55,6 +56,8 @@ public class ProviderRequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_provider_request);
+
+        App.checkToken(mContext);
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {

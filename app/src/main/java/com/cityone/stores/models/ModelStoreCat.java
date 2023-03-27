@@ -44,6 +44,18 @@ public class ModelStoreCat implements Serializable {
 
         private String restaurant_image;
 
+        private String main_category_id;
+
+      //  private String image;
+
+       /* public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }*/
+
         public void setId(String id){
             this.id = id;
         }
@@ -79,6 +91,14 @@ public class ModelStoreCat implements Serializable {
         }
         public String getRestaurant_image(){
             return this.restaurant_image;
+        }
+
+        public String getMain_category_id() {
+            return main_category_id;
+        }
+
+        public void setMain_category_id(String main_category_id) {
+            this.main_category_id = main_category_id;
         }
     }
 

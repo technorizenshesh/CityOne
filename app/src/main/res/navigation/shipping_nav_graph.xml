@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shipping_nav_graph"
+    app:startDestination="@+id/shippingStart">
+
+
+    <fragment
+        android:id="@+id/shippingStart"
+        android:name="com.cityone.shipping.fragment.ShippingStartFragment"
+        android:label="Start"
+        tools:layout="@layout/fragment_start">
+
+        <action
+            android:id="@+id/action_navigation_start_to_services"
+            app:destination="@id/shippingServices" />
+        <action
+            android:id="@+id/action_navigation_start_to_profile"
+            app:destination="@id/shippingProfile" />
+
+
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/shippingServices"
+        android:name="com.cityone.shipping.fragment.ShippingServiceFragment"
+        android:label="Services"
+        tools:layout="@layout/fragment_shipping_service">
+
+        <action
+            android:id="@+id/action_navigation_services_to_start"
+            app:destination="@id/shippingStart" />
+        <action
+            android:id="@+id/action_navigation_services_to_profile"
+            app:destination="@id/shippingProfile" />
+
+
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/shippingProfile"
+        android:name="com.cityone.shipping.fragment.ShippingProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_shipping_profile">
+
+        <action
+            android:id="@+id/action_navigation_profile_to_start"
+            app:destination="@id/shippingStart" />
+        <action
+            android:id="@+id/action_navigation_profile_to_services"
+            app:destination="@id/shippingServices" />
+
+
+    </fragment>
+
+</navigation>

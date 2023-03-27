@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/wallet"
+        android:title="@string/virtual_wallet"
+        app:showAsAction="never"
+     />
+
+    <!--    <item-->
+    <!--        android:id="@+id/search"-->
+    <!--        android:title="@string/cart"-->
+    <!--        app:showAsAction="always"-->
+    <!--        android:icon="@drawable/cart"/>-->
+
+    <item
+        android:id="@+id/msg"
+        android:title="@string/msg"
+        app:showAsAction="never"
+       />
+
+    <item
+        android:id="@+id/help"
+        android:title="@string/help_center"
+        app:showAsAction="never"
+       />
+
+    <item
+        android:id="@+id/drive"
+        android:title="@string/driver_with_cityone"
+        app:showAsAction="never"
+        />
+
+</menu>

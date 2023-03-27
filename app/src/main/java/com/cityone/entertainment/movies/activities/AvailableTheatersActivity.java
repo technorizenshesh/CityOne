@@ -18,9 +18,12 @@ import com.cityone.entertainment.movies.adapters.AdapterExclutiveSeats;
 import com.cityone.entertainment.movies.adapters.AdapterNormalSeats;
 import com.cityone.entertainment.movies.adapters.AdapterRemMovies;
 import com.cityone.entertainment.movies.models.ModelAvilTheater;
+import com.cityone.entertainment.movies.models.ModelAvilTheaterOne;
 import com.cityone.entertainment.movies.models.ModelUpcMovies;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
+import com.cityone.utils.GPSTracker;
 import com.cityone.utils.ProjectUtil;
 import com.google.gson.Gson;
 
@@ -39,24 +42,28 @@ public class AvailableTheatersActivity extends AppCompatActivity {
     Context mContext = AvailableTheatersActivity.this;
     ActivityAvailableTheatersBinding binding;
     String id;
-
+    GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_available_theaters);
         id = getIntent().getStringExtra("id");
         Log.e("ididid","id = " + id);
+
+        App.checkToken(mContext);
+
         init();
     }
 
     private void init() {
+        gpsTracker = new GPSTracker(AvailableTheatersActivity.this);
+        if(gpsTracker.canGetLocation()) getAvilTheater(ProjectUtil.getAddress(AvailableTheatersActivity.this,gpsTracker.getLatitude(),gpsTracker.getLongitude()));
 
-        getAvilTheater();
 
         binding.swipLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getAvilTheater();
+                if(gpsTracker.canGetLocation()) getAvilTheater(ProjectUtil.getAddress(AvailableTheatersActivity.this,gpsTracker.getLatitude(),gpsTracker.getLongitude()));
             }
         });
 
@@ -66,15 +73,17 @@ public class AvailableTheatersActivity extends AppCompatActivity {
 
     }
 
-    private void getAvilTheater() {
+    private void getAvilTheater(String city) {
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         HashMap<String,String> param = new HashMap<>();
-        param.put("movie_id",id);
+        param.put("city",city);
+      //  Call<ResponseBody> call = api.getTheaterApiCall(param);
 
-        Call<ResponseBody> call = api.getTheaterApiCall(param);
+        Call<ResponseBody> call = api.getTheaterApiCall2(param);
+
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -86,8 +95,9 @@ public class AvailableTheatersActivity extends AppCompatActivity {
 
                     if(jsonObject.getString("status").equals("1")) {
 
-                        ModelAvilTheater modelAvilTheater = new Gson().fromJson(responseString, ModelAvilTheater.class);
+                       // ModelAvilTheater modelAvilTheater = new Gson().fromJson(responseString, ModelAvilTheater.class);
 
+                        ModelAvilTheaterOne modelAvilTheater = new Gson().fromJson(responseString, ModelAvilTheaterOne.class);
                         AdapterAvailTheater adapterRemMovies = new AdapterAvailTheater(mContext,modelAvilTheater.getResult());
                         binding.rvAvailTheater.setAdapter(adapterRemMovies);
 

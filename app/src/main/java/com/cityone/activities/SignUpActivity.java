@@ -3,6 +3,7 @@ package com.cityone.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
@@ -19,9 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cityone.R;
 import com.cityone.databinding.ActivitySignUpBinding;
 import com.cityone.databinding.ProviderReqDialogBinding;
@@ -32,6 +38,7 @@ import com.cityone.utils.ApiFactory;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.Compress;
 import com.cityone.utils.ProjectUtil;
+import com.cityone.utils.SharedPref;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -76,17 +83,19 @@ public class SignUpActivity extends AppCompatActivity {
     Api api;
     String registerId = "";
     LatLng latLng;
-    File fileImage, doc1Img, doc2Img;
-    Dialog dialog;
+    File fileImage, doc1Img, doc2Img, doc1Dialog, doc2Dialog;
+    Dialog parentDialog;
     SubmitRequestDialogBinding dialogBinding;
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     private static int AUTOCOMPLETE_REQUEST_DIALOG_CODE = 2;
+    SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        sharedPref = SharedPref.getInstance(mContext);
 
         FirebaseInstanceId
                 .getInstance()
@@ -118,6 +127,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         binding.tvSendRequest.setOnClickListener(v -> {
             openRequestDialog();
+        });
+
+        binding.changeLang.setOnClickListener(v -> {
+            changeLangDialog();
         });
 
         binding.spUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -248,10 +261,12 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(mContext, getString(R.string.password_not_match), Toast.LENGTH_SHORT).show();
             } else if (!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
-            } else if (!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ", "")
+            } else if (!isValidMobile(binding.etPhone.getText().toString().replace(" ", ""))) {
+                Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
+            } /*else if (!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ", "")
                     , binding.ccp.getSelectedCountryCode())) {
                 Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
-            } else {
+            } */else {
 
                 if (TextUtils.isEmpty(binding.etReferralCode.getText().toString().trim())) {
                     HashMap<String, String> params = new HashMap<>();
@@ -285,9 +300,49 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     checkReferCode(binding.etReferralCode.getText().toString().trim());
                 }
-
             }
         });
+
+    }
+
+    private boolean isValidMobile(String phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+    }
+
+    private void changeLangDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_language_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioEng = dialog.findViewById(R.id.radioEng);
+        RadioButton radioSpanish = dialog.findViewById(R.id.radioSpanish);
+
+        if ("es".equals(sharedPref.getLanguage("lan"))) {
+            radioSpanish.setChecked(true);
+        } else {
+            radioEng.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioEng.isChecked()) {
+                ProjectUtil.updateResources(mContext, "en");
+                sharedPref.setlanguage("lan", "en");
+                finish();
+                startActivity(new Intent(mContext, SignUpActivity.class));
+                dialog.dismiss();
+            } else if (radioSpanish.isChecked()) {
+                ProjectUtil.updateResources(mContext, "es");
+                sharedPref.setlanguage("lan", "es");
+                finish();
+                startActivity(new Intent(mContext, SignUpActivity.class));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
 
     }
 
@@ -296,6 +351,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         HashMap<String, String> paramHash = new HashMap<>();
         paramHash.put("referral_code", code);
+        paramHash.put("type", "USER");
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.checkReferApiCall(paramHash);
@@ -343,15 +399,17 @@ public class SignUpActivity extends AppCompatActivity {
                                     .putExtra("request", "user")
                             );
 
+                        } else if (jsonObject.getString("status").equals("2")) {
+                            Toast.makeText(mContext, "Not allowed to use drivers refferal code", Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(mContext, "Your referral code is wrong", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Your referral code is wrong", Toast.LENGTH_LONG).show();
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -368,10 +426,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void openRequestDialog() {
-        dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        parentDialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
                 R.layout.submit_request_dialog, null, false);
-        dialog.setContentView(dialogBinding.getRoot());
+        parentDialog.setContentView(dialogBinding.getRoot());
 
         dialogBinding.address.setOnClickListener(v -> {
             List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
@@ -379,6 +437,86 @@ public class SignUpActivity extends AppCompatActivity {
             Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                     .build(this);
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_DIALOG_CODE);
+        });
+
+        dialogBinding.ivDoc1.setOnClickListener(v -> {
+            if (checkPermissions()) {
+                final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
+                dialog.setOnPickCancel(new IPickCancel() {
+                    @Override
+                    public void onCancelClick() {
+                        dialog.dismiss();
+                    }
+                }).setOnPickResult(new IPickResult() {
+                    @Override
+                    public void onPickResult(PickResult r) {
+                        if (r.getError() == null) {
+
+                            String path = r.getPath();
+                            doc1Dialog = new File(path);
+
+                            Compress.get(mContext).setQuality(90)
+                                    .execute(new Compress.onSuccessListener() {
+                                        @Override
+                                        public void response(boolean status, String message, File file) {
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
+                                            doc1Dialog = file;
+                                            dialogBinding.ivDoc1.setImageURI(r.getUri());
+                                        }
+                                    }).CompressedImage(path);
+
+                        } else {
+                            // Handle possible errors
+                            // TODO: do what you have to do with r.getError();
+                            Toast.makeText(mContext, r.getError().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                }).show(SignUpActivity.this);
+            } else {
+                requestPermissions();
+            }
+        });
+
+        dialogBinding.ivDoc2.setOnClickListener(v -> {
+            if (checkPermissions()) {
+                final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
+                dialog.setOnPickCancel(new IPickCancel() {
+                    @Override
+                    public void onCancelClick() {
+                        dialog.dismiss();
+                    }
+                }).setOnPickResult(new IPickResult() {
+                    @Override
+                    public void onPickResult(PickResult r) {
+                        if (r.getError() == null) {
+
+                            String path = r.getPath();
+                            doc2Dialog = new File(path);
+
+                            Compress.get(mContext).setQuality(90)
+                                    .execute(new Compress.onSuccessListener() {
+                                        @Override
+                                        public void response(boolean status, String message, File file) {
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
+                                            doc2Dialog = file;
+                                            dialogBinding.ivDoc2.setImageURI(r.getUri());
+                                        }
+                                    }).CompressedImage(path);
+
+                        } else {
+                            // Handle possible errors
+                            // TODO: do what you have to do with r.getError();
+                            Toast.makeText(mContext, r.getError().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                }).show(SignUpActivity.this);
+            } else {
+                requestPermissions();
+            }
         });
 
         dialogBinding.btSubmit.setOnClickListener(v -> {
@@ -403,7 +541,10 @@ public class SignUpActivity extends AppCompatActivity {
             } else if (!validateUsing_libphonenumber(dialogBinding.etPhone.getText().toString().replace(" ", "")
                     , dialogBinding.ccp.getSelectedCountryCode())) {
                 Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
+            } else if (doc1Dialog == null || doc2Dialog == null) {
+                Toast.makeText(mContext, getString(R.string.please_upload_both_doc), Toast.LENGTH_SHORT).show();
             } else {
+
                 HashMap<String, String> params = new HashMap<>();
 
                 params.put("name", dialogBinding.etUsername.getText().toString().trim());
@@ -412,12 +553,71 @@ public class SignUpActivity extends AppCompatActivity {
                 params.put("address", dialogBinding.address.getText().toString().trim());
                 params.put("password", dialogBinding.pass.getText().toString().trim());
 
-                requestProviderApiCall(params, dialog);
+                HashMap<String, File> fileHashMap = new HashMap<>();
+                fileHashMap.put("document1", doc1Dialog);
+                fileHashMap.put("document2", doc2Dialog);
+
+                requestSuppliersApi(fileHashMap, params, parentDialog);
+
             }
         });
 
-        dialog.show();
+        parentDialog.show();
 
+    }
+
+    private void requestSuppliersApi(HashMap<String, File> fileHashMap,
+                                     HashMap<String, String> params, Dialog dialog) {
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .build();
+
+        AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
+
+        Log.e("fsfdsfdsfs", "paramHash = " + params);
+        Log.e("fsfdsfdsfs", "paramHash = " + fileHashMap);
+
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+        AndroidNetworking.upload(AppConstant.BASE_URL + "request_subadmin")
+                .addMultipartParameter(params)
+                .addMultipartFile(fileHashMap)
+                .setPriority(Priority.HIGH)
+                .setTag("request_subadmin")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            if (jsonObject.getString("status").equals("1")) {
+
+                                doc1Dialog = null;
+                                doc2Dialog = null;
+                                dialog.dismiss();
+                                openProviderReqDialog();
+
+                                Log.e("zdgfxsdgfxdg", "response = " + response);
+
+                            } else {
+                                Toast.makeText(mContext, jsonObject.getString("result"), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("Exception", "Exception = " + e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+
+                });
     }
 
     private void requestProviderApiCall(HashMap<String, String> params, Dialog dialog) {
@@ -464,7 +664,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         dialogBinding.btOk.setOnClickListener(v -> {
             dialog.dismiss();
-            // finish();
         });
 
         dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.cityone.R;
 import com.cityone.databinding.ActivityTaxiHomeBinding;
 import com.cityone.models.ModelLogin;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.DrawPollyLine;
 import com.cityone.utils.ProjectUtil;
@@ -83,6 +84,8 @@ public class TaxiHomeActivity extends AppCompatActivity implements OnMapReadyCal
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         ProjectUtil.changeStatusBarColor(TaxiHomeActivity.this);
+
+        App.checkToken(mContext);
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(),getString(R.string.places_api_key));

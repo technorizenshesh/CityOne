@@ -83,77 +83,102 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/pickup_date"
-                    android:textSize="@dimen/_12sdp"
+                    android:inputType="textVisiblePassword"
+                    android:text="@string/bid_price"
                     android:textColor="@color/black"
-                    android:inputType="textVisiblePassword" />
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bidPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:drawableLeft="@drawable/ic_date_icon"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="$12"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10sdp" />
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:inputType="textVisiblePassword"
+                    android:text="@string/pickup_date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/pickDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:drawableLeft="@drawable/ic_date_icon"
-                    android:textSize="@dimen/_10sdp"
                     android:drawablePadding="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="20-10-2021"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_bold"
+                    android:inputType="textVisiblePassword"
                     android:text="@string/dropoff_date"
-                    android:textSize="@dimen/_12sdp"
                     android:textColor="@color/black"
-                    android:inputType="textVisiblePassword" />
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/dropDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:drawableLeft="@drawable/ic_date_icon"
-                    android:textSize="@dimen/_10sdp"
                     android:drawablePadding="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="20-10-2021"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_bold"
+                    android:inputType="textVisiblePassword"
                     android:text="@string/comments"
-                    android:textSize="@dimen/_12sdp"
                     android:textColor="@color/dark_green"
-                    android:inputType="textVisiblePassword" />
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
                     android:layout_marginTop="@dimen/_3sdp"
-                    android:textSize="@dimen/_9sdp"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:textColor="@color/black" />
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp" />
 
             </LinearLayout>
 

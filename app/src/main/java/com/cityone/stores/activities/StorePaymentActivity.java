@@ -32,6 +32,7 @@ import com.cityone.stores.adapters.AdapterCards;
 import com.cityone.stores.models.ModelCards;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -62,10 +63,11 @@ public class StorePaymentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_store_payment);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_store_payment);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-        param = (HashMap<String,String>) getIntent().getSerializableExtra("param");
+        param = (HashMap<String, String>) getIntent().getSerializableExtra("param");
+        App.checkToken(mContext);
         init();
     }
 
@@ -91,7 +93,7 @@ public class StorePaymentActivity extends AppCompatActivity {
     }
 
     private void getAvailableCardApi() {
-        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
 
         AndroidNetworking.post(AppConstant.PAY_GET_ALL_CARD
                 + "user_id=" + modelLogin.getResult().getId())
@@ -103,11 +105,11 @@ public class StorePaymentActivity extends AppCompatActivity {
                         binding.swipReferesh.setRefreshing(false);
                         try {
                             String stringRes = response;
-                            Log.e("stringResstringRes","stringRes = " + stringRes);
+                            Log.e("stringResstringRes", "stringRes = " + stringRes);
                             JSONObject jsonObject = new JSONObject(stringRes);
-                            if(jsonObject.getInt("result_size") != 0) {
-                                ModelPayCardsPro modelPayCardsPro = new Gson().fromJson(stringRes,ModelPayCardsPro.class);
-                               // ModelPayCards.Result data;
+                            if (jsonObject.getInt("result_size") != 0) {
+                                ModelPayCardsPro modelPayCardsPro = new Gson().fromJson(stringRes, ModelPayCardsPro.class);
+//                                ModelPayCards.Result data;
 
 //                                modelPayCards.setMessage(jsonObject.getString("message"));
 //                                modelPayCards.setStatus(jsonObject.getString("status"));
@@ -115,15 +117,16 @@ public class StorePaymentActivity extends AppCompatActivity {
 //                                data = new Gson().fromJson(jsonObject.getString("result"),ModelPayCards.Result.class);
 //                                modelPayCards.setResult(data);
 
-                                AdapterCards adapterCards = new AdapterCards(mContext,modelPayCardsPro.getCards(),"store");
+                                AdapterCards adapterCards = new AdapterCards(mContext, modelPayCardsPro.getCards(), "store");
                                 binding.rvCards.setAdapter(adapterCards);
 
                             } else {
-                                Toast.makeText(mContext,getString(R.string.please_add_card), Toast.LENGTH_SHORT).show();
-                                AdapterCards adapterCards = new AdapterCards(mContext,null,"store");
+                                Toast.makeText(mContext, getString(R.string.please_add_card), Toast.LENGTH_SHORT).show();
+                                AdapterCards adapterCards = new AdapterCards(mContext, null, "store");
                                 binding.rvCards.setAdapter(adapterCards);
                             }
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                        }
                     }
 
                     @Override
@@ -133,7 +136,7 @@ public class StorePaymentActivity extends AppCompatActivity {
                     }
                 });
 
-//        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+                //        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 //        Call<ResponseBody> call = api.getCardApiCall(param);
 //        call.enqueue(new Callback<ResponseBody>() {
 //            @Override
@@ -165,7 +168,7 @@ public class StorePaymentActivity extends AppCompatActivity {
     }
 
     public void callBookingApiFromAdapter(String token) {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
         Call<ResponseBody> call = api.bookingStoreApiCall(param);
@@ -176,26 +179,26 @@ public class StorePaymentActivity extends AppCompatActivity {
                 try {
                     String stringRes = response.body().string();
                     JSONObject jsonObject = new JSONObject(stringRes);
-                    if(jsonObject.getString("status").equals("1")) {
+                    if (jsonObject.getString("status").equals("1")) {
 
                         JSONObject resultJson = jsonObject.getJSONObject("result");
 
-                        HashMap<String,String> param = new HashMap<>();
+                        HashMap<String, String> param = new HashMap<>();
 
-                        param.put("transaction_type","transaction_type");
-                        param.put("payment_type","Card");
-                        param.put("amount",resultJson.getString("total_amount"));
-                        param.put("user_id",modelLogin.getResult().getId());
-                        param.put("order_id",resultJson.getString("id"));
-                        param.put("restaurant_id",resultJson.getString("restaurant_id"));
-                        param.put("time_zone",timZone);
-                        param.put("token",token);
-                        param.put("currency","INR");
-                        param.put("tip","0");
+                        param.put("transaction_type", "transaction_type");
+                        param.put("payment_type", "Card");
+                        param.put("amount", resultJson.getString("total_amount"));
+                        param.put("user_id", modelLogin.getResult().getId());
+                        param.put("order_id", resultJson.getString("id"));
+                        param.put("restaurant_id", resultJson.getString("restaurant_id"));
+                        param.put("time_zone", timZone);
+                        param.put("token", token);
+                        param.put("currency", "INR");
+                        param.put("tip", "0");
 
-                        Log.e("paramparam","param = " + param.toString());
+                        Log.e("paramparam", "param = " + param.toString());
 
-                        paymentApiCall(token,resultJson.getString("total_amount"));
+                        paymentApiCall(token, resultJson.getString("total_amount"));
 
                     } else {
 
@@ -215,9 +218,9 @@ public class StorePaymentActivity extends AppCompatActivity {
 
     }
 
-    private void paymentApiCall(String token,String amount) {
+    private void paymentApiCall(String token, String amount) {
 
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
 //        HashMap<String,String> paramas = new HashMap<>();
 //        paramas.put("amount",amount);
 //        paramas.put("token",token);
@@ -225,19 +228,19 @@ public class StorePaymentActivity extends AppCompatActivity {
 //        paramas.put("user_id",modelLogin.getResult().getId());
 //        paramas.put("email",modelLogin.getResult().getEmail());
 
-        Log.e("adasdasd","PaymentUrl = " + AppConstant.PAY_PAYMENT_API+
-                "amount="+amount+
-                "&token="+token+
-                "&request_id="+
-                "&user_id="+modelLogin.getResult().getId()+
-                "&email="+modelLogin.getResult().getEmail());
+        Log.e("adasdasd", "PaymentUrl = " + AppConstant.PAY_PAYMENT_API +
+                "amount=" + amount +
+                "&token=" + token +
+                "&request_id=" +
+                "&user_id=" + modelLogin.getResult().getId() +
+                "&email=" + modelLogin.getResult().getEmail());
 
-        AndroidNetworking.post(AppConstant.PAY_PAYMENT_API+
-                "amount="+amount+
-                "&token="+token+
-                "&request_id="+
-                "&user_id="+modelLogin.getResult().getId()+
-                "&email="+modelLogin.getResult().getEmail())
+        AndroidNetworking.post(AppConstant.PAY_PAYMENT_API +
+                "amount=" + amount +
+                "&token=" + token +
+                "&request_id=" +
+                "&user_id=" + modelLogin.getResult().getId() +
+                "&email=" + modelLogin.getResult().getEmail())
                 .build()
                 .getAsString(new StringRequestListener() {
                     @Override
@@ -246,15 +249,18 @@ public class StorePaymentActivity extends AppCompatActivity {
                         try {
                             String stringRes = response;
 
-                            Log.e("stringResstringRes","stringRes = " + stringRes);
+                            Log.e("stringResstringRes", "stringRes = " + stringRes);
 
                             JSONObject jsonObject = new JSONObject(stringRes);
-                            if(jsonObject.getString("status").equals("1")) {
+                            if (jsonObject.getString("status").equals("1")) {
                                 Toast.makeText(StorePaymentActivity.this, getString(R.string.order_placed), Toast.LENGTH_SHORT).show();
-                                finishAffinity();
-                                startActivity(new Intent(mContext, DashboardActivity.class));
-                            } else {}
-                        } catch (Exception e) {}
+                               // finishAffinity();
+                                startActivity(new Intent(mContext, DashboardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                 finish();
+                            } else {
+                            }
+                        } catch (Exception e) {
+                        }
                     }
 
                     @Override
@@ -264,7 +270,7 @@ public class StorePaymentActivity extends AppCompatActivity {
 
                 });
 
-//        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+            //        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 //        Call<ResponseBody> call = api.paymentStoreApiCall(param);
 //        call.enqueue(new Callback<ResponseBody>() {
 //            @Override
@@ -303,8 +309,8 @@ public class StorePaymentActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
 
         AddCardDialogBinding dialogBinding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext),R.layout.add_card_dialog,
-                        null,false);
+                .inflate(LayoutInflater.from(mContext), R.layout.add_card_dialog,
+                        null, false);
         dialog.setContentView(dialogBinding.getRoot());
 
         dialogBinding.btMakePayment.setOnClickListener(v -> {
@@ -316,14 +322,14 @@ public class StorePaymentActivity extends AppCompatActivity {
                 return;
             } else {
 
-                HashMap<String,String> param = new HashMap<>();
-                param.put("user_id",modelLogin.getResult().getId());
-                param.put("number",cardToSave.getNumber());
-                param.put("holder_name",cardToSave.getHolderName());
-                param.put("expiry_month",String.valueOf(cardToSave.getExpiryMonth()));
-                param.put("expiry_year",String.valueOf(cardToSave.getExpiryYear()));
-                param.put("cvc",cardToSave.getCVC());
-                param.put("email",modelLogin.getResult().getEmail());
+                HashMap<String, String> param = new HashMap<>();
+                param.put("user_id", modelLogin.getResult().getId());
+                param.put("number", cardToSave.getNumber());
+                param.put("holder_name", cardToSave.getHolderName());
+                param.put("expiry_month", String.valueOf(cardToSave.getExpiryMonth()));
+                param.put("expiry_year", String.valueOf(cardToSave.getExpiryYear()));
+                param.put("cvc", cardToSave.getCVC());
+                param.put("email", modelLogin.getResult().getEmail());
 
                 addCardApi(dialog,
                         cardToSave.getNumber(),
@@ -331,7 +337,6 @@ public class StorePaymentActivity extends AppCompatActivity {
                         String.valueOf(cardToSave.getExpiryMonth()),
                         String.valueOf(cardToSave.getExpiryYear()),
                         cardToSave.getCVC());
-
             }
 
         });
@@ -344,22 +349,31 @@ public class StorePaymentActivity extends AppCompatActivity {
 
     }
 
-    private void addCardApi(Dialog dialog,String number,
+    private void addCardApi(Dialog dialog, String number,
                             String holderName,
                             String exp_mon,
                             String exp_year,
                             String cvc) {
 
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        Log.e("sdfsdfdsf", "URL = " + AppConstant.PAY_ADD_CARD +
+                "number=" + number + "&" +
+                "holder_name=" + holderName + "&" +
+                "expiry_month=" + exp_mon + "&" +
+                "expiry_year=" + exp_year + "&" +
+                "cvc=" + cvc + "&" +
+                "user_id=" + modelLogin.getResult().getId() + "&" +
+                "email=" + modelLogin.getResult().getEmail());
 
         AndroidNetworking.post(AppConstant.PAY_ADD_CARD +
-                "number="+number+"&" +
-                "holder_name="+holderName+"&" +
-                "expiry_month="+exp_mon+"&" +
-                "expiry_year="+exp_year+"&" +
-                "cvc="+cvc+"&" +
-                "user_id="+modelLogin.getResult().getId()+"&" +
-                "email="+modelLogin.getResult().getEmail())
+                "number=" + number + "&" +
+                "holder_name=" + holderName + "&" +
+                "expiry_month=" + exp_mon + "&" +
+                "expiry_year=" + exp_year + "&" +
+                "cvc=" + cvc + "&" +
+                "user_id=" + modelLogin.getResult().getId() + "&" +
+                "email=" + modelLogin.getResult().getEmail())
                 .build()
                 .getAsString(new StringRequestListener() {
                     @Override
@@ -369,27 +383,29 @@ public class StorePaymentActivity extends AppCompatActivity {
                             String stringRes = response;
                             JSONObject jsonObject = new JSONObject(stringRes);
 
-                            Log.e("dfsdfdsf","stringRes = " + stringRes);
+                            Log.e("dfsdfdsf", "stringRes = " + stringRes);
                             // Log.e("dfsdfdsf","params = " + params.toString());
 
-                            if(jsonObject.getString("status").equals("1")) {
+                            if (jsonObject.getString("status").equals("1")) {
                                 dialog.dismiss();
                                 getAvailableCardApi();
-                            } else {}
-                        } catch (Exception e) {}
+                            } else {
+                            }
+                        } catch (Exception e) {
+                        }
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         ProjectUtil.pauseProgressDialog();
-                        Log.e("dfsdfdsf","anError = " + anError.getErrorBody());
-                        Log.e("dfsdfdsf","anError = " + anError.getErrorDetail());
+                        Log.e("dfsdfdsf", "anError = " + anError.getErrorBody());
+                        Log.e("dfsdfdsf", "anError = " + anError.getErrorDetail());
                     }
                 });
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
-        Log.e("sdfgdsfd","param = " + param.toString());
+        Log.e("sdfgdsfd", "param = " + param.toString());
 
 //        Call<ResponseBody> call = api.addCardApiCall(param);
 //        call.enqueue(new Callback<ResponseBody>() {

@@ -27,7 +27,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/llPlusMinus"
+            android:layout_above="@+id/llplusMinuslayout"
             android:layout_marginTop="@dimen/_160sdp"
             android:orientation="vertical">
 
@@ -63,77 +63,87 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:visibility="gone"
                         android:text="This is the dummy description of this item"
                         android:textSize="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:textColor="@color/gray"
                         android:inputType="textVisiblePassword" />
 
+                    <TextView
+                        android:id="@+id/tvAdditionalDiscount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/green_spalsh"
+                        android:inputType="textVisiblePassword" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/ivMinus"
-                    android:layout_width="@dimen/_35sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginRight="@dimen/_25sdp"
-                    android:src="@drawable/ic_minus_orange"/>
-
-                <TextView
-                    android:id="@+id/tvQuantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/poppins_bold"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:paddingLeft="@dimen/_20sdp"
-                    android:paddingRight="@dimen/_20sdp"
-                    android:background="@color/orange"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:text="1"/>
-
-                <ImageView
-                    android:id="@+id/ivPlus"
-                    android:layout_width="@dimen/_35sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:src="@drawable/ic_add_orange"/>
-
-            </LinearLayout>
-
             <TextView
+                android:id="@+id/tvOptionOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/_13sdp"
-                android:text="Select Topping"/>
+                android:text="@string/select_option"/>
 
             <ListView
-                android:id="@+id/toppingListView"
+                android:id="@+id/optionListView"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:scrollbars="none"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llplusMinuslayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/llPlusMinus"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_55sdp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivMinus"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:src="@drawable/ic_minus_orange" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@color/orange"
+                android:fontFamily="@font/poppins_bold"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivPlus"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:src="@drawable/ic_add_orange" />
 
         </LinearLayout>
 
@@ -156,12 +166,12 @@
                     android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:text="$10"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
-                    android:text="$10"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvAddItem"

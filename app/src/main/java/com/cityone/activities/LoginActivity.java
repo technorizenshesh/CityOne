@@ -4,11 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.cityone.R;
@@ -31,6 +37,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -74,6 +81,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
 
+        binding.changeLang.setOnClickListener(v -> {
+            changeLangDialog();
+        });
+
         binding.tvForogtPassword.setOnClickListener(v -> {
             startActivity(new Intent(mContext,ForgotPassActivity.class));
         });
@@ -96,6 +107,43 @@ public class LoginActivity extends AppCompatActivity {
                }
            }
         });
+
+    }
+
+    private void changeLangDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_language_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioEng = dialog.findViewById(R.id.radioEng);
+        RadioButton radioSpanish = dialog.findViewById(R.id.radioSpanish);
+
+        if ("es".equals(sharedPref.getLanguage("lan"))) {
+            radioSpanish.setChecked(true);
+        } else {
+            radioEng.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioEng.isChecked()) {
+                ProjectUtil.updateResources(mContext, "en");
+                sharedPref.setlanguage("lan", "en");
+                finish();
+                startActivity(new Intent(mContext, LoginActivity.class));
+                dialog.dismiss();
+            } else if (radioSpanish.isChecked()) {
+                ProjectUtil.updateResources(mContext, "es");
+                sharedPref.setlanguage("lan", "es");
+                finish();
+                startActivity(new Intent(mContext, LoginActivity.class));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
 
     }
 

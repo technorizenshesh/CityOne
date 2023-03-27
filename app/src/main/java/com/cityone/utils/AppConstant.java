@@ -6,14 +6,14 @@ public interface AppConstant {
 //  debit card
 //  Yolanda Rozo López
 
-    String BASE_URL = "https://equipmeapp.co.nz/CityOne/webservice/";
-//  String BASE_URL = "https://shar-v.com/CityOne/webservice/";
+    String BASE_URL = "http://city-one.co/webservice/";
+  //String BASE_URL = "https://city-one.co/Cityone/webservice/";
     String IMAGE_URL = "https://www.pickpock.net/uploads/images/";
 
-    String PAY_ADD_CARD = "http://equipmeapp.co.nz/CityOne/webservice/add_card?";
-    String PAY_DELETE_CARD = "https://equipmeapp.co.nz/CityOne/webservice/delete_card?";
-    String PAY_GET_ALL_CARD = "http://equipmeapp.co.nz/CityOne/webservice/card_list?";
-    String PAY_PAYMENT_API = "https://equipmeapp.co.nz/CityOne/webservice/global_payment?";
+    String PAY_ADD_CARD = "http://city-one.co/webservice/add_card?";
+    String PAY_DELETE_CARD = "http://city-one.co/webservice/delete_card?";
+    String PAY_GET_ALL_CARD = "http://city-one.co/webservice/card_list?";
+    String PAY_PAYMENT_API = "http://city-one.co/webservice/global_payment?";
 
     String LOGIN_API = "login";
 
@@ -41,6 +41,7 @@ public interface AppConstant {
     String EXCLUSIVE = "exclusive";
     String NORMAL = "normal";
     String CLASSIC = "classic";
+    String CURRENCY = "COP";
     String UPDATE_PROFILE_API = "update_profile";
     String FORGOT_PASSWORD_API = "forgot_password";
     String CHANGE_PASSWORD_API = "change_password";

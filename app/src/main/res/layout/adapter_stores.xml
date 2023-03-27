@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_120sdp"
                 android:scaleType="centerCrop"
+                android:padding="@dimen/_5sdp"
                 app:riv_corner_radius="@dimen/_10sdp"
                 android:src="@drawable/grocery2"/>
 
@@ -34,7 +35,7 @@
                 android:text="D-mart Grocery Store"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tvAddress"
@@ -46,7 +47,7 @@
                 android:text="Nk Tantuni, Kadikoy"
                 android:textAllCaps="false"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_9sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

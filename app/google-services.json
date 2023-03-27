@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "57474920573",
-    "project_id": "cityone-f6ec2",
-    "storage_bucket": "cityone-f6ec2.appspot.com"
+    "project_number": "1019706437848",
+    "project_id": "cityone-18c58",
+    "storage_bucket": "cityone-18c58.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:57474920573:android:853618178eb21fae0a8114",
+        "mobilesdk_app_id": "1:1019706437848:android:e04d010ed9daa4bf5b27ad",
         "android_client_info": {
           "package_name": "com.cityone"
         }
       },
       "oauth_client": [
         {
-          "client_id": "57474920573-jg6ptc1ltuu92nb6tt2vjutle9oqa639.apps.googleusercontent.com",
+          "client_id": "1019706437848-pa6rpr5p1pdpo72ugqb00cjrp85qnltd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.cityone",
-            "certificate_hash": "26cf14069d5878784efbf6de0138a0fd452d746c"
+            "certificate_hash": "4a54a0201b383cca1b8c056aecfb715e2f24fe05"
           }
         },
         {
-          "client_id": "57474920573-1f3r112poaku66k96jrr2ivmm6jj47dd.apps.googleusercontent.com",
+          "client_id": "1019706437848-t4hi15b5mn7fci12gjebsc7b44ql58uh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBg8HotO69FQJIbU2eKRzF-wXVmP9w1bDQ"
+          "current_key": "AIzaSyAIPzcDdtK12LPvEeXPOvbWOzMWuPMQMxA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "57474920573-1f3r112poaku66k96jrr2ivmm6jj47dd.apps.googleusercontent.com",
+              "client_id": "1019706437848-t4hi15b5mn7fci12gjebsc7b44ql58uh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

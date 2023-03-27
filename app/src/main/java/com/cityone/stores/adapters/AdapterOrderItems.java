@@ -2,6 +2,7 @@ package com.cityone.stores.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class AdapterOrderItems extends RecyclerView.Adapter<AdapterOrderItems.St
     @Override
     public AdapterOrderItems.StoreHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         AdapterItemDetailsBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(mContext), R.layout.adapter_item_details,parent,false);
+                .inflate(LayoutInflater.from(mContext), R.layout.adapter_item_details, parent, false);
         return new StoreHolder(binding);
     }
 
@@ -45,24 +46,41 @@ public class AdapterOrderItems extends RecyclerView.Adapter<AdapterOrderItems.St
         ModelStoreBooking.Result.Item_data data = storeList.get(position);
 
         holder.binding.tvName.setText(data.getItem_name());
-        holder.binding.tvPrice.setText(AppConstant.DOLLAR + data.getPrice() +" x "+ data.getQuantity());
+        holder.binding.tvPrice.setText(AppConstant.DOLLAR + data.getPrice() + " x " + data.getQuantity());
 
-        if(data.getDiscount() == null || data.getDiscount().equals("") || data.getDiscount().equals("0")){
-            holder.binding.tvDiscount.setVisibility(View.GONE);
-        } else {
-            holder.binding.tvDiscount.setText(data.getDiscount()+"% Off");
-            holder.binding.tvDiscount.setVisibility(View.VISIBLE);
+//        if (data.getDiscount() == null || data.getDiscount().equals("") || data.getDiscount().equals("0")) {
+//            holder.binding.tvDiscount.setVisibility(View.GONE);
+//        } else {
+//            holder.binding.tvDiscount.setText(data.getDiscount() + "% Off");
+//            holder.binding.tvDiscount.setVisibility(View.VISIBLE);
+//        }
+
+        String finalExtras = "";
+
+        try {
+            holder.binding.tvExtras.setVisibility(View.VISIBLE);
+            holder.binding.tvExtraText.setVisibility(View.VISIBLE);
+            for (int i = 0; i < data.getExtra_options().size(); i++) {
+                finalExtras = finalExtras + data.getExtra_options().get(i).getExtra_item() + " " +
+                        data.getExtra_options().get(i).getExtra_price() + "/-\n";
+            }
+        } catch (Exception e) {
+            holder.binding.tvExtras.setVisibility(View.GONE);
+            holder.binding.tvExtraText.setVisibility(View.GONE);
         }
 
+        holder.binding.tvExtras.setText(finalExtras);
+
         Picasso.get().load(data.getItem_image()).into(holder.binding.ivImage);
+
     }
 
     @Override
     public int getItemCount() {
-        return storeList == null?0:storeList.size();
+        return storeList == null ? 0 : storeList.size();
     }
 
-    public class StoreHolder extends RecyclerView.ViewHolder{
+    public class StoreHolder extends RecyclerView.ViewHolder {
 
         AdapterItemDetailsBinding binding;
 

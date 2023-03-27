@@ -26,10 +26,10 @@
                 android:id="@+id/profileImage"
                 android:layout_width="0dp"
                 android:layout_weight="0.2"
+                android:src="@drawable/default_profile_icon"
                 android:layout_height="@dimen/_50sdp"
                 app:civ_border_width="@dimen/_1sdp"
-                app:civ_border_color="@color/black"
-                android:image="@{chat.image}"/>
+                app:civ_border_color="@color/black" />
 
             <LinearLayout
                 android:layout_width="0dp"

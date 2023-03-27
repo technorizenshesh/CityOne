@@ -17,6 +17,7 @@ import com.cityone.shipping.adapters.AdapterChating;
 import com.cityone.shipping.models.ModelChating;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.BottomReachedInterface;
 import com.cityone.utils.ProjectUtil;
 import com.google.gson.Gson;
@@ -53,6 +54,7 @@ public class TaxiChatingActivity extends AppCompatActivity implements BottomReac
         receiverName = getIntent().getStringExtra("name");
         requestId = getIntent().getStringExtra("request_id");
 
+        App.checkToken(mContext);
         init();
     }
 

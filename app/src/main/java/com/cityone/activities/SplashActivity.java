@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.cityone.MainActivity;
 import com.cityone.R;
 import com.cityone.utils.AppConstant;
+import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -120,6 +121,14 @@ public class SplashActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if ("en".equals(sharedPref.getLanguage("lan"))) {
+                    ProjectUtil.updateResources(mContext, "en");
+                } else if ("es".equals(sharedPref.getLanguage("lan"))) {
+                    ProjectUtil.updateResources(mContext, "es");
+                } else {
+                    sharedPref.setlanguage("lan", "es");
+                    ProjectUtil.updateResources(mContext, "es");
+                }
                 processNextActivity();
             }
         }
@@ -146,6 +155,14 @@ public class SplashActivity extends AppCompatActivity
         Log.e("asdad","OnResume Called");
         if (checkPermissions()) {
             if (isLocationEnabled()) {
+                if ("en".equals(sharedPref.getLanguage("lan"))) {
+                    ProjectUtil.updateResources(mContext, "en");
+                } else if ("es".equals(sharedPref.getLanguage("lan"))) {
+                    ProjectUtil.updateResources(mContext, "es");
+                } else {
+                    sharedPref.setlanguage("lan", "es");
+                    ProjectUtil.updateResources(mContext, "es");
+                }
                 processNextActivity();
             } else {
                 Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();

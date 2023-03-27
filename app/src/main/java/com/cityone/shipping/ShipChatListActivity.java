@@ -17,6 +17,7 @@ import com.cityone.shipping.adapters.AdapterChats;
 import com.cityone.shipping.models.ModelChatList;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -48,6 +49,8 @@ public class ShipChatListActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ship_chat_list);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
 
         init();
 

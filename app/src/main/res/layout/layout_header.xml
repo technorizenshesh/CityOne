@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_700"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            app:civ_border_color="@color/white"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:civ_border_width="@dimen/_2sdp"
+            android:src="@drawable/default_profile_icon"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_15sdp"/>
+
+    </LinearLayout>
+
+    <!--<TextView
+        android:id="@+id/tvMySending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/my_sendings"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:padding="@dimen/_10sdp"
+        android:background="?android:selectableItemBackground"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_12sdp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/tvMessages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/messages"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:padding="@dimen/_10sdp"
+        android:background="?android:selectableItemBackground"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_12sdp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/tvChangePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:padding="@dimen/_10sdp"
+        android:visibility="gone"
+        android:background="?android:selectableItemBackground"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_12sdp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/tvLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:visibility="gone"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:padding="@dimen/_10sdp"
+        android:background="?android:selectableItemBackground"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_12sdp"/>-->
+
+</LinearLayout>
+</layout>

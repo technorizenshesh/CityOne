@@ -2,8 +2,8 @@
     <string name="app_name">CityOne</string>
 
     <string name="places_api_key">AIzaSyD5KJs-4W2v_SJM5oJrwrC92KCcu34m9do</string>
-    <string name="facebook_app_id">401201928050148</string>
-    <string name="fb_login_protocol_scheme">fb401201928050148</string>
+    <string name="facebook_app_id">699894100976717</string>
+    <string name="fb_login_protocol_scheme">fb699894100976717</string>
     <string name="stripe_test_key">pk_test_51IH6khHvrBXHiy9OKldfgUUtI4iHepzsYINuK66EDMeLNPnFWmlaxqcJt2bEiry73Ei8QysltqwDq8bppntPeO4D00YDqGmHT2</string>
     <string name="stripe_live_key">pk_test_51IH6khHvrBXHiy9OKldfgUUtI4iHepzsYINuK66EDMeLNPnFWmlaxqcJt2bEiry73Ei8QysltqwDq8bppntPeO4D00YDqGmHT2</string>
 
@@ -61,6 +61,7 @@
     <string name="my_store_orders">My Stores Orders</string>
     <string name="my_orderss">My Orders</string>
     <string name="wallet">Wallet</string>
+    <string name="my_wallet">My Wallet</string>
     <string name="delivery_addresses">Delivery addresses</string>
     <string name="movie_ticket_books">Movie Tickets Bookings</string>
     <string name="my_reviews">My reviews</string>
@@ -116,6 +117,7 @@
     <string name="dropoff_address">DropOff Address</string>
     <string name="parcel_detail">Parcel Detail</string>
     <string name="upload">Upload</string>
+    <string name="upload_profile_pic">Upload Profile Pic</string>
     <string name="my_parcels">My Parcels</string>
     <string name="delivery_instructions">Delivery Instructions</string>
     <string name="applied_bids">Applied Bids</string>
@@ -127,7 +129,7 @@
     <string name="price">Price</string>
     <string name="bid_detail">Bid Detail</string>
     <string name="comments">Comments</string>
-    <string name="accept">Accept</string>
+    <string name="accept">Accept and Pay</string>
     <string name="cancel">Cancel</string>
     <string name="reject">Reject</string>
     <string name="pub">Pub</string>
@@ -212,7 +214,7 @@
     <string name="destination">I am going to...</string>
 
     <string-array name="parcel_quantity">
-        <item>Select Quantity</item>
+        <item>Select Order Quantity</item>
         <item>Less then 1KG</item>
         <item>1KG - 5KG</item>
         <item>5KG - 10KG</item>
@@ -225,6 +227,14 @@
         <item>40KG Above</item>
     </string-array>
 
+    <string-array name="vehicle_type1">
+        <item>Select Vehicle Type</item>
+        <item>Normal</item>
+        <item>XL</item>
+        <item>Luxury</item>
+        <item>Van</item>
+    </string-array>
+
     <string-array name="vehicle_type">
         <item>Select Vehicle Type</item>
         <item>Bicycle</item>
@@ -232,6 +242,10 @@
         <item>VAN</item>
         <item>Any</item>
     </string-array>
+
+
+
+
 
     <string-array name="store_item_type">
         <item>Indian Food</item>
@@ -249,7 +263,7 @@
         <item>Select Item Category</item>
         <item>Document</item>
         <item>Food</item>
-        <item>Cloting</item>
+        <item>Clothing</item>
         <item>Electronics</item>
         <item>Fragile</item>
         <item>Medical</item>
@@ -272,7 +286,7 @@
     <string name="provider_request">Provider Request</string>
     <string name="please_upload_both_doc">Please upload both documents</string>
     <string name="want_to_provider">Want to become a provider ?</string>
-    <string name="send_request">Send Request</string>
+    <string name="send_request">Send Request To Admin</string>
     <string name="not_allowed_to_see_other_bids">You are not allowed to see other parcel bids</string>
     <string name="chat">Chat</string>
     <string name="type_a_message">Type a message</string>
@@ -333,4 +347,35 @@
     <string name="enter_referral_code">Enter Referral Code</string>
     <string name="referral_code_optional">Referral Code (Optional)</string>
     <string name="share_your_referral_code">Share your referral code to earn points</string>
+    <string name="please_upload_profile_image">Please upload profile image</string>
+    <string name="i_want_to_be_a_supplier">I want to be a supplier</string>
+    <string name="select_option">Select Option</string>
+    <string name="extras">Extras :</string>
+    <string name="additional_instruction_for_cook">Additional Instruction For Cook(Optional)</string>
+    <string name="additional_instruction_for_cook1">Additional Instruction For Cook</string>
+    <string name="enter_instruction_here">Enter Instruction Here</string>
+    <string name="chnage_lang">Change Language</string>
+    <string name="change_language">Change Language</string>
+    <string name="session_expire_alert_text">Your session is expired please login again</string>
+    <string name="old_pass">Old Password</string>
+    <string name="new_pass">New Password</string>
+    <string name="please_enter_old_pass">Please enter old password</string>
+    <string name="please_enter_new_pass">Please enter new password</string>
+    <string name="old_pass_wrong">Old password is wrong</string>
+    <string name="my_earnings">My Earnings</string>
+    <string name="invalid_otp">Invalid otp</string>
+    <string name="please_select_vehicle">Please select vehicle</string>
+    <string name="virtual_wallet">Virtual Wallet</string>
+    <string name="msg">Messages</string>
+    <string name="help_center">Help Center</string>
+    <string name="driver_with_cityone">drive with cityone</string>
+    <string name="start">Start</string>
+    <string name="services">Services</string>
+    <string name="profile">Profile</string>
+    <string name="not_available">not available</string>
+    <string name="configuration">Configuration</string>
+    <string name="order_note">Apercentage will be charged that will guarantee 100% payment in case of any onconvenience</string>
+    <string name="Send">Send</string>
+    <string name="bid_price">Bid price</string>
+    <string name="best_events_this_week">The Best Events this week</string>
 </resources>

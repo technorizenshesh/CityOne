@@ -61,13 +61,14 @@
                 android:padding="@dimen/_10sdp" />
 
             <EditText
+                android:id="@+id/etAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_amount"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:singleLine="true"
                 android:background="@drawable/orange_outline_back"
                 android:textColor="@color/black"

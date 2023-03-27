@@ -20,6 +20,7 @@ import com.cityone.stores.models.ModelMyStoreCart;
 import com.cityone.stores.models.ModelStores;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.ProjectUtil;
 import com.cityone.utils.SharedPref;
@@ -48,16 +49,18 @@ public class MyCartActivity extends AppCompatActivity {
     SharedPref sharedPref;
     ModelLogin modelLogin;
     StringBuilder builder = new StringBuilder();
+    StringBuilder builderItemIds = new StringBuilder();
     String storeId = null;
     double itemTotal = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_my_cart);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_my_cart);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         init();
+        App.checkToken(mContext);
         getCartApiCall();
     }
 
@@ -75,30 +78,34 @@ public class MyCartActivity extends AppCompatActivity {
         });
 
         binding.btCheckout.setOnClickListener(v -> {
-            if(itemTotal != 0.0) {
-                if(builder == null || builder.length() == 0) {
+            if (itemTotal != 0.0) {
+                if (builder == null || builder.length() == 0) {
                     Toast.makeText(mContext, getString(R.string.please_add_items_in_cart), Toast.LENGTH_SHORT).show();
                 } else {
-                    HashMap<String,String> params = new HashMap<>();
+                    HashMap<String, String> params = new HashMap<>();
 
                     String currentDate = ProjectUtil.getCurrentDate();
                     String currentTime = ProjectUtil.getCurrentTime();
 
-                    params.put("user_id",modelLogin.getResult().getId());
-                    params.put("cart_id",builder.toString());
-                    params.put("restaurant_id",storeId);
-                    params.put("date",currentDate);
-                    params.put("time",currentTime);
-                    params.put("total_amount", String.valueOf(itemTotal+10));
+                    params.put("user_id", modelLogin.getResult().getId());
+                    params.put("cart_id", builder.toString());
+                    params.put("item_id", builderItemIds.toString());
+                    params.put("restaurant_id", storeId);
+                    params.put("date", currentDate);
+                    params.put("time", currentTime);
+                    params.put("total_amount", String.valueOf(itemTotal + 10));
 
-                    startActivity(new Intent(mContext,SetDeliveryLocationActivity.class)
-                            .putExtra(AppConstant.STORE_BOOKING_PARAMS,params)
+                    Log.e("asdfasdasd", "params = " + params);
+
+                    startActivity(new Intent(mContext, SetDeliveryLocationActivity.class)
+                            .putExtra(AppConstant.STORE_BOOKING_PARAMS, params)
                     );
 
                 }
             } else {
                 Toast.makeText(mContext, getString(R.string.please_add_item), Toast.LENGTH_SHORT).show();
             }
+
         });
 
     }
@@ -109,12 +116,12 @@ public class MyCartActivity extends AppCompatActivity {
 
     private void getCartApiCall() {
 
-        Log.e("dsfdsffs","userId = " + modelLogin.getResult().getId());
+        Log.e("dsfdsffs", "userId = " + modelLogin.getResult().getId());
 
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
 
-        HashMap<String,String> param = new HashMap<>();
-        param.put("user_id",modelLogin.getResult().getId());
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", modelLogin.getResult().getId());
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.getStoreCartApiCall(param);
@@ -127,38 +134,46 @@ public class MyCartActivity extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
+                    if (jsonObject.getString("status").equals("1")) {
 
-                        Log.e("responseString","response = " + response);
-                        Log.e("responseString","responseString = " + responseString);
+                        Log.e("responseString", "response = " + response);
+                        Log.e("responseString", "responseString = " + responseString);
 
                         ModelMyStoreCart modelMyStoreCart = new Gson().fromJson(responseString, ModelMyStoreCart.class);
 
                         storeId = modelMyStoreCart.getResult().get(0).getRestaurant_id();
                         itemTotal = modelMyStoreCart.getTotal_amount();
 
-                        AdapterMyCart adapterMyCart = new AdapterMyCart(mContext,modelMyStoreCart.getResult());
+                        AdapterMyCart adapterMyCart = new AdapterMyCart(mContext, modelMyStoreCart.getResult(), modelMyStoreCart.getTotal_amount());
                         binding.rvCartItem.setAdapter(adapterMyCart);
                         binding.itemsTotal.setText(AppConstant.DOLLAR + modelMyStoreCart.getTotal_amount());
                         binding.itemPlusDevCharges.setText(AppConstant.DOLLAR + (modelMyStoreCart.getTotal_amount() + 10));
 
-                        for(int i=0;i<modelMyStoreCart.getResult().size();i++)
-                            builder.append(modelMyStoreCart.getResult().get(i).getItem_id()+",");
+                        Log.e("fasdasdasdasd", "Id = " + modelMyStoreCart.getResult().get(0).getId());
+                        Log.e("fasdasdasdasd", "Item Id = " + modelMyStoreCart.getResult().get(0).getItem_id());
+
+                        for (int i = 0; i < modelMyStoreCart.getResult().size(); i++) {
+                            builder.append(modelMyStoreCart.getResult().get(i).getItem_id() + ",");
+                            builderItemIds.append(modelMyStoreCart.getResult().get(i).getId() + ",");
+                        }
+
                         // Log.e("builderbuilder","builder = " + builder.deleteCharAt(builder.length()-1));
 
-                        builder = builder.deleteCharAt(builder.length()-1);
+                        builder = builder.deleteCharAt(builder.length() - 1);
+                        builderItemIds = builderItemIds.deleteCharAt(builderItemIds.length() - 1);
 
                     } else {
                         builder = new StringBuilder();
+                        builderItemIds = new StringBuilder();
                         binding.itemsTotal.setText(AppConstant.DOLLAR + 0.0);
                         binding.itemPlusDevCharges.setText(AppConstant.DOLLAR + 0.0);
-                        AdapterMyCart adapterStores = new AdapterMyCart(mContext,null);
+                        AdapterMyCart adapterStores = new AdapterMyCart(mContext, null, null);
                         binding.rvCartItem.setAdapter(adapterStores);
                     }
 
                 } catch (Exception e) {
-                   // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }
@@ -174,16 +189,19 @@ public class MyCartActivity extends AppCompatActivity {
 
     public void updateCartId(ArrayList<ModelMyStoreCart.Result> itemsList) {
         builder = new StringBuilder();
-        if(itemsList != null && itemsList.size() != 0) {
-            for(int i=0;i<itemsList.size();i++) {
+        builderItemIds = new StringBuilder();
+        if (itemsList != null && itemsList.size() != 0) {
+            for (int i = 0; i < itemsList.size(); i++) {
                 double amount = Double.parseDouble(itemsList.get(i).getAmount());
                 double quantity = Double.parseDouble(itemsList.get(i).getQuantity());
                 itemTotal = itemTotal + (amount * quantity);
                 builder.append(itemsList.get(i).getItem_id() + ",");
+                builderItemIds.append(itemsList.get(i).getId() + ",");
             }
             binding.itemsTotal.setText(AppConstant.DOLLAR + itemTotal);
             binding.itemPlusDevCharges.setText(AppConstant.DOLLAR + (itemTotal + 10));
             builder = builder.deleteCharAt(builder.length() - 1);
+            builderItemIds = builderItemIds.deleteCharAt(builderItemIds.length() - 1);
         } else {
             binding.itemsTotal.setText(AppConstant.DOLLAR + 0.0);
             binding.itemPlusDevCharges.setText(AppConstant.DOLLAR + 0.0);

@@ -27,9 +27,7 @@ public class DeliveryAddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_delivery_address);
-
         init();
-
     }
 
     private void init() {

@@ -56,7 +56,7 @@ public class ModelStoreDetails implements Serializable {
 
         private String address;
 
-        private ArrayList<Restaurant_sub_category> restaurant_sub_category;
+        private ArrayList<Restaurant_sub_category> sub_item_list;
 
         public String getAddress() {
             return address;
@@ -133,10 +133,10 @@ public class ModelStoreDetails implements Serializable {
             return this.status;
         }
         public void setRestaurant_sub_category(ArrayList<Restaurant_sub_category> restaurant_sub_category){
-            this.restaurant_sub_category = restaurant_sub_category;
+            this.sub_item_list = restaurant_sub_category;
         }
         public ArrayList<Restaurant_sub_category> getRestaurant_sub_category(){
-            return this.restaurant_sub_category;
+            return this.sub_item_list;
         }
 
         public class Restaurant_sub_category

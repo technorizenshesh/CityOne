@@ -31,6 +31,7 @@ import com.cityone.taxi.adapters.AdapterCarTypes;
 import com.cityone.taxi.models.ModelTaxiType;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.DrawPollyLine;
 import com.cityone.utils.ProjectUtil;
@@ -96,6 +97,8 @@ public class TaxiRideOtpActivity extends
 
         pickAdd = ProjectUtil.getCompleteAddressString(mContext,pickLatLng.latitude,pickLatLng.longitude);
         dropAdd = ProjectUtil.getCompleteAddressString(mContext,dropLatLng.latitude,dropLatLng.longitude);
+
+        App.checkToken(mContext);
 
         init();
     }

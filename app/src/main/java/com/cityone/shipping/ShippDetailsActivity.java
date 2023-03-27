@@ -28,6 +28,7 @@ import com.cityone.shipping.models.ModelShipDetail;
 import com.cityone.shipping.models.ModelShipRequest;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.DataParser;
 import com.cityone.utils.ProjectUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -78,6 +79,8 @@ public class ShippDetailsActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_shipp_details);
         parcelId = getIntent().getStringExtra("parcelid");
+
+        App.checkToken(mContext);
 
         init();
 
@@ -179,7 +182,8 @@ public class ShippDetailsActivity extends AppCompatActivity implements OnMapRead
                         ModelShipDetail modelShipDetail = new Gson().fromJson(responseString,ModelShipDetail.class);
                         binding.setShip(modelShipDetail.getResult());
                         shippmentUserId = modelShipDetail.getResult().getUser_id();
-
+                        Log.e("bid status===",modelShipDetail.getResult().getBid_status());
+                        binding.tvStatus.setText(modelShipDetail.getResult().getBid_status());
                         originLatLng = new LatLng(Double.parseDouble(modelShipDetail.getResult().getPickup_lat())
                         ,Double.parseDouble(modelShipDetail.getResult().getPickup_lon()));
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.cityone.R;
+import com.cityone.adapters.AdapterMealStores;
 import com.cityone.databinding.ActivityMealsHomeBinding;
 import com.cityone.models.ModelLogin;
 import com.cityone.stores.activities.MyCartActivity;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,6 +42,7 @@ public class MealsHomeActivity extends AppCompatActivity {
     ActivityMealsHomeBinding binding;
     SharedPref sharedPref;
     ModelLogin modelLogin;
+    String id ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,10 @@ public class MealsHomeActivity extends AppCompatActivity {
 
         init();
 
-        getStoreCat();
+        if(getIntent()!=null){
+            id = getIntent().getStringExtra("id");
+            getStoreCat();
+        }
     }
 
     private void init() {
@@ -81,7 +87,9 @@ public class MealsHomeActivity extends AppCompatActivity {
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.getStoreMealsCatApiCall();
+        Map<String,String> map = new HashMap<>();
+        map.put("main_category_id",id);
+        Call<ResponseBody> call = api.getStoreMealsCatApiCall(map);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -95,7 +103,7 @@ public class MealsHomeActivity extends AppCompatActivity {
 
                         ModelStoreCat modelStoreCat = new Gson().fromJson(responseString, ModelStoreCat.class);
 
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),true,false);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,modelStoreCat.getResult(),true,false,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
 
                         Log.e("responseString","response = " + response);
@@ -106,7 +114,7 @@ public class MealsHomeActivity extends AppCompatActivity {
                                 ,modelStoreCat.getResult().get(0).getName());
 
                     } else {
-                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,true,false);
+                        AdapterStoreCat adapterStoreCat = new AdapterStoreCat(mContext,null,true,false,false);
                         binding.rvStoresCat.setAdapter(adapterStoreCat);
                     }
 
@@ -178,7 +186,7 @@ public class MealsHomeActivity extends AppCompatActivity {
         param.put("restaurant_sub_category_id",id);
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.getStoreMealsApiCall(param);
+        Call<ResponseBody> call = api.getStoreList(param);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -194,11 +202,11 @@ public class MealsHomeActivity extends AppCompatActivity {
 
                         ModelStores modelStores = new Gson().fromJson(responseString, ModelStores.class);
 
-                        AdapterStores adapterStores = new AdapterStores(mContext,modelStores.getResult());
+                        AdapterMealStores adapterStores = new AdapterMealStores(mContext,modelStores.getResult());
                         binding.rvStores.setAdapter(adapterStores);
 
                     } else {
-                        AdapterStores adapterStores = new AdapterStores(mContext,null);
+                        AdapterMealStores adapterStores = new AdapterMealStores(mContext,null);
                         binding.rvStores.setAdapter(adapterStores);
                     }
 

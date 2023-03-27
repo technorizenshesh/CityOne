@@ -5,7 +5,7 @@
     <data>
         <variable
             name="data"
-            type="com.cityone.entertainment.movies.models.ModelAvilTheater.Result" />
+            type="com.cityone.entertainment.movies.models.ModelAvilTheaterOne.Result" />
     </data>
 
     <RelativeLayout
@@ -16,6 +16,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/home_back">
 
+      <!--  imageurl="@{data.image}"-->
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivTheatre"
             android:layout_width="match_parent"
@@ -23,7 +24,6 @@
             app:riv_border_width="@dimen/_1sdp"
             app:riv_corner_radius="@dimen/_10sdp"
             android:src="@drawable/theatre"
-            imageurl="@{data.treater_image}"
             android:scaleType="centerCrop"/>
 
         <androidx.cardview.widget.CardView
@@ -84,7 +84,7 @@
                     android:textSize="@dimen/_10sdp"
                     android:drawablePadding="@dimen/_5sdp"
                     android:text="@{data.address}"
-                    android:textColor="@color/gray" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 

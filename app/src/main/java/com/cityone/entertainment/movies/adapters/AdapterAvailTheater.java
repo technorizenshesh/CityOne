@@ -15,6 +15,7 @@ import com.cityone.databinding.AdapterRemMoviesBinding;
 import com.cityone.entertainment.movies.activities.MovieDetailsActivity;
 import com.cityone.entertainment.movies.activities.TheaterDetailActivity;
 import com.cityone.entertainment.movies.models.ModelAvilTheater;
+import com.cityone.entertainment.movies.models.ModelAvilTheaterOne;
 import com.cityone.entertainment.movies.models.ModelUpcMovies;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 public class AdapterAvailTheater extends RecyclerView.Adapter<AdapterAvailTheater.StoreCatHolder> {
 
     Context mContext;
-    ArrayList<ModelAvilTheater.Result> entList;
+    ArrayList<ModelAvilTheaterOne.Result> entList;
 
-    public AdapterAvailTheater(Context mContext, ArrayList<ModelAvilTheater.Result> entList) {
+    public AdapterAvailTheater(Context mContext, ArrayList<ModelAvilTheaterOne.Result> entList) {
         this.mContext = mContext;
         this.entList = entList;
     }
@@ -41,7 +42,7 @@ public class AdapterAvailTheater extends RecyclerView.Adapter<AdapterAvailTheate
     @Override
     public void onBindViewHolder(@NonNull AdapterAvailTheater.StoreCatHolder holder, int position) {
 
-        ModelAvilTheater.Result data = entList.get(position);
+        ModelAvilTheaterOne.Result data = entList.get(position);
 
         holder.binding.setData(data);
 

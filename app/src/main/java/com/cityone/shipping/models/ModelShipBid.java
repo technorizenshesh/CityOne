@@ -28,7 +28,7 @@ public class ModelShipBid implements Serializable {
         return this.status;
     }
 
-    public class Result
+    public class Result implements Serializable
     {
         private String id;
 

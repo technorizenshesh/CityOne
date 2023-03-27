@@ -10,6 +10,33 @@ public class ModelReferrals implements Serializable {
     private String message;
     private String status;
     private String referral_code_point;
+    private String referral_point_fifteen_day;
+    private String purches_amount;
+    private String referral_point_fifteen_date;
+
+    public String getReferral_point_fifteen_day() {
+        return referral_point_fifteen_day;
+    }
+
+    public void setReferral_point_fifteen_day(String referral_point_fifteen_day) {
+        this.referral_point_fifteen_day = referral_point_fifteen_day;
+    }
+
+    public String getPurches_amount() {
+        return purches_amount;
+    }
+
+    public void setPurches_amount(String purches_amount) {
+        this.purches_amount = purches_amount;
+    }
+
+    public String getReferral_point_fifteen_date() {
+        return referral_point_fifteen_date;
+    }
+
+    public void setReferral_point_fifteen_date(String referral_point_fifteen_date) {
+        this.referral_point_fifteen_date = referral_point_fifteen_date;
+    }
 
     public String getReferral_code_point() {
         return referral_code_point;

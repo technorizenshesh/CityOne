@@ -23,6 +23,7 @@ import com.cityone.taxi.adapters.AdapterTripHistory;
 import com.cityone.taxi.models.ModelTripHistory;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.PaypalClientId;
 import com.cityone.utils.ProjectUtil;
@@ -81,6 +82,8 @@ public class TripHistoryAct extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_trip_history);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
 
         try {
             braintree = BraintreeFragment.newInstance(TripHistoryAct.this,getString(R.string.tokenizationKey));

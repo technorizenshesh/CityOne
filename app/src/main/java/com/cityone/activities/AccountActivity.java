@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.cityone.R;
 import com.cityone.databinding.ActivityAccountBinding;
 import com.cityone.models.ModelLogin;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.SharedPref;
 import com.squareup.picasso.Picasso;
@@ -30,6 +31,8 @@ public class AccountActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_account);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+
+        App.checkToken(mContext);
 
         init();
 
@@ -54,19 +57,19 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         binding.ivMyOrders.setOnClickListener(v -> {
-            // startActivity(new Intent(mContext, MyOrdersActivity.class));
+            startActivity(new Intent(mContext, MyBookingActivity.class));
         });
 
-        binding.ivDevAdd.setOnClickListener(v -> {
+        binding.ivMovieTicket.setOnClickListener(v -> {
             // startActivity(new Intent(mContext, DeliveryAddressActivity.class));
         });
 
-        binding.ivSettings.setOnClickListener(v -> {
-            // startActivity(new Intent(mContext, SettingsActivity.class));
+        binding.ivChangePassword.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, ChangePassActivity.class));
         });
 
-        binding.ivMyReviews.setOnClickListener(v -> {
-            // startActivity(new Intent(mContext, MyReviewsActivity.class));
+        binding.ivUpdateProfile.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, UpdateProfileActivity.class));
         });
 
     }

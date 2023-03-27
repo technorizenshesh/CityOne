@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <LinearLayout
+        android:id="@+id/layCat"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_margin="@dimen/_2sdp"
+        android:orientation="horizontal"
+        android:background="@drawable/orange_back_20"
+        android:gravity="center"
+        android:paddingRight="@dimen/_20sdp"
+        android:paddingLeft="@dimen/_20sdp"
+        >
+
+        <ImageView
+            android:id="@+id/ivCate"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:src="@drawable/delete"/>
+
+        <TextView
+            android:id="@+id/btCatName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:includeFontPadding="false"
+            android:textSize="@dimen/_9sdp"
+            android:text="@string/grocery"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:paddingStart="@dimen/_5sdp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+<!--
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btCatName1"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/_2sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:background="@drawable/orange_back_20"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:paddingRight="@dimen/_20sdp"
+        android:paddingLeft="@dimen/_20sdp"
+        android:includeFontPadding="false"
+        android:textSize="@dimen/_9sdp"
+        android:text="@string/grocery"
+        android:visibility="gone"
+        android:fontFamily="@font/poppins_bold" />
+-->
+
+</layout>

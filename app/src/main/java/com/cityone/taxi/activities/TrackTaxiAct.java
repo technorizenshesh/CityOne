@@ -41,6 +41,7 @@ import com.cityone.taxi.models.ModelTaxiBookingDetail;
 import com.cityone.taxi.models.ModelTripHistory;
 import com.cityone.utils.Api;
 import com.cityone.utils.ApiFactory;
+import com.cityone.utils.App;
 import com.cityone.utils.AppConstant;
 import com.cityone.utils.DrawPollyLine;
 import com.cityone.utils.PaypalClientId;
@@ -114,7 +115,7 @@ public class TrackTaxiAct extends AppCompatActivity
         binding = DataBindingUtil.setContentView(this,R.layout.activity_track_taxi);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-
+        App.checkToken(mContext);
 //        Intent intent = new Intent(mContext,PayPalService.class);
 //        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,payPalConfiguration);
 //        startService(intent);

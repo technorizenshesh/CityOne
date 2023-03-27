@@ -31,6 +31,17 @@
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/ivReferesh"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/referesh_icon" />
+
         </RelativeLayout>
 
         <View
@@ -39,15 +50,38 @@
             android:background="@color/white"/>
 
         <TextView
+            android:id="@+id/tvExpiryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:background="@drawable/red_outline_back"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="start"
+            android:includeFontPadding="false"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/tvPoints"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/_8sdp"
             android:paddingLeft="@dimen/_8sdp"
             android:paddingRight="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:layout_centerInParent="true"
             android:textStyle="bold"
+            android:text="You have 0 points"
             android:gravity="center"
             android:background="@color/orange"
             android:textSize="@dimen/_20sdp"
